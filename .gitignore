@@ -1,0 +1,23 @@
+# Environment & Secret files
+.env
+.env.backup
+.env.local
+.env.production
+.env.staging
+
+# Dependencies
+/vendor/
+
+# Logs & Temporary files
+*.log
+/tmp/
+
+# OS and Editor generated files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+/admin/
+/students/
+/centers/
+

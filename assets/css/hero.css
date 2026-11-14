@@ -1,0 +1,202 @@
+/**
+ * MG Education & Social Development Organization
+ * Hero Slider Stylesheet
+ * Pure Image Slider - Fully Mobile Responsive
+ */
+
+.mg-hero-slider {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background-color: #0b1f36;
+  user-select: none;
+  margin: 0;
+  padding: 0;
+  /* Sleek, reduced banner height */
+  aspect-ratio: 1920 / 460;
+  max-height: 460px;
+}
+
+/* Slider Track & Slides */
+.mg-hero-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.mg-hero-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(1.02);
+  z-index: 1;
+}
+
+.mg-hero-slide.active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  z-index: 2;
+}
+
+/* Pure Hero Image (No overlays, full visual presentation) */
+.mg-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+}
+
+/* Navigation Arrow Controls */
+.mg-hero-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(11, 31, 54, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.25s ease;
+  opacity: 0.85;
+}
+
+.mg-hero-arrow:hover {
+  background: #0b63b6;
+  border-color: #0b63b6;
+  color: #ffffff;
+  opacity: 1;
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 4px 14px rgba(11, 99, 182, 0.4);
+}
+
+.mg-hero-arrow.prev {
+  left: 20px;
+}
+
+.mg-hero-arrow.next {
+  right: 20px;
+}
+
+/* Pagination Dots */
+.mg-hero-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 10;
+  padding: 6px 14px;
+  background: rgba(11, 31, 54, 0.45);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.mg-hero-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.mg-hero-dot:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.mg-hero-dot.active {
+  background: #0b63b6;
+  width: 32px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(11, 99, 182, 0.7);
+}
+
+/* Subtle Loading Animation / Skeleton */
+.mg-hero-slider.loading {
+  background: linear-gradient(90deg, #0b1f36 0%, #153252 50%, #0b1f36 100%);
+  background-size: 200% 100%;
+  animation: mgSkeleton 1.5s infinite;
+}
+
+@keyframes mgSkeleton {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ==========================================================================
+   Mobile & Tablet Responsiveness
+   ========================================================================== */
+@media (max-width: 991px) {
+  .mg-hero-slider {
+    aspect-ratio: 16 / 5.2;
+    max-height: 350px;
+  }
+
+  .mg-hero-arrow {
+    width: 40px;
+    height: 40px;
+    font-size: 15px;
+  }
+
+  .mg-hero-arrow.prev {
+    left: 12px;
+  }
+
+  .mg-hero-arrow.next {
+    right: 12px;
+  }
+}
+
+@media (max-width: 640px) {
+  .mg-hero-slider {
+    aspect-ratio: 16 / 6.2;
+    max-height: 250px;
+  }
+
+  .mg-hero-arrow {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+    background: rgba(11, 31, 54, 0.6);
+  }
+
+  .mg-hero-arrow.prev {
+    left: 8px;
+  }
+
+  .mg-hero-arrow.next {
+    right: 8px;
+  }
+}
+
+@media (max-width: 420px) {
+  .mg-hero-slider {
+    aspect-ratio: 16 / 6.8;
+    max-height: 200px;
+  }
+}
+

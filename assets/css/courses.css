@@ -1,0 +1,446 @@
+/**
+ * MG Education & Social Development Organization
+ * Trending Courses Component Stylesheet
+ * Modern, Unique, Colorful & Professional Cards Design
+ */
+
+.mg-courses-section {
+  width: 100%;
+  padding: 50px 0 70px 0;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.mg-courses-container {
+  width: 100%;
+  max-width: 100%;
+  padding: 0 24px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* Section Header */
+.mg-courses-header {
+  margin-bottom: 28px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.mg-courses-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mg-courses-subtitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0b63b6;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.mg-courses-title {
+  font-family: var(--mg-font-en, 'Plus Jakarta Sans', sans-serif);
+  font-size: 28px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.4px;
+  margin: 0;
+}
+
+.mg-courses-explore-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #0b63b6;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.mg-courses-explore-link:hover {
+  color: #084e96;
+  transform: translateX(3px);
+}
+
+/* Carousel Outer Wrapper */
+.mg-carousel-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Scrollable Track */
+.mg-courses-track {
+  display: flex;
+  gap: 22px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  padding: 12px 6px 24px 6px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.mg-courses-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* Floating Navigation Arrows */
+.mg-course-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  color: #0f172a;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 6px 18px rgba(11, 31, 54, 0.12);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mg-course-arrow:hover {
+  background: #0b63b6;
+  border-color: #0b63b6;
+  color: #ffffff;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 8px 22px rgba(11, 99, 182, 0.3);
+}
+
+.mg-course-arrow:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  transform: translateY(-50%) scale(1);
+  background: #f8fafc;
+  color: #94a3b8;
+  box-shadow: none;
+}
+
+.mg-course-arrow.prev {
+  left: -16px;
+}
+
+.mg-course-arrow.next {
+  right: -16px;
+}
+
+/* ==========================================================================
+   UNIQUE & COLORFUL COURSE CARD DESIGN
+   ========================================================================== */
+.mg-course-card {
+  flex: 0 0 calc(25% - 17px);
+  min-width: 285px;
+  max-width: 330px;
+  scroll-snap-align: start;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.mg-course-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 36px rgba(11, 31, 54, 0.12);
+  border-color: #cbd5e1;
+}
+
+/* Card Thumbnail Area */
+.mg-course-thumb-wrap {
+  width: 100%;
+  aspect-ratio: 16 / 9.5;
+  overflow: hidden;
+  position: relative;
+  background-color: #0b1f36;
+}
+
+.mg-course-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.mg-course-card:hover .mg-course-thumb {
+  transform: scale(1.06);
+}
+
+/* Card Content Body */
+.mg-course-body {
+  padding: 16px 16px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Duration & Level Quick Stats */
+.mg-course-specs {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.mg-course-specs span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.mg-course-specs i {
+  color: #94a3b8;
+  font-size: 11px;
+}
+
+/* Course Title */
+.mg-course-title {
+  font-family: var(--mg-font-en, 'Plus Jakarta Sans', sans-serif);
+  font-size: 15.5px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.35;
+  margin-bottom: 6px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 42px;
+  transition: color 0.2s ease;
+}
+
+.mg-course-card:hover .mg-course-title {
+  color: #0b63b6;
+}
+
+/* Instructor / Subtitle */
+.mg-course-author {
+  font-size: 12px;
+  color: #64748b;
+  margin-bottom: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.mg-course-author i.fa-circle-check {
+  color: #0284c7;
+  font-size: 11px;
+}
+
+/* Badges & Rating Row */
+.mg-course-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+/* Distinct Colorful Badge Pills */
+.mg-badge-pill {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1.2;
+  letter-spacing: 0.2px;
+}
+
+.mg-badge-pill.gold {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.mg-badge-pill.cyan {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+.mg-badge-pill.purple {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.mg-badge-pill.emerald {
+  background: #d1fae5;
+  color: #047857;
+}
+
+/* Star Rating */
+.mg-course-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #b45309;
+}
+
+.mg-course-rating i {
+  color: #f59e0b;
+  font-size: 12px;
+}
+
+.mg-course-ratings-count {
+  font-size: 11.5px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* Price & Button Footer Row */
+.mg-course-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.mg-course-pricing-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.mg-course-pricing {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.mg-price-current {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.mg-price-original {
+  font-size: 12px;
+  color: #94a3b8;
+  text-decoration: line-through;
+  font-weight: 500;
+}
+
+.mg-discount-tag {
+  font-size: 10px;
+  font-weight: 800;
+  color: #15803d;
+  background: #dcfce7;
+  padding: 1px 6px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-top: 2px;
+}
+
+/* Add to Cart Button */
+.mg-btn-add-cart {
+  background: #ffffff;
+  color: #0b63b6;
+  border: 1.5px solid #0b63b6;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mg-btn-add-cart i {
+  font-size: 13px;
+  transition: transform 0.2s ease;
+}
+
+.mg-btn-add-cart:hover {
+  background: #0b63b6;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(11, 99, 182, 0.25);
+  transform: translateY(-2px);
+}
+
+.mg-btn-add-cart:hover i {
+  transform: scale(1.15);
+}
+
+.mg-btn-add-cart:active {
+  transform: translateY(0);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .mg-course-card {
+    flex: 0 0 calc(33.333% - 15px);
+    min-width: 270px;
+  }
+}
+
+@media (max-width: 900px) {
+  .mg-course-card {
+    flex: 0 0 calc(50% - 11px);
+    min-width: 250px;
+  }
+
+  .mg-course-arrow.prev {
+    left: 2px;
+  }
+
+  .mg-course-arrow.next {
+    right: 2px;
+  }
+}
+
+@media (max-width: 600px) {
+  .mg-courses-section {
+    padding: 35px 0 45px 0;
+  }
+
+  .mg-courses-container {
+    padding: 0 14px;
+  }
+
+  .mg-courses-title {
+    font-size: 23px;
+  }
+
+  .mg-course-card {
+    flex: 0 0 85%;
+    min-width: 245px;
+  }
+
+  .mg-course-arrow {
+    width: 36px;
+    height: 36px;
+    font-size: 13px;
+  }
+}

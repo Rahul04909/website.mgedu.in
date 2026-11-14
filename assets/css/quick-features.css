@@ -1,0 +1,220 @@
+/**
+ * MG Education & Social Development Organization
+ * Hero Quick-Action Chevron Modules Stylesheet
+ * 100% Visual Replica with Overlapping Hero Alignment & Seamless Vector Chevrons
+ */
+
+.mg-qf-section {
+  width: 100%;
+  background: transparent;
+  position: relative;
+  z-index: 20;
+  /* Pull up so the circular badges overlap the bottom of the hero banner */
+  margin-top: -28px;
+  margin-bottom: 25px;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 4 Chevron Action Blocks Wrapper */
+.mg-qf-wrapper {
+  width: 100%;
+  display: flex;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+}
+
+/* Individual Feature Block */
+.mg-qf-col {
+  flex: 1;
+  position: relative;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* Distinct Block Background Colors (Exact match from reference) */
+.mg-qf-col.purple {
+  background-color: #724c97;
+  z-index: 4;
+}
+
+.mg-qf-col.amber {
+  background-color: #d67d26;
+  z-index: 3;
+}
+
+.mg-qf-col.cyan {
+  background-color: #00a2db;
+  z-index: 2;
+}
+
+.mg-qf-col.vermilion {
+  background-color: #e34e26;
+  z-index: 1;
+}
+
+/* Seamless Vector Chevron Arrow Pointing Right */
+.mg-qf-arrow {
+  position: absolute;
+  top: 0;
+  right: -28px;
+  width: 29px;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+  filter: drop-shadow(2px 0 3px rgba(0, 0, 0, 0.08));
+}
+
+/* Circular Icon Badge (Overlapping the Hero Banner) */
+.mg-qf-badge {
+  position: absolute;
+  top: -26px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3.5px solid #ffb703; /* Bright Golden Yellow Ring */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 15;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.25s ease;
+}
+
+.mg-qf-col:hover .mg-qf-badge {
+  transform: translateX(-50%) scale(1.1);
+}
+
+.mg-qf-badge i {
+  font-size: 21px;
+  color: #1e293b;
+}
+
+/* Content Container Inside the Block */
+.mg-qf-content {
+  position: relative;
+  z-index: 5;
+  padding: 38px 24px 20px 38px;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.mg-qf-col.purple .mg-qf-content {
+  padding-left: 30px;
+}
+
+/* Block Heading */
+.mg-qf-title {
+  font-family: var(--mg-font-en, 'Plus Jakarta Sans', sans-serif);
+  font-size: 17.5px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 10px 0;
+  text-align: left;
+  letter-spacing: 0.1px;
+}
+
+/* Bulleted List */
+.mg-qf-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.mg-qf-list li {
+  position: relative;
+  padding-left: 14px;
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.mg-qf-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  top: -1px;
+  color: #ffffff;
+  font-size: 15px;
+}
+
+.mg-qf-list li a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: opacity 0.2s ease, text-decoration 0.2s ease;
+  display: inline-block;
+}
+
+.mg-qf-list li a:hover {
+  text-decoration: underline;
+  opacity: 0.95;
+}
+
+/* ==========================================================================
+   Mobile & Tablet Responsiveness
+   ========================================================================== */
+@media (max-width: 991px) {
+  .mg-qf-section {
+    margin-top: -15px;
+    padding: 0 14px;
+  }
+
+  .mg-qf-wrapper {
+    flex-wrap: wrap;
+    gap: 30px 16px;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .mg-qf-arrow {
+    display: none; /* Hide chevron on stacked mobile view */
+  }
+
+  .mg-qf-col {
+    flex: 0 0 calc(50% - 8px);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+
+  .mg-qf-content {
+    padding: 36px 18px 18px 24px !important;
+  }
+}
+
+@media (max-width: 580px) {
+  .mg-qf-section {
+    margin-top: 10px;
+    padding: 0 12px;
+  }
+
+  .mg-qf-wrapper {
+    flex-direction: column;
+    gap: 34px;
+  }
+
+  .mg-qf-col {
+    flex: 0 0 100%;
+    width: 100%;
+  }
+
+  .mg-qf-content {
+    padding: 34px 18px 18px 24px !important;
+  }
+
+  .mg-qf-title {
+    font-size: 16.5px;
+  }
+}

@@ -1,0 +1,594 @@
+/**
+ * MG Education & Social Development Organization
+ * Footer Stylesheet - Colorful Chevron Menu Modules & Harmonized Vibrant Bottom Bar
+ * Palette: Purple (#724c97), Amber (#d67d26), Cyan (#00a2db), Vermilion (#e34e26)
+ */
+
+.mg-footer-wrapper {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  font-family: var(--mg-font-en, 'Plus Jakarta Sans', sans-serif);
+  margin-top: 50px;
+}
+
+/* ==========================================================================
+   1. COLORFUL CHEVRON MENU MODULES CONTAINER
+   ========================================================================== */
+.mg-footer-chevron-section {
+  width: 100%;
+  position: relative;
+  z-index: 10;
+  padding-top: 28px;
+  background: transparent;
+}
+
+.mg-footer-chevron-wrapper {
+  width: 100%;
+  display: flex;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Individual Chevron Menu Column */
+.mg-fmenu-col {
+  flex: 1;
+  position: relative;
+  min-height: 275px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  transition: transform 0.25s ease;
+}
+
+/* Distinct Block Background Colors */
+.mg-fmenu-col.purple {
+  background-color: #724c97;
+  z-index: 4;
+}
+
+.mg-fmenu-col.amber {
+  background-color: #d67d26;
+  z-index: 3;
+}
+
+.mg-fmenu-col.cyan {
+  background-color: #00a2db;
+  z-index: 2;
+}
+
+.mg-fmenu-col.vermilion {
+  background-color: #e34e26;
+  z-index: 1;
+}
+
+/* Seamless Vector Chevron Arrow Pointing Right */
+.mg-fmenu-arrow {
+  position: absolute;
+  top: 0;
+  right: -28px;
+  width: 29px;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+  filter: drop-shadow(2px 0 3px rgba(0, 0, 0, 0.1));
+}
+
+/* Overlapping Circular Badge with Bright Golden-Yellow Ring */
+.mg-fmenu-badge {
+  position: absolute;
+  top: -26px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3.5px solid #ffb703;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 15;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+  transition: transform 0.25s ease;
+}
+
+.mg-fmenu-col:hover .mg-fmenu-badge {
+  transform: translateX(-50%) scale(1.12);
+}
+
+.mg-fmenu-badge i {
+  font-size: 21px;
+  color: #1e293b;
+}
+
+/* Content Container Inside Each Chevron Menu */
+.mg-fmenu-content {
+  position: relative;
+  z-index: 5;
+  padding: 38px 24px 26px 36px;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.mg-fmenu-col.purple .mg-fmenu-content {
+  padding-left: 28px;
+}
+
+/* Block Heading */
+.mg-fmenu-title {
+  font-family: var(--mg-font-en, 'Plus Jakarta Sans', sans-serif);
+  font-size: 18px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 14px 0;
+  text-align: left;
+  letter-spacing: -0.2px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.25);
+  padding-bottom: 8px;
+  display: inline-block;
+}
+
+/* Bulleted Menu List */
+.mg-fmenu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.mg-fmenu-list li {
+  position: relative;
+  padding-left: 14px;
+  font-size: 13.5px;
+  line-height: 1.45;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.mg-fmenu-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  top: -1px;
+  color: #ffffff;
+  font-size: 15px;
+  opacity: 0.9;
+}
+
+.mg-fmenu-list li a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.mg-fmenu-list li a:hover {
+  text-decoration: underline;
+  transform: translateX(3px);
+  opacity: 0.95;
+}
+
+/* Contact Details in 4th Column */
+.mg-fmenu-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 13px;
+  line-height: 1.4;
+  margin-bottom: 9px;
+  color: #ffffff;
+}
+
+.mg-fmenu-contact-item i {
+  font-size: 14px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  opacity: 0.95;
+}
+
+.mg-fmenu-contact-item a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: text-decoration 0.2s ease;
+}
+
+.mg-fmenu-contact-item a:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   2. VIBRANT, COLORFUL & PROFESSIONAL BOTTOM BAR
+   ========================================================================== */
+
+/* Multi-Color Spectrum Connector Strip (Locks directly to the 4 modules) */
+.mg-footer-spectrum-bar {
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(
+    90deg, 
+    #724c97 0%, 
+    #724c97 25%, 
+    #d67d26 25%, 
+    #d67d26 50%, 
+    #00a2db 50%, 
+    #00a2db 75%, 
+    #e34e26 75%, 
+    #e34e26 100%
+  );
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 12;
+}
+
+/* Bottom Bar Background with Ambient Theme Glows */
+.mg-footer-bottom {
+  background: radial-gradient(circle at 10% 20%, rgba(114, 76, 151, 0.22) 0%, transparent 45%),
+              radial-gradient(circle at 40% 90%, rgba(214, 125, 38, 0.18) 0%, transparent 45%),
+              radial-gradient(circle at 70% 20%, rgba(0, 162, 219, 0.2) 0%, transparent 45%),
+              radial-gradient(circle at 95% 80%, rgba(227, 78, 38, 0.22) 0%, transparent 45%),
+              linear-gradient(180deg, #06182a 0%, #030d17 100%);
+  color: #e2e8f0;
+  padding: 26px 0 22px 0;
+  position: relative;
+  z-index: 5;
+}
+
+.mg-footer-container {
+  width: 100%;
+  max-width: 100%;
+  padding: 0 24px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.mg-footer-bottom-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Brand Section Left */
+.mg-fbottom-brand-group {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.mg-fbottom-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+}
+
+.mg-fbottom-logo {
+  max-height: 54px;
+  width: auto;
+  object-fit: contain;
+  background: #ffffff;
+  padding: 4px 8px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
+  transition: transform 0.25s ease;
+}
+
+.mg-fbottom-brand:hover .mg-fbottom-logo {
+  transform: scale(1.05);
+}
+
+.mg-fbottom-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.mg-fbottom-title-en {
+  font-size: 16px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.2px;
+  line-height: 1.25;
+}
+
+.mg-fbottom-title-en span.mg-word-blue {
+  color: #38bdf8;
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+}
+
+.mg-fbottom-title-en span.mg-word-orange {
+  color: #ff9800;
+  text-shadow: 0 0 12px rgba(255, 152, 0, 0.4);
+}
+
+.mg-fbottom-title-hi {
+  font-family: var(--mg-font-hi, 'Mukta', sans-serif);
+  font-size: 13.5px;
+  color: #e2e8f0;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* Colorful Accreditation Micro-Pills */
+.mg-fbottom-trust-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.mg-ftrust-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
+}
+
+.mg-ftrust-pill.iso {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(217, 119, 6, 0.25));
+  color: #fcd34d;
+  border: 1px solid rgba(252, 211, 77, 0.35);
+}
+
+.mg-ftrust-pill.govt {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.18), rgba(2, 132, 199, 0.25));
+  color: #7dd3fc;
+  border: 1px solid rgba(125, 211, 252, 0.35);
+}
+
+.mg-ftrust-pill.trust {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(5, 150, 105, 0.25));
+  color: #6ee7b7;
+  border: 1px solid rgba(110, 231, 183, 0.35);
+}
+
+.mg-ftrust-pill:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.2);
+}
+
+/* Vibrant Colorful Social Media Buttons */
+.mg-fbottom-social {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mg-fsocial-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  color: #ffffff;
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Individual Brand Colors */
+.mg-fsocial-btn.x-tw {
+  background: #000000;
+  border-color: #333333;
+}
+.mg-fsocial-btn.x-tw:hover {
+  background: #1da1f2;
+  border-color: #1da1f2;
+  box-shadow: 0 0 16px rgba(29, 161, 242, 0.6);
+  transform: translateY(-4px) scale(1.1);
+}
+
+.mg-fsocial-btn.fb {
+  background: #1877f2;
+  border-color: #2b84f3;
+}
+.mg-fsocial-btn.fb:hover {
+  background: #0d6efd;
+  box-shadow: 0 0 16px rgba(24, 119, 242, 0.6);
+  transform: translateY(-4px) scale(1.1);
+}
+
+.mg-fsocial-btn.yt {
+  background: #ff0000;
+  border-color: #ff3333;
+}
+.mg-fsocial-btn.yt:hover {
+  background: #cc0000;
+  box-shadow: 0 0 16px rgba(255, 0, 0, 0.6);
+  transform: translateY(-4px) scale(1.1);
+}
+
+.mg-fsocial-btn.insta {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.mg-fsocial-btn.insta:hover {
+  box-shadow: 0 0 16px rgba(220, 39, 67, 0.7);
+  transform: translateY(-4px) scale(1.1);
+}
+
+.mg-fsocial-btn.in {
+  background: #0a66c2;
+  border-color: #1b7cd9;
+}
+.mg-fsocial-btn.in:hover {
+  background: #084e96;
+  box-shadow: 0 0 16px rgba(10, 102, 194, 0.6);
+  transform: translateY(-4px) scale(1.1);
+}
+
+/* Copyright & Legal Sub-strip */
+.mg-footer-bottom-sub {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding-top: 18px;
+  font-size: 13px;
+}
+
+.mg-fbottom-copy {
+  color: #94a3b8;
+}
+
+.mg-fbottom-copy strong {
+  color: #ffffff;
+}
+
+.mg-fbottom-copy span.govt-badge {
+  color: #38bdf8;
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.mg-fbottom-legal {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.mg-fbottom-legal a {
+  color: #94a3b8;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.mg-fbottom-legal a:hover {
+  color: #38bdf8;
+  text-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
+}
+
+/* Floating Back To Top Button */
+.mg-back-to-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0b63b6 0%, #f37021 100%);
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 999;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mg-back-to-top.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.mg-back-to-top:hover {
+  transform: translateY(-4px) scale(1.1);
+  box-shadow: 0 8px 24px rgba(243, 112, 33, 0.5);
+}
+
+/* ==========================================================================
+   3. MOBILE & TABLET RESPONSIVENESS
+   ========================================================================== */
+@media (max-width: 991px) {
+  .mg-footer-chevron-section {
+    padding: 30px 14px 10px 14px;
+  }
+
+  .mg-footer-chevron-wrapper {
+    flex-wrap: wrap;
+    gap: 32px 14px;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .mg-fmenu-arrow {
+    display: none;
+  }
+
+  .mg-fmenu-col {
+    flex: 0 0 calc(50% - 7px);
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+    min-height: auto;
+  }
+
+  .mg-fmenu-content {
+    padding: 36px 20px 22px 24px !important;
+  }
+
+  .mg-fbottom-brand-group {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 580px) {
+  .mg-footer-chevron-wrapper {
+    flex-direction: column;
+    gap: 36px;
+  }
+
+  .mg-fmenu-col {
+    flex: 0 0 100%;
+    width: 100%;
+  }
+
+  .mg-fmenu-content {
+    padding: 34px 18px 20px 22px !important;
+  }
+
+  .mg-footer-bottom-main,
+  .mg-footer-bottom-sub {
+    flex-direction: column;
+    text-align: center;
+    gap: 14px;
+  }
+
+  .mg-fbottom-brand {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .mg-fbottom-trust-badges {
+    justify-content: center;
+  }
+
+  .mg-fbottom-social {
+    justify-content: center;
+  }
+
+  .mg-fbottom-legal {
+    justify-content: center;
+  }
+}

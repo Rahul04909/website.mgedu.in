@@ -1,0 +1,489 @@
+/**
+ * MG Education & Social Development Organization
+ * Director's Message Component Stylesheet - Premium & Executive Design
+ */
+
+.mg-director-section {
+  width: 100%;
+  padding: 65px 0 75px 0;
+  background: linear-gradient(180deg, #fcfdff 0%, #f4f8fc 60%, #ffffff 100%);
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  border-bottom: 1px solid #eef2f6;
+}
+
+/* Subtle background glowing ambient orbs */
+.mg-director-section::before {
+  content: '';
+  position: absolute;
+  top: 10%;
+  right: -5%;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(11, 99, 182, 0.07) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.mg-director-section::after {
+  content: '';
+  position: absolute;
+  bottom: 5%;
+  left: -5%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.mg-director-container {
+  width: 100%;
+  max-width: 1240px;
+  padding: 0 24px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 2;
+}
+
+/* Optional Top Notice Bar */
+.mg-director-top-notice {
+  text-align: center;
+  color: #dc2626;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 35px;
+  background: #fef2f2;
+  border: 1px solid #fee2e2;
+  padding: 8px 16px;
+  border-radius: 30px;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+  position: relative;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.08);
+}
+
+/* Main 2-Column Grid Layout */
+.mg-director-grid {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 55px;
+  align-items: center;
+}
+
+/* ==========================================================================
+   LEFT COLUMN: PHOTO WITH 3D ACCENTS, SHADOWS & FLOATING BADGE
+   ========================================================================== */
+.mg-director-photo-col {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.mg-director-frame {
+  position: relative;
+  width: 100%;
+  max-width: 370px;
+  padding: 16px 16px 24px 0;
+}
+
+/* Geometric Gold Top-Right Accent */
+.mg-director-frame::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+  border-radius: 12px;
+  z-index: 1;
+  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+}
+
+/* Geometric Deep Navy Bottom-Left Foundation */
+.mg-director-frame::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: -14px;
+  width: 170px;
+  height: 50px;
+  background: linear-gradient(90deg, #0b2542 0%, #034a7d 100%);
+  border-radius: 8px;
+  z-index: 1;
+  box-shadow: 0 8px 20px rgba(11, 37, 66, 0.25);
+}
+
+/* Photo Wrapper */
+.mg-director-img-wrap {
+  position: relative;
+  z-index: 2;
+  border-radius: 14px;
+  overflow: hidden;
+  background-color: #ffffff;
+  border: 4px solid #ffffff;
+  box-shadow: 0 16px 40px rgba(11, 31, 54, 0.16);
+}
+
+.mg-director-photo {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3.6;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.mg-director-frame:hover .mg-director-photo {
+  transform: scale(1.03);
+}
+
+/* Floating Leadership Badge on Photo */
+.mg-director-badge-float {
+  position: absolute;
+  bottom: 0px;
+  right: -10px;
+  z-index: 5;
+  background: linear-gradient(135deg, #071d33 0%, #0b3b5c 100%);
+  color: #ffffff;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 2px solid #ffffff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: transform 0.25s ease;
+}
+
+.mg-director-frame:hover .mg-director-badge-float {
+  transform: translateY(-3px);
+}
+
+.mg-badge-float-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.mg-badge-float-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.mg-badge-float-num {
+  font-size: 15px;
+  font-weight: 800;
+  color: #fcd34d;
+  line-height: 1.1;
+}
+
+.mg-badge-float-sub {
+  font-size: 11px;
+  font-weight: 600;
+  color: #cbd5e1;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* ==========================================================================
+   RIGHT COLUMN: EXECUTIVE LEADERSHIP MESSAGE
+   ========================================================================== */
+.mg-director-content-col {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Decorative Watermark Quote Icon */
+.mg-quote-watermark {
+  position: absolute;
+  top: -15px;
+  right: 10px;
+  font-size: 90px;
+  color: rgba(11, 99, 182, 0.05);
+  pointer-events: none;
+  line-height: 1;
+}
+
+/* Category Pill */
+.mg-director-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #0b63b6;
+  background: rgba(11, 99, 182, 0.08);
+  border: 1px solid rgba(11, 99, 182, 0.2);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  width: fit-content;
+}
+
+.mg-director-title-pre {
+  font-family: var(--mg-font-en, 'Plus Jakarta Sans', sans-serif);
+  font-size: 26px;
+  font-weight: 800;
+  color: #034a7d;
+  letter-spacing: -0.3px;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.mg-director-title-main {
+  font-family: var(--mg-font-en, 'Plus Jakarta Sans', sans-serif);
+  font-size: 32px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.5px;
+  margin: 4px 0 16px 0;
+  line-height: 1.25;
+}
+
+.mg-director-title-main span {
+  color: #0b63b6;
+}
+
+/* Highlight Quote Callout Box */
+.mg-director-quote-box {
+  background: #ffffff;
+  border-left: 4px solid #f59e0b;
+  border-radius: 0 10px 10px 0;
+  padding: 12px 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.mg-director-quote-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e293b;
+  font-style: italic;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Main Message Paragraph */
+.mg-director-text {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: #475569;
+  margin: 0 0 20px 0;
+  text-align: justify;
+}
+
+/* Read More Button */
+.mg-btn-readmore {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #0d6efd;
+  color: #ffffff;
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 4px;
+  text-decoration: none;
+  margin-left: 6px;
+  vertical-align: baseline;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(13, 110, 253, 0.3);
+}
+
+.mg-btn-readmore:hover {
+  background: #0b5ed7;
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.45);
+  transform: translateY(-1px);
+}
+
+.mg-director-more-text {
+  display: none;
+}
+
+.mg-director-more-text.show {
+  display: inline;
+}
+
+/* 3 Vision Pillar Badges */
+.mg-director-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.mg-pillar-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  transition: all 0.2s ease;
+}
+
+.mg-pillar-card:hover {
+  border-color: #0b63b6;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(11, 99, 182, 0.1);
+}
+
+.mg-pillar-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.mg-pillar-icon.purple { color: #7c3aed; }
+.mg-pillar-icon.amber { color: #d97706; }
+.mg-pillar-icon.cyan { color: #0284c7; }
+
+.mg-pillar-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.mg-pillar-num {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.1;
+}
+
+.mg-pillar-lbl {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+/* Director Sign-off Block */
+.mg-director-signoff {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-top: 18px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.mg-director-identity {
+  display: flex;
+  flex-direction: column;
+}
+
+.mg-director-name {
+  font-family: var(--mg-font-en, 'Plus Jakarta Sans', sans-serif);
+  font-size: 18px;
+  font-weight: 800;
+  color: #034a7d;
+  margin: 0 0 2px 0;
+  letter-spacing: -0.2px;
+}
+
+.mg-director-designation {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Contact / Desk CTA Button */
+.mg-btn-director-contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #ffffff;
+  color: #034a7d;
+  border: 1.5px solid #034a7d;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.mg-btn-director-contact:hover {
+  background: #034a7d;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(3, 74, 125, 0.25);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   RESPONSIVENESS
+   ========================================================================== */
+@media (max-width: 991px) {
+  .mg-director-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .mg-director-frame {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .mg-director-title-main {
+    font-size: 26px;
+  }
+
+  .mg-director-text {
+    text-align: left;
+  }
+
+  .mg-director-pillars {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .mg-director-section {
+    padding: 45px 0 50px 0;
+  }
+
+  .mg-director-container {
+    padding: 0 16px;
+  }
+
+  .mg-director-title-pre {
+    font-size: 20px;
+  }
+
+  .mg-director-title-main {
+    font-size: 23px;
+  }
+
+  .mg-director-quote-text {
+    font-size: 14px;
+  }
+
+  .mg-director-text {
+    font-size: 13.5px;
+    line-height: 1.65;
+  }
+
+  .mg-director-signoff {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
