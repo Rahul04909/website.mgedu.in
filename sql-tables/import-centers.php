@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['run_migration'])) {
                     `royalty_percentage`, `status`
                 ) VALUES 
                 (
-                    'MG-CENT-1001',
+                    'MGEDU2026001',
                     'Prayag Institute of Computer & Skill Development',
                     'prayag.cent1001@mgedu.in',
                     '+91 8059982049',
@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['run_migration'])) {
                     'active'
                 ),
                 (
-                    'MG-CENT-1002',
+                    'MGEDU2026002',
                     'Delhi Central Academy of Technical Studies',
                     'delhi.cent1002@mgedu.in',
                     '+91 9812345678',

@@ -1,36 +1,34 @@
 /**
  * MG Education & Social Development Organization
- * Study Centers Management & Colorful Form Stylesheet
+ * Study Centers Management - Professional Enterprise UI Stylesheet
  * 
- * Styled with 100% Quick Features Visual Language:
- * Pointed Chevron Ribbon Headers, Golden-Ring Floating Badges, Vibrant Solid Sections,
- * India Post API Status Indicators, Amenities Toggle Chips, and Document Dropzones.
+ * Crafted for clean human enterprise UX:
+ * Subtle borders, refined typography, elegant section headers,
+ * robust India Post status handling, and clean document upload components.
  */
 
 :root {
-  --mg-cyan: #00a2db;
-  --mg-cyan-dark: #0284c7;
-  --mg-cyan-soft: #e0f2fe;
+  --mg-primary: #0284c7;
+  --mg-primary-hover: #0369a1;
+  --mg-primary-light: #f0f9ff;
+  --mg-primary-border: #bae6fd;
 
-  --mg-purple: #724c97;
-  --mg-purple-dark: #5e3b7e;
-  --mg-purple-soft: #f3e8ff;
-
-  --mg-amber: #d67d26;
-  --mg-amber-dark: #b86518;
-  --mg-amber-soft: #fef3c7;
-
-  --mg-vermilion: #e34e26;
-  --mg-vermilion-dark: #c53a15;
-  --mg-vermilion-soft: #fee2e2;
-
-  --mg-emerald: #10b981;
-  --mg-emerald-dark: #059669;
-  --mg-emerald-soft: #d1fae5;
-
+  --mg-dark: #0f172a;
   --mg-navy: #071d33;
-  --mg-navy-light: #0b2542;
-  --mg-gold: #ffb703;
+  --mg-slate-700: #334155;
+  --mg-slate-600: #475569;
+  --mg-slate-500: #64748b;
+  --mg-slate-400: #94a3b8;
+  --mg-slate-200: #e2e8f0;
+  --mg-slate-100: #f1f5f9;
+  --mg-slate-50:  #f8fafc;
+
+  --mg-success: #10b981;
+  --mg-success-light: #ecfdf5;
+  --mg-danger: #ef4444;
+  --mg-danger-light: #fef2f2;
+  --mg-warning: #f59e0b;
+  --mg-warning-light: #fffbeb;
 }
 
 /* ==========================================================================
@@ -38,264 +36,210 @@
    ========================================================================== */
 .mg-page-header {
   background: #ffffff;
-  border-radius: 16px;
-  padding: 22px 26px;
-  margin-bottom: 25px;
-  box-shadow: 0 4px 20px rgba(7, 29, 51, 0.05);
-  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 18px 24px;
+  margin-bottom: 22px;
+  border: 1px solid var(--mg-slate-200);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 15px;
+  gap: 16px;
 }
 
 .mg-page-header-title {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 14px;
 }
 
 .mg-page-header-icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, var(--mg-vermilion) 0%, var(--mg-vermilion-dark) 100%);
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--mg-navy);
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.4rem;
-  box-shadow: 0 6px 15px rgba(227, 78, 38, 0.3);
+  font-size: 1.2rem;
+  flex-shrink: 0;
 }
 
 .mg-page-header-title h4 {
-  font-size: 1.45rem;
-  font-weight: 800;
-  color: var(--mg-navy);
+  font-size: 1.28rem;
+  font-weight: 700;
+  color: var(--mg-dark);
   margin: 0;
-  line-height: 1.2;
+  letter-spacing: -0.2px;
 }
 
 .mg-page-header-title p {
-  font-size: 0.85rem;
-  color: #64748b;
-  margin: 4px 0 0;
-  font-weight: 500;
+  font-size: 0.83rem;
+  color: var(--mg-slate-500);
+  margin: 2px 0 0;
 }
 
 .mg-btn-action {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 22px;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 0.92rem;
-  transition: all 0.25s ease;
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.88rem;
+  transition: all 0.2s ease;
   text-decoration: none;
+  border: 1px solid transparent;
 }
 
-.mg-btn-vermilion {
-  background: linear-gradient(135deg, var(--mg-vermilion) 0%, var(--mg-vermilion-dark) 100%);
+.mg-btn-primary {
+  background: var(--mg-navy);
   color: #ffffff !important;
-  box-shadow: 0 6px 16px rgba(227, 78, 38, 0.3);
-  border: none;
 }
-.mg-btn-vermilion:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 9px 22px rgba(227, 78, 38, 0.4);
+.mg-btn-primary:hover {
+  background: #0b2542;
+  color: #ffffff;
 }
 
-.mg-btn-navy {
-  background: linear-gradient(135deg, var(--mg-navy) 0%, var(--mg-navy-light) 100%);
-  color: #ffffff !important;
-  box-shadow: 0 6px 16px rgba(7, 29, 51, 0.25);
-  border: none;
+.mg-btn-secondary {
+  background: #ffffff;
+  color: var(--mg-slate-700) !important;
+  border-color: var(--mg-slate-200);
 }
-.mg-btn-navy:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 9px 22px rgba(7, 29, 51, 0.35);
+.mg-btn-secondary:hover {
+  background: var(--mg-slate-50);
+  border-color: var(--mg-slate-400);
 }
 
 /* ==========================================================================
-   2. COLORFUL SECTION CARDS & POINTED CHEVRON HEADERS
+   2. ENTERPRISE SECTION CARDS (Clean, Human Handcrafted Architecture)
    ========================================================================== */
-.mg-form-card {
+.mg-section-card {
   background: #ffffff;
-  border-radius: 18px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 6px 25px rgba(7, 29, 51, 0.06);
-  margin-bottom: 28px;
+  border-radius: 12px;
+  border: 1px solid var(--mg-slate-200);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  margin-bottom: 22px;
   overflow: hidden;
-  transition: box-shadow 0.3s ease;
+  transition: border-color 0.2s ease;
 }
 
-.mg-form-card:hover {
-  box-shadow: 0 10px 32px rgba(7, 29, 51, 0.09);
+.mg-section-card:hover {
+  border-color: #cbd5e1;
 }
 
-/* Pointed Chevron Header Ribbon */
-.mg-chevron-header {
-  position: relative;
+.mg-section-header {
+  padding: 16px 22px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--mg-slate-200);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 24px;
-  color: #ffffff;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  clip-path: polygon(0% 0%, calc(100% - 24px) 0%, 100% 50%, calc(100% - 24px) 100%, 0% 100%);
-  margin-right: 0px;
+  gap: 12px;
 }
 
-@media (max-width: 768px) {
-  .mg-chevron-header {
-    clip-path: none;
-  }
-}
-
-.mg-chevron-left {
+.mg-section-header-left {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
-/* Circular Icon Hole with Golden Ring (Quick Features Language) */
-.mg-chevron-icon-hole {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: #ffffff;
+.mg-section-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 0 3px var(--mg-gold), 0 4px 10px rgba(0, 0, 0, 0.15);
+  font-size: 1rem;
   flex-shrink: 0;
 }
 
-.mg-chevron-title {
-  font-size: 1.12rem;
-  font-weight: 800;
-  margin: 0;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
-}
+.mg-section-icon.blue   { background: #e0f2fe; color: #0284c7; }
+.mg-section-icon.purple { background: #f3e8ff; color: #7c3aed; }
+.mg-section-icon.amber  { background: #fef3c7; color: #d97706; }
+.mg-section-icon.green  { background: #ecfdf5; color: #059669; }
+.mg-section-icon.navy   { background: #f1f5f9; color: #071d33; }
+.mg-section-icon.coral  { background: #fee2e2; color: #dc2626; }
 
-.mg-chevron-sub {
-  font-size: 0.78rem;
-  opacity: 0.92;
-  margin: 2px 0 0;
-  font-weight: 500;
-}
-
-.mg-chevron-badge {
-  background: rgba(255, 255, 255, 0.22);
-  backdrop-filter: blur(6px);
-  padding: 4px 14px;
-  border-radius: 50px;
-  font-size: 0.75rem;
+.mg-section-title {
+  font-size: 0.98rem;
   font-weight: 700;
-  letter-spacing: 0.5px;
+  color: var(--mg-dark);
+  margin: 0;
+  letter-spacing: -0.1px;
+}
+
+.mg-section-sub {
+  font-size: 0.78rem;
+  color: var(--mg-slate-500);
+  margin: 1px 0 0;
+}
+
+.mg-section-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: var(--mg-slate-100);
+  color: var(--mg-slate-600);
+  letter-spacing: 0.3px;
   text-transform: uppercase;
-  margin-right: 30px;
 }
 
-/* Themes for Chevron Headers */
-.theme-vermilion-header {
-  background: linear-gradient(135deg, var(--mg-vermilion) 0%, var(--mg-vermilion-dark) 100%);
-}
-.theme-vermilion-header .mg-chevron-icon-hole i { color: var(--mg-vermilion); font-size: 1.15rem; }
-
-.theme-cyan-header {
-  background: linear-gradient(135deg, var(--mg-cyan) 0%, var(--mg-cyan-dark) 100%);
-}
-.theme-cyan-header .mg-chevron-icon-hole i { color: var(--mg-cyan); font-size: 1.15rem; }
-
-.theme-purple-header {
-  background: linear-gradient(135deg, var(--mg-purple) 0%, var(--mg-purple-dark) 100%);
-}
-.theme-purple-header .mg-chevron-icon-hole i { color: var(--mg-purple); font-size: 1.15rem; }
-
-.theme-amber-header {
-  background: linear-gradient(135deg, var(--mg-amber) 0%, var(--mg-amber-dark) 100%);
-}
-.theme-amber-header .mg-chevron-icon-hole i { color: var(--mg-amber); font-size: 1.15rem; }
-
-.theme-emerald-header {
-  background: linear-gradient(135deg, var(--mg-emerald) 0%, var(--mg-emerald-dark) 100%);
-}
-.theme-emerald-header .mg-chevron-icon-hole i { color: var(--mg-emerald); font-size: 1.15rem; }
-
-.theme-navy-header {
-  background: linear-gradient(135deg, var(--mg-navy) 0%, var(--mg-navy-light) 100%);
-}
-.theme-navy-header .mg-chevron-icon-hole i { color: var(--mg-navy); font-size: 1.15rem; }
-
-.mg-form-body {
-  padding: 26px 26px 20px;
+.mg-section-body {
+  padding: 22px 22px 16px;
 }
 
 /* ==========================================================================
-   3. FORM LABELS, INPUTS & PREFIX BADGES
+   3. CLEAN LABELS & FORM CONTROLS
    ========================================================================== */
 .mg-field-group {
-  margin-bottom: 22px;
+  margin-bottom: 18px;
 }
 
 .mg-form-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 700;
-  font-size: 0.88rem;
-  color: #1e293b;
-  margin-bottom: 8px;
+  display: block;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: var(--mg-slate-700);
+  margin-bottom: 6px;
 }
-
-.mg-form-label .mg-label-icon {
-  width: 24px;
-  height: 24px;
-  border-radius: 6px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.78rem;
-  color: #ffffff;
-}
-
-.mg-label-icon.icon-vermilion { background: var(--mg-vermilion); }
-.mg-label-icon.icon-cyan      { background: var(--mg-cyan); }
-.mg-label-icon.icon-purple    { background: var(--mg-purple); }
-.mg-label-icon.icon-amber     { background: var(--mg-amber); }
-.mg-label-icon.icon-emerald   { background: var(--mg-emerald); }
-.mg-label-icon.icon-navy      { background: var(--mg-navy); }
 
 .mg-required {
-  color: #ef4444;
+  color: var(--mg-danger);
+  font-weight: 700;
   margin-left: 2px;
 }
 
 .mg-input-control {
-  border: 1.5px solid #cbd5e1;
-  border-radius: 12px;
-  padding: 11px 16px;
-  font-size: 0.94rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 9px 13px;
+  font-size: 0.88rem;
   font-weight: 500;
-  color: #1e293b;
-  transition: all 0.25s ease;
-  background-color: #f8fafc;
+  color: var(--mg-dark);
+  background-color: #ffffff;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  height: 42px;
+}
+
+textarea.mg-input-control {
+  height: auto;
+  min-height: 80px;
 }
 
 .mg-input-control:focus {
-  background-color: #ffffff;
-  border-color: var(--mg-cyan);
-  box-shadow: 0 0 0 3.5px rgba(0, 162, 219, 0.16);
+  border-color: var(--mg-primary);
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.12);
   outline: none;
 }
 
 .mg-input-control::placeholder {
-  color: #94a3b8;
-  font-size: 0.88rem;
+  color: var(--mg-slate-400);
+  font-weight: 400;
 }
 
 .mg-input-group {
@@ -303,455 +247,380 @@
   align-items: stretch;
 }
 
-.mg-input-group .mg-input-prefix {
-  background: #f1f5f9;
-  border: 1.5px solid #cbd5e1;
-  border-right: none;
-  border-radius: 12px 0 0 12px;
-  padding: 0 16px;
+.mg-input-group .mg-input-prefix,
+.mg-input-group .mg-input-suffix {
+  background: var(--mg-slate-50);
+  border: 1px solid #cbd5e1;
+  padding: 0 13px;
   display: flex;
   align-items: center;
-  font-weight: 700;
-  font-size: 0.9rem;
-  color: #475569;
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: var(--mg-slate-600);
 }
 
-.mg-input-group .mg-input-control {
-  border-radius: 0 12px 12px 0;
-  flex: 1;
+.mg-input-group .mg-input-prefix {
+  border-right: none;
+  border-radius: 8px 0 0 8px;
 }
 
 .mg-input-group .mg-input-suffix {
-  background: #f1f5f9;
-  border: 1.5px solid #cbd5e1;
   border-left: none;
-  border-radius: 0 12px 12px 0;
-  padding: 0 16px;
-  display: flex;
-  align-items: center;
-  font-weight: 700;
-  font-size: 0.9rem;
-  color: #475569;
+  border-radius: 0 8px 8px 0;
+}
+
+.mg-input-group .mg-input-control {
+  border-radius: 0 8px 8px 0;
+  flex: 1;
 }
 
 .mg-input-group.has-suffix .mg-input-control {
-  border-radius: 12px 0 0 12px;
+  border-radius: 8px 0 0 8px;
+}
+
+.mg-input-readonly {
+  background-color: var(--mg-slate-100) !important;
+  color: var(--mg-slate-600) !important;
+  cursor: not-allowed;
 }
 
 /* ==========================================================================
-   4. INDIA POST PIN CODE LIVE API INTEGRATION STYLES
+   4. INDIA POST PIN CODE VERIFICATION (NO OVERLAPPING BUGS)
    ========================================================================== */
-.mg-pincode-wrap {
-  position: relative;
+.mg-pin-lookup-box {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
-.mg-pincode-status {
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
+.mg-pin-lookup-box input {
+  max-width: 150px;
+  letter-spacing: 1px;
+}
+
+.mg-pin-status-pill {
   display: none;
   align-items: center;
   gap: 6px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  pointer-events: none;
-}
-
-.mg-pincode-status.loading {
-  display: flex;
-  color: var(--mg-cyan);
-}
-
-.mg-pincode-status.success {
-  display: flex;
-  color: var(--mg-emerald);
-}
-
-.mg-pincode-status.error {
-  display: flex;
-  color: #ef4444;
-}
-
-.mg-post-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  background: #e0f2fe;
-  color: #0369a1;
-  border: 1px solid #bae6fd;
-  border-radius: 50px;
   font-size: 0.78rem;
-  font-weight: 700;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
   margin-top: 6px;
 }
 
-.mg-readonly-badge {
-  background: #f1f5f9 !important;
-  color: #64748b !important;
-  cursor: not-allowed !important;
-  border-color: #e2e8f0 !important;
-}
-
-/* ==========================================================================
-   5. AMENITIES TOGGLE CHIPS
-   ========================================================================== */
-.mg-amenities-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 12px;
-  margin-top: 10px;
-}
-
-.mg-amenity-chip {
-  position: relative;
-  cursor: pointer;
-  user-select: none;
-}
-
-.mg-amenity-chip input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
-
-.mg-amenity-box {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  background: #f8fafc;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 12px;
-  transition: all 0.25s ease;
-  font-weight: 600;
-  font-size: 0.88rem;
-  color: #334155;
-}
-
-.mg-amenity-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: #e2e8f0;
-  color: #475569;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.95rem;
-  transition: all 0.25s ease;
-}
-
-.mg-amenity-chip input:checked + .mg-amenity-box {
-  background: #eff6ff;
-  border-color: var(--mg-cyan);
+.mg-pin-status-pill.loading {
+  display: inline-flex;
+  background: #f0f9ff;
   color: #0369a1;
-  box-shadow: 0 4px 12px rgba(0, 162, 219, 0.15);
+  border: 1px solid #bae6fd;
 }
 
-.mg-amenity-chip input:checked + .mg-amenity-box .mg-amenity-icon {
-  background: var(--mg-cyan);
-  color: #ffffff;
+.mg-pin-status-pill.success {
+  display: inline-flex;
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.mg-pin-status-pill.error {
+  display: inline-flex;
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
 }
 
 /* ==========================================================================
-   6. DOCUMENT DROPZONES (PDF ONLY) & PREVIEWS
+   5. AMENITIES MULTI-SELECT CHIPS (Modern Pill Selector)
    ========================================================================== */
-.mg-upload-dropzone {
-  border: 2px dashed #cbd5e1;
-  border-radius: 14px;
-  padding: 20px;
-  text-align: center;
-  background: #f8fafc;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  position: relative;
+.mg-amenities-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
 }
 
-.mg-upload-dropzone:hover {
-  border-color: var(--mg-emerald);
-  background: #f0fdf4;
-}
-
-.mg-upload-dropzone.pdf-zone:hover {
-  border-color: #ef4444;
-  background: #fef2f2;
-}
-
-.mg-upload-icon-circle {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
+.mg-amenity-pill {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  font-size: 1.3rem;
-  margin-bottom: 8px;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: var(--mg-slate-50);
+  border: 1px solid var(--mg-slate-200);
+  color: var(--mg-slate-700);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
 }
 
-.mg-upload-icon-circle.pdf {
+.mg-amenity-pill input {
+  display: none;
+}
+
+.mg-amenity-pill:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.mg-amenity-pill.active {
+  background: #eff6ff;
+  border-color: #93c5fd;
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+.mg-amenity-pill .check-icon {
+  display: none;
+  font-size: 0.75rem;
+}
+
+.mg-amenity-pill.active .check-icon {
+  display: inline;
+}
+
+/* ==========================================================================
+   6. CLEAN DOCUMENT & MEDIA UPLOAD BOXES
+   ========================================================================== */
+.mg-doc-upload-card {
+  border: 1px dashed #cbd5e1;
+  border-radius: 10px;
+  padding: 16px;
+  background: var(--mg-slate-50);
+  transition: all 0.2s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.mg-doc-upload-card:hover {
+  border-color: #94a3b8;
+  background: #f1f5f9;
+}
+
+.mg-doc-upload-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.mg-doc-icon-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.mg-doc-icon-badge.pdf {
   background: #fee2e2;
   color: #dc2626;
 }
 
-.mg-upload-icon-circle.image {
+.mg-doc-icon-badge.img {
   background: #e0f2fe;
-  color: var(--mg-cyan);
+  color: #0284c7;
 }
 
-.mg-upload-title {
-  font-weight: 700;
-  font-size: 0.92rem;
-  color: #1e293b;
+.mg-doc-upload-info h6 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--mg-dark);
   margin: 0;
 }
 
-.mg-upload-sub {
+.mg-doc-upload-info span {
+  font-size: 0.74rem;
+  color: var(--mg-slate-500);
+}
+
+.mg-file-status-line {
   font-size: 0.78rem;
-  color: #64748b;
-  margin: 3px 0 0;
-}
-
-.mg-upload-badge {
-  display: inline-block;
-  padding: 3px 10px;
-  border-radius: 6px;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  margin-top: 6px;
-}
-
-.mg-upload-badge.pdf {
-  background: #dc2626;
-  color: #ffffff;
-}
-
-.mg-upload-badge.img {
-  background: var(--mg-cyan);
-  color: #ffffff;
-}
-
-.mg-file-chosen-preview {
-  margin-top: 10px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: #10b981;
+  font-weight: 600;
+  color: #059669;
   display: none;
   align-items: center;
-  justify-content: center;
   gap: 6px;
+  margin-bottom: 8px;
 }
 
-/* Image preview thumbnails */
-.mg-img-preview-box {
-  width: 110px;
-  height: 110px;
-  border-radius: 12px;
-  border: 2px solid #e2e8f0;
+.mg-upload-btn-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mg-btn-browse {
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: #ffffff;
+  border: 1px solid var(--mg-slate-200);
+  color: var(--mg-slate-700);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.mg-btn-browse:hover {
+  background: var(--mg-slate-100);
+  border-color: var(--mg-slate-400);
+}
+
+.mg-img-preview-frame {
+  width: 72px;
+  height: 72px;
+  border-radius: 8px;
+  border: 1px solid var(--mg-slate-200);
   object-fit: cover;
-  margin: 10px auto 0;
+  background: #ffffff;
   display: none;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
-.mg-current-file-badge {
+/* ==========================================================================
+   7. STICKY SUBMIT FOOTER BAR
+   ========================================================================== */
+.mg-form-footer-bar {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px 24px;
+  border: 1px solid var(--mg-slate-200);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+  margin-bottom: 35px;
+}
+
+.mg-btn-save-main {
+  background: var(--mg-navy);
+  color: #ffffff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.92rem;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 14px;
-  background: #f1f5f9;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: #334155;
-  margin-top: 8px;
-  text-decoration: none;
+  transition: all 0.15s ease;
 }
-.mg-current-file-badge:hover {
-  background: #e2e8f0;
-  color: #0f172a;
+
+.mg-btn-save-main:hover {
+  background: #0b2542;
+  color: #ffffff;
 }
 
 /* ==========================================================================
-   7. FORM SUBMIT & ACTION FOOTER
-   ========================================================================== */
-.mg-form-footer {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 20px 28px;
-  box-shadow: 0 4px 20px rgba(7, 29, 51, 0.06);
-  border: 1px solid #e2e8f0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  margin-top: 10px;
-  margin-bottom: 40px;
-}
-
-.mg-btn-submit {
-  background: linear-gradient(135deg, var(--mg-emerald) 0%, var(--mg-emerald-dark) 100%);
-  color: #ffffff;
-  border: none;
-  padding: 13px 34px;
-  border-radius: 12px;
-  font-weight: 800;
-  font-size: 1rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
-  transition: all 0.25s ease;
-}
-
-.mg-btn-submit:hover {
-  color: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 12px 25px rgba(16, 185, 129, 0.4);
-}
-
-.mg-btn-reset {
-  background: #f1f5f9;
-  color: #475569;
-  border: 1px solid #cbd5e1;
-  padding: 13px 24px;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 0.95rem;
-  transition: all 0.2s ease;
-}
-
-.mg-btn-reset:hover {
-  background: #e2e8f0;
-  color: #1e293b;
-}
-
-/* ==========================================================================
-   8. CENTERS DATA TABLE & STATS (INDEX PAGE)
+   8. DATA TABLE & STATS (INDEX PAGE)
    ========================================================================== */
 .mg-table-card {
   background: #ffffff;
-  border-radius: 18px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 6px 25px rgba(7, 29, 51, 0.06);
+  border-radius: 12px;
+  border: 1px solid var(--mg-slate-200);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
   overflow: hidden;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 }
 
 .mg-table-toolbar {
-  padding: 20px 24px;
-  background: #fafafa;
-  border-bottom: 1px solid #e2e8f0;
+  padding: 16px 20px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--mg-slate-200);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 15px;
-}
-
-.mg-search-input {
-  max-width: 340px;
-  position: relative;
-}
-
-.mg-search-input i {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #94a3b8;
-}
-
-.mg-search-input input {
-  padding-left: 38px;
+  gap: 12px;
 }
 
 .mg-centers-table {
   width: 100%;
   margin-bottom: 0;
-  border-collapse: separate;
-  border-spacing: 0;
 }
 
 .mg-centers-table th {
-  background: #f8fafc;
-  color: #475569;
-  font-weight: 700;
-  font-size: 0.8rem;
+  background: var(--mg-slate-50);
+  color: var(--mg-slate-600);
+  font-weight: 600;
+  font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  padding: 14px 18px;
-  border-bottom: 1px solid #e2e8f0;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--mg-slate-200);
 }
 
 .mg-centers-table td {
-  padding: 16px 18px;
+  padding: 14px 16px;
   vertical-align: middle;
   border-bottom: 1px solid #f1f5f9;
-  font-size: 0.9rem;
-  color: #1e293b;
+  font-size: 0.88rem;
 }
 
 .mg-centers-table tbody tr:hover td {
-  background-color: #f8fafc;
+  background: #fbfcfe;
 }
 
+.mg-code-badge,
 .mg-code-pill {
-  background: #e0f2fe;
-  color: #0284c7;
-  font-weight: 800;
+  background: #f1f5f9;
+  color: var(--mg-navy);
+  font-weight: 700;
   font-family: monospace;
   padding: 3px 8px;
   border-radius: 6px;
   font-size: 0.82rem;
-  display: inline-block;
+  border: 1px solid var(--mg-slate-200);
 }
 
-.mg-center-title {
-  font-weight: 700;
-  color: var(--mg-navy);
-  font-size: 0.95rem;
-  margin-bottom: 3px;
-}
-
-.mg-center-sub {
-  font-size: 0.78rem;
-  color: #64748b;
-}
-
-.mg-status-badge {
+.mg-status-badge,
+.mg-status-pill {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 4px 12px;
+  padding: 3px 10px;
   border-radius: 50px;
-  font-size: 0.78rem;
-  font-weight: 700;
+  font-size: 0.74rem;
+  font-weight: 600;
   text-transform: capitalize;
 }
 
-.mg-status-badge.active {
-  background: #dcfce7;
-  color: #15803d;
+.mg-status-badge.active,
+.mg-status-pill.active {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
 }
 
-.mg-status-badge.inactive {
-  background: #fee2e2;
+.mg-status-badge.inactive,
+.mg-status-pill.inactive {
+  background: #fef2f2;
   color: #b91c1c;
+  border: 1px solid #fecaca;
 }
 
-.mg-status-badge.pending {
-  background: #fef3c7;
+.mg-status-badge.pending,
+.mg-status-pill.pending {
+  background: #fffbeb;
   color: #b45309;
+  border: 1px solid #fde68a;
 }
 
-.mg-status-badge .dot {
+.mg-status-badge .dot,
+.mg-status-pill .dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
@@ -767,21 +636,21 @@
 .mg-btn-sm-action {
   width: 32px;
   height: 32px;
-  border-radius: 8px;
+  border-radius: 6px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.85rem;
-  border: 1px solid #cbd5e1;
+  font-size: 0.82rem;
+  border: 1px solid var(--mg-slate-200);
   background: #ffffff;
-  color: #475569;
-  transition: all 0.2s ease;
+  color: var(--mg-slate-600);
+  transition: all 0.15s ease;
   text-decoration: none;
 }
 
 .mg-btn-sm-action:hover {
-  background: #f1f5f9;
-  color: var(--mg-navy);
+  background: var(--mg-slate-100);
+  color: var(--mg-dark);
 }
 
 .mg-btn-sm-action.view:hover {
@@ -801,4 +670,3 @@
   color: #dc2626;
   border-color: #fecaca;
 }
-

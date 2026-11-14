@@ -111,10 +111,10 @@ if ($pdo) {
             </div>
         </div>
         <div class="d-flex align-items-center gap-2">
-            <a href="../../sql-tables/import-centers.php" class="btn btn-outline-secondary" style="border-radius:12px; font-weight:700;" title="Check DB Migration">
+            <a href="../../sql-tables/import-centers.php" class="mg-btn-action mg-btn-secondary" title="Database Migration">
                 <i class="fas fa-database me-1"></i> Migration
             </a>
-            <a href="add-center.php" class="mg-btn-action mg-btn-vermilion">
+            <a href="add-center.php" class="mg-btn-action mg-btn-primary">
                 <i class="fas fa-circle-plus"></i>
                 <span>Add New Center</span>
             </a>

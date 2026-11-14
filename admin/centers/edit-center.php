@@ -4,14 +4,12 @@
  * Edit & Update Authorized Study Center
  * 
  * Features:
- * - Pre-filled data across all sections
- * - View / Download links for current PDF documents (Aadhar, PAN, GST)
- * - Image thumbnails for current Owner Photo & Signature with live replacement preview
- * - India Post PIN Code API Integration for location updates
- * - Full validation & secure updates via PDO
+ * - Enterprise Clean & Professional Architecture
+ * - Pre-filled fields, document links & image previews
+ * - India Post PIN Code Verification with Single Status Feedback
  */
 
-// Include Admin Header (Enforces JWT Auth & Navigation)
+// Include Admin Top Header (Enforces JWT Auth & Navigation)
 require_once dirname(__DIR__) . '/header.php';
 require_once dirname(dirname(__DIR__)) . '/includes/db.php';
 
@@ -79,7 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
     $gstNumber          = trim($_POST['gst_number'] ?? '');
     $status             = in_array($_POST['status'] ?? '', ['active', 'inactive', 'pending']) ? $_POST['status'] : 'active';
 
-    // Validation
     if (empty($centerName))   $errors[] = "Center Name is required.";
     if (empty($centerEmail))  $errors[] = "Center Email is required.";
     if (empty($centerMobile)) $errors[] = "Center Mobile Number is required.";
@@ -91,13 +88,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
     if (empty($ownerEmail))   $errors[] = "Owner Email is required.";
     if (empty($ownerMobile))  $errors[] = "Owner Mobile Number is required.";
 
-    // File handling
     $baseUploadDir = dirname(dirname(__DIR__)) . '/uploads/centers';
     $docsDir       = $baseUploadDir . '/documents';
     $photosDir     = $baseUploadDir . '/photos';
     $sigsDir       = $baseUploadDir . '/signatures';
 
-    // Helper for uploading PDF documents (keeps existing if not re-uploaded)
     $handlePdfUpload = function ($fileKey, $prefix, $currentPath) use ($docsDir, &$errors) {
         if (!isset($_FILES[$fileKey]) || $_FILES[$fileKey]['error'] === UPLOAD_ERR_NO_FILE) {
             return $currentPath;
@@ -114,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
         finfo_close($finfo);
 
         if ($ext !== 'pdf' || !in_array($mime, ['application/pdf', 'application/x-pdf'])) {
-            $errors[] = "Document '{$fileKey}' MUST be in PDF format only. (Uploaded: .{$ext})";
+            $errors[] = "Document '{$fileKey}' MUST be a PDF file.";
             return $currentPath;
         }
 
@@ -134,7 +129,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
         }
     };
 
-    // Helper for uploading images
     $handleImageUpload = function ($fileKey, $targetDir, $relPathPrefix, $prefix, $currentPath) use (&$errors) {
         if (!isset($_FILES[$fileKey]) || $_FILES[$fileKey]['error'] === UPLOAD_ERR_NO_FILE) {
             return $currentPath;
@@ -245,7 +239,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
 
             $successMessage = "Study Center '{$centerName}' [{$centerCode}] updated successfully!";
 
-            // Refresh center record
             $stmt = $pdo->prepare("SELECT * FROM `centers` WHERE `id` = :id LIMIT 1");
             $stmt->execute([':id' => $centerId]);
             $center = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -259,37 +252,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
 
 <div class="container-fluid px-3 px-md-4 py-3">
 
-    <!-- Page Header & Action Bar -->
+    <!-- Page Header -->
     <div class="mg-page-header">
         <div class="mg-page-header-title">
-            <div class="mg-page-header-icon" style="background: linear-gradient(135deg, var(--mg-amber) 0%, var(--mg-amber-dark) 100%);">
+            <div class="mg-page-header-icon" style="background: var(--mg-primary);">
                 <i class="fas fa-pen-to-square"></i>
             </div>
             <div>
                 <h4>Edit Study Center: <?= htmlspecialchars($center['center_name']) ?></h4>
-                <p>Center Code: <span class="mg-code-pill"><?= htmlspecialchars($center['center_code']) ?></span> &bull; Status: <span class="badge bg-<?= $center['status'] === 'active' ? 'success' : ($center['status'] === 'pending' ? 'warning' : 'secondary') ?> text-capitalize"><?= htmlspecialchars($center['status']) ?></span></p>
+                <p>Code: <span class="mg-code-badge"><?= htmlspecialchars($center['center_code']) ?></span> &bull; Status: <span class="badge bg-light text-dark border text-capitalize"><?= htmlspecialchars($center['status']) ?></span></p>
             </div>
         </div>
         <div class="d-flex gap-2">
-            <a href="index.php" class="mg-btn-action mg-btn-navy">
+            <a href="index.php" class="mg-btn-action mg-btn-secondary">
                 <i class="fas fa-arrow-left"></i>
                 <span>Centers List</span>
             </a>
-            <a href="add-center.php" class="mg-btn-action mg-btn-vermilion">
+            <a href="add-center.php" class="mg-btn-action mg-btn-primary">
                 <i class="fas fa-plus"></i>
-                <span>Add Another</span>
+                <span>Add Center</span>
             </a>
         </div>
     </div>
 
     <!-- Error Alerts -->
     <?php if (!empty($errors)): ?>
-        <div class="alert alert-danger alert-dismissible fade show shadow-sm border-0 rounded-4 mb-4" role="alert">
-            <div class="d-flex align-items-center mb-2">
-                <i class="fas fa-circle-exclamation fa-lg me-2 text-danger"></i>
-                <h6 class="mb-0 fw-bold">Please correct the following errors:</h6>
+        <div class="alert alert-danger alert-dismissible fade show rounded-3 mb-4" role="alert">
+            <div class="d-flex align-items-center mb-1">
+                <i class="fas fa-circle-exclamation me-2"></i>
+                <strong>Please correct the following errors:</strong>
             </div>
-            <ul class="mb-0 ps-4">
+            <ul class="mb-0 ps-3">
                 <?php foreach ($errors as $error): ?>
                     <li><?= htmlspecialchars($error) ?></li>
                 <?php endforeach; ?>
@@ -298,44 +291,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
         </div>
     <?php endif; ?>
 
-    <!-- Center Update Form Started -->
+    <!-- Form Started -->
     <form method="POST" action="" enctype="multipart/form-data" id="mgEditCenterForm" autocomplete="off">
         <input type="hidden" name="action_update_center" value="1">
 
-        <!-- SECTION 1: CENTER IDENTITY -->
-        <div class="mg-form-card">
-            <div class="mg-chevron-header theme-vermilion-header">
-                <div class="mg-chevron-left">
-                    <div class="mg-chevron-icon-hole">
+        <!-- 1. Center Identity & Contact -->
+        <div class="mg-section-card">
+            <div class="mg-section-header">
+                <div class="mg-section-header-left">
+                    <div class="mg-section-icon blue">
                         <i class="fas fa-building-columns"></i>
                     </div>
                     <div>
-                        <h5 class="mg-chevron-title">Section 1: Center Identity &amp; Contact</h5>
-                        <p class="mg-chevron-sub">Official center name, franchise code and communications</p>
+                        <h6 class="mg-section-title">Center Identity &amp; Contact Details</h6>
+                        <span class="mg-section-sub">Official center profile and communications</span>
                     </div>
                 </div>
-                <div class="mg-chevron-badge d-none d-md-block">Step 1</div>
+                <span class="mg-section-tag">Identity</span>
             </div>
 
-            <div class="mg-form-body">
+            <div class="mg-section-body">
                 <div class="row g-3">
                     <div class="col-md-4">
                         <div class="mg-field-group">
-                            <label class="mg-form-label">
-                                <span class="mg-label-icon icon-vermilion"><i class="fas fa-barcode"></i></span>
-                                Center Code / ID <span class="mg-required">*</span>
-                            </label>
-                            <input type="text" name="center_code" class="form-control mg-input-control text-uppercase fw-bold" 
+                            <label class="mg-form-label">Center ID / Code <span class="mg-required">*</span></label>
+                            <input type="text" name="center_code" class="form-control mg-input-control font-monospace fw-bold" 
                                 value="<?= htmlspecialchars($center['center_code']) ?>" required>
                         </div>
                     </div>
 
                     <div class="col-md-8">
                         <div class="mg-field-group">
-                            <label class="mg-form-label">
-                                <span class="mg-label-icon icon-vermilion"><i class="fas fa-school"></i></span>
-                                Center / Institute Name <span class="mg-required">*</span>
-                            </label>
+                            <label class="mg-form-label">Center / Institute Name <span class="mg-required">*</span></label>
                             <input type="text" name="center_name" class="form-control mg-input-control" 
                                 value="<?= htmlspecialchars($center['center_name']) ?>" required>
                         </div>
@@ -343,10 +330,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
 
                     <div class="col-md-6">
                         <div class="mg-field-group">
-                            <label class="mg-form-label">
-                                <span class="mg-label-icon icon-vermilion"><i class="fas fa-envelope"></i></span>
-                                Center Official Email <span class="mg-required">*</span>
-                            </label>
+                            <label class="mg-form-label">Center Official Email <span class="mg-required">*</span></label>
                             <input type="email" name="center_email" class="form-control mg-input-control" 
                                 value="<?= htmlspecialchars($center['center_email']) ?>" required>
                         </div>
@@ -354,12 +338,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
 
                     <div class="col-md-6">
                         <div class="mg-field-group">
-                            <label class="mg-form-label">
-                                <span class="mg-label-icon icon-vermilion"><i class="fas fa-phone"></i></span>
-                                Center Mobile Number <span class="mg-required">*</span>
-                            </label>
+                            <label class="mg-form-label">Center Mobile Number <span class="mg-required">*</span></label>
                             <div class="mg-input-group">
-                                <span class="mg-input-prefix"><i class="fas fa-flag me-1 text-danger"></i> +91</span>
+                                <span class="mg-input-prefix">+91</span>
                                 <input type="tel" name="center_mobile" class="form-control mg-input-control" 
                                     maxlength="15"
                                     value="<?= htmlspecialchars(str_replace('+91 ', '', $center['center_mobile'])) ?>" required>
@@ -370,134 +351,102 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
             </div>
         </div>
 
-        <!-- SECTION 2: LOCATION & INDIA POST API -->
-        <div class="mg-form-card">
-            <div class="mg-chevron-header theme-cyan-header">
-                <div class="mg-chevron-left">
-                    <div class="mg-chevron-icon-hole">
-                        <i class="fas fa-map-location-dot"></i>
+        <!-- 2. Address & Geolocation (India Post API) -->
+        <div class="mg-section-card">
+            <div class="mg-section-header">
+                <div class="mg-section-header-left">
+                    <div class="mg-section-icon green">
+                        <i class="fas fa-location-dot"></i>
                     </div>
                     <div>
-                        <h5 class="mg-chevron-title">Section 2: Address &amp; Location (India Post API)</h5>
-                        <p class="mg-chevron-sub">Postal PIN Code validation and geolocation details</p>
+                        <h6 class="mg-section-title">Address &amp; Location (India Post Verified)</h6>
+                        <span class="mg-section-sub">Postal PIN Code validation and geolocation</span>
                     </div>
                 </div>
-                <div class="mg-chevron-badge d-none d-md-block">Step 2</div>
+                <span class="mg-section-tag">India Post API</span>
             </div>
 
-            <div class="mg-form-body">
+            <div class="mg-section-body">
                 <div class="row g-3">
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <div class="mg-field-group">
-                            <label class="mg-form-label">
-                                <span class="mg-label-icon icon-cyan"><i class="fas fa-map-pin"></i></span>
-                                Postal PIN Code <span class="mg-required">*</span>
-                            </label>
-                            <div class="mg-pincode-wrap">
+                            <label class="mg-form-label">Postal PIN Code <span class="mg-required">*</span></label>
+                            <div class="input-group">
                                 <input type="text" name="pincode" id="mg_pincode_input" 
                                     class="form-control mg-input-control fw-bold" 
                                     maxlength="6" pattern="\d{6}"
                                     value="<?= htmlspecialchars($center['pincode']) ?>" required>
-                                <div class="mg-pincode-status loading" id="pincode_loader">
-                                    <i class="fas fa-spinner fa-spin"></i> Fetching...
-                                </div>
-                                <div class="mg-pincode-status success" id="pincode_success">
-                                    <i class="fas fa-circle-check"></i> Verified
-                                </div>
-                                <div class="mg-pincode-status error" id="pincode_error">
-                                    <i class="fas fa-circle-xmark"></i> Invalid
-                                </div>
+                                <button type="button" class="btn btn-outline-secondary" id="btn_verify_pin" style="border-color:#cbd5e1; font-size:0.82rem; font-weight:600;">
+                                    <i class="fas fa-magnifying-glass me-1"></i> Verify
+                                </button>
                             </div>
-                            <div id="pincode_help_text" class="form-text text-muted">
-                                PIN code connects to <strong>api.postalpincode.in</strong> for verified City &amp; State.
-                            </div>
+                            <div id="pin_status_container" class="mt-1"></div>
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3 col-6">
                         <div class="mg-field-group">
-                            <label class="mg-form-label">
-                                <span class="mg-label-icon icon-cyan"><i class="fas fa-city"></i></span>
-                                City / District <span class="mg-required">*</span>
-                            </label>
+                            <label class="mg-form-label">City / District <span class="mg-required">*</span></label>
                             <input type="text" name="city" id="mg_city_input" class="form-control mg-input-control" 
                                 value="<?= htmlspecialchars($center['city']) ?>" required>
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-2 col-6">
                         <div class="mg-field-group">
-                            <label class="mg-form-label">
-                                <span class="mg-label-icon icon-cyan"><i class="fas fa-landmark-dome"></i></span>
-                                State <span class="mg-required">*</span>
-                            </label>
+                            <label class="mg-form-label">State <span class="mg-required">*</span></label>
                             <input type="text" name="state" id="mg_state_input" class="form-control mg-input-control" 
                                 value="<?= htmlspecialchars($center['state']) ?>" required>
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-2 col-12">
                         <div class="mg-field-group">
-                            <label class="mg-form-label">
-                                <span class="mg-label-icon icon-cyan"><i class="fas fa-globe-asia"></i></span>
-                                Country <span class="text-muted">(Locked)</span>
-                            </label>
-                            <div class="mg-input-group">
-                                <span class="mg-input-prefix"><i class="fas fa-lock text-muted"></i></span>
-                                <input type="text" name="country" class="form-control mg-input-control mg-readonly-badge" 
-                                    value="India" readonly tabindex="-1">
-                            </div>
+                            <label class="mg-form-label">Country <span class="text-muted">(Default)</span></label>
+                            <input type="text" name="country" class="form-control mg-input-control mg-input-readonly" 
+                                value="India" readonly tabindex="-1">
                         </div>
                     </div>
 
-                    <div class="col-md-8" id="postoffice_select_wrap" style="display: none;">
-                        <div class="mg-field-group">
-                            <label class="mg-form-label">
-                                <span class="mg-label-icon icon-cyan"><i class="fas fa-envelope-open-text"></i></span>
-                                Post Office Locality Suggestion
-                            </label>
-                            <select id="mg_postoffice_select" class="form-select mg-input-control">
-                                <option value="">Select post office branch...</option>
+                    <div class="col-12" id="postoffice_select_wrap" style="display: none;">
+                        <div class="p-2 rounded-2 bg-light border mb-2 d-flex flex-wrap align-items-center gap-2">
+                            <span class="text-muted small fw-semibold"><i class="fas fa-envelope-open-text me-1 text-primary"></i> Post Office Locality:</span>
+                            <select id="mg_postoffice_select" class="form-select form-select-sm d-inline-block w-auto" style="min-width: 250px;">
+                                <option value="">Select post office branch to append...</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="col-12">
                         <div class="mg-field-group mb-0">
-                            <label class="mg-form-label">
-                                <span class="mg-label-icon icon-cyan"><i class="fas fa-location-crosshairs"></i></span>
-                                Complete Address Of Center <span class="mg-required">*</span>
-                            </label>
-                            <textarea name="address" id="mg_address_textarea" class="form-control mg-input-control" rows="3" required><?= htmlspecialchars($center['address']) ?></textarea>
+                            <label class="mg-form-label">Complete Center Address <span class="mg-required">*</span></label>
+                            <textarea name="address" id="mg_address_textarea" class="form-control mg-input-control" rows="2" required><?= htmlspecialchars($center['address']) ?></textarea>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- SECTION 3: INFRASTRUCTURE & AMENITIES -->
-        <div class="mg-form-card">
-            <div class="mg-chevron-header theme-purple-header">
-                <div class="mg-chevron-left">
-                    <div class="mg-chevron-icon-hole">
+        <!-- 3. Infrastructure & Facilities -->
+        <div class="mg-section-card">
+            <div class="mg-section-header">
+                <div class="mg-section-header-left">
+                    <div class="mg-section-icon purple">
                         <i class="fas fa-network-wired"></i>
                     </div>
                     <div>
-                        <h5 class="mg-chevron-title">Section 3: Infrastructure, Lab &amp; Facilities</h5>
-                        <p class="mg-chevron-sub">Classroom setup, computers, lab type and operational hours</p>
+                        <h6 class="mg-section-title">Infrastructure &amp; Operational Setup</h6>
+                        <span class="mg-section-sub">Classroom setup, IT lab capacity and amenities</span>
                     </div>
                 </div>
-                <div class="mg-chevron-badge d-none d-md-block">Step 3</div>
+                <span class="mg-section-tag">Facilities</span>
             </div>
 
-            <div class="mg-form-body">
+            <div class="mg-section-body">
                 <div class="row g-3">
                     <div class="col-md-3 col-6">
                         <div class="mg-field-group">
-                            <label class="mg-form-label">
-                                <span class="mg-label-icon icon-purple"><i class="fas fa-chalkboard-user"></i></span>
-                                Classrooms <span class="mg-required">*</span>
-                            </label>
+                            <label class="mg-form-label">Classrooms <span class="mg-required">*</span></label>
                             <input type="number" name="classrooms_count" class="form-control mg-input-control" min="1" max="100" 
                                 value="<?= (int)$center['classrooms_count'] ?>" required>
                         </div>
@@ -505,10 +454,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
 
                     <div class="col-md-3 col-6">
                         <div class="mg-field-group">
-                            <label class="mg-form-label">
-                                <span class="mg-label-icon icon-purple"><i class="fas fa-desktop"></i></span>
-                                Computers <span class="mg-required">*</span>
-                            </label>
+                            <label class="mg-form-label">Computers <span class="mg-required">*</span></label>
                             <input type="number" name="computers_count" class="form-control mg-input-control" min="0" max="500" 
                                 value="<?= (int)$center['computers_count'] ?>" required>
                         </div>
@@ -516,10 +462,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
 
                     <div class="col-md-3 col-6">
                         <div class="mg-field-group">
-                            <label class="mg-form-label">
-                                <span class="mg-label-icon icon-purple"><i class="fas fa-users-gear"></i></span>
-                                Total Staff <span class="mg-required">*</span>
-                            </label>
+                            <label class="mg-form-label">Total Staff <span class="mg-required">*</span></label>
                             <input type="number" name="total_staff" class="form-control mg-input-control" min="0" max="100" 
                                 value="<?= (int)$center['total_staff'] ?>" required>
                         </div>
@@ -527,13 +470,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
 
                     <div class="col-md-3 col-6">
                         <div class="mg-field-group">
-                            <label class="mg-form-label">
-                                <span class="mg-label-icon icon-purple"><i class="fas fa-microchip"></i></span>
-                                Lab Type <span class="mg-required">*</span>
-                            </label>
+                            <label class="mg-form-label">Lab Type <span class="mg-required">*</span></label>
                             <select name="lab_type" class="form-select mg-input-control">
                                 <option value="Basic" <?= ($center['lab_type'] === 'Basic') ? 'selected' : '' ?>>Basic (Standard PC Lab)</option>
-                                <option value="Advanced" <?= ($center['lab_type'] === 'Advanced') ? 'selected' : '' ?>>Advanced (High-End / Programming)</option>
+                                <option value="Advanced" <?= ($center['lab_type'] === 'Advanced') ? 'selected' : '' ?>>Advanced (High-End Lab)</option>
                             </select>
                         </div>
                     </div>
@@ -541,10 +481,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
                     <?php $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']; ?>
                     <div class="col-md-3 col-6">
                         <div class="mg-field-group">
-                            <label class="mg-form-label">
-                                <span class="mg-label-icon icon-purple"><i class="far fa-calendar-check"></i></span>
-                                Working Day: From
-                            </label>
+                            <label class="mg-form-label">Working Days: From</label>
                             <select name="working_days_from" class="form-select mg-input-control">
                                 <?php foreach ($days as $day): ?>
                                     <option value="<?= $day ?>" <?= ($center['working_days_from'] === $day) ? 'selected' : '' ?>><?= $day ?></option>
@@ -555,10 +492,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
 
                     <div class="col-md-3 col-6">
                         <div class="mg-field-group">
-                            <label class="mg-form-label">
-                                <span class="mg-label-icon icon-purple"><i class="far fa-calendar-xmark"></i></span>
-                                Working Day: To
-                            </label>
+                            <label class="mg-form-label">Working Days: To</label>
                             <select name="working_days_to" class="form-select mg-input-control">
                                 <?php foreach ($days as $day): ?>
                                     <option value="<?= $day ?>" <?= ($center['working_days_to'] === $day) ? 'selected' : '' ?>><?= $day ?></option>
@@ -569,10 +503,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
 
                     <div class="col-md-3 col-6">
                         <div class="mg-field-group">
-                            <label class="mg-form-label">
-                                <span class="mg-label-icon icon-purple"><i class="far fa-clock"></i></span>
-                                Hours: From
-                            </label>
+                            <label class="mg-form-label">Working Hours: From</label>
                             <input type="text" name="working_hours_from" class="form-control mg-input-control" 
                                 value="<?= htmlspecialchars($center['working_hours_from']) ?>">
                         </div>
@@ -580,47 +511,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
 
                     <div class="col-md-3 col-6">
                         <div class="mg-field-group">
-                            <label class="mg-form-label">
-                                <span class="mg-label-icon icon-purple"><i class="fas fa-hourglass-end"></i></span>
-                                Hours: To
-                            </label>
+                            <label class="mg-form-label">Working Hours: To</label>
                             <input type="text" name="working_hours_to" class="form-control mg-input-control" 
                                 value="<?= htmlspecialchars($center['working_hours_to']) ?>">
                         </div>
                     </div>
 
-                    <!-- Amenities Checklist -->
-                    <div class="col-12 mt-2">
-                        <label class="mg-form-label mb-1">
-                            <span class="mg-label-icon icon-purple"><i class="fas fa-sparkles"></i></span>
-                            Amenities &amp; Facilities Available
-                        </label>
-                        <div class="mg-amenities-grid">
+                    <!-- Amenities Pills -->
+                    <div class="col-12 mt-1">
+                        <label class="mg-form-label mb-2">Available Amenities &amp; Services</label>
+                        <div class="mg-amenities-wrap">
                             <?php
-                            $availableAmenities = [
-                                ["name" => "High-Speed Internet",             "icon" => "fas fa-wifi"],
-                                ["name" => "Power Backup (Inverter/Gen)",      "icon" => "fas fa-bolt"],
-                                ["name" => "Dedicated Parking Area",          "icon" => "fas fa-square-parking"],
-                                ["name" => "Student Reference Library",        "icon" => "fas fa-book-open-reader"],
-                                ["name" => "24x7 CCTV Surveillance",          "icon" => "fas fa-video"],
-                                ["name" => "Air Conditioned Classrooms",      "icon" => "fas fa-snowflake"],
-                                ["name" => "RO Pure Drinking Water",          "icon" => "fas fa-glass-water"],
-                                ["name" => "Clean Restrooms (M/F)",           "icon" => "fas fa-restroom"],
-                                ["name" => "Smart TV / Interactive Projector", "icon" => "fas fa-tv"],
-                                ["name" => "Fire Safety & Extinguisher",      "icon" => "fas fa-fire-extinguisher"]
+                            $amenitiesList = [
+                                "High-Speed Internet",
+                                "Power Backup (Inverter/Generator)",
+                                "Dedicated Parking Area",
+                                "Student Reference Library",
+                                "24x7 CCTV Surveillance",
+                                "Air Conditioned Classrooms",
+                                "RO Pure Drinking Water",
+                                "Clean Restrooms (M/F)",
+                                "Smart TV / Interactive Projector",
+                                "Fire Safety & Extinguisher"
                             ];
                             ?>
-                            <?php foreach ($availableAmenities as $amenity): 
-                                $isChecked = in_array($amenity['name'], $existingAmenities);
+                            <?php foreach ($amenitiesList as $amenity): 
+                                $isChecked = in_array($amenity, $existingAmenities);
                             ?>
-                                <label class="mg-amenity-chip">
-                                    <input type="checkbox" name="amenities[]" value="<?= htmlspecialchars($amenity['name']) ?>" <?= $isChecked ? 'checked' : '' ?>>
-                                    <div class="mg-amenity-box">
-                                        <div class="mg-amenity-icon">
-                                            <i class="<?= $amenity['icon'] ?>"></i>
-                                        </div>
-                                        <span><?= htmlspecialchars($amenity['name']) ?></span>
-                                    </div>
+                                <label class="mg-amenity-pill <?= $isChecked ? 'active' : '' ?>">
+                                    <input type="checkbox" name="amenities[]" value="<?= htmlspecialchars($amenity) ?>" <?= $isChecked ? 'checked' : '' ?> onchange="togglePillActive(this)">
+                                    <i class="fas fa-check check-icon"></i>
+                                    <span><?= htmlspecialchars($amenity) ?></span>
                                 </label>
                             <?php endforeach; ?>
                         </div>
@@ -629,29 +550,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
             </div>
         </div>
 
-        <!-- SECTION 4: OWNER CONTACT & FINANCIALS -->
-        <div class="mg-form-card">
-            <div class="mg-chevron-header theme-amber-header">
-                <div class="mg-chevron-left">
-                    <div class="mg-chevron-icon-hole">
+        <!-- 4. Owner & Commercials -->
+        <div class="mg-section-card">
+            <div class="mg-section-header">
+                <div class="mg-section-header-left">
+                    <div class="mg-section-icon amber">
                         <i class="fas fa-user-tie"></i>
                     </div>
                     <div>
-                        <h5 class="mg-chevron-title">Section 4: Owner Details &amp; Commercial Terms</h5>
-                        <p class="mg-chevron-sub">Center head, public enquiry number and franchise royalty percentage</p>
+                        <h6 class="mg-section-title">Owner Details &amp; Commercial Terms</h6>
+                        <span class="mg-section-sub">Center head, helpline number and franchise royalty percentage</span>
                     </div>
                 </div>
-                <div class="mg-chevron-badge d-none d-md-block">Step 4</div>
+                <span class="mg-section-tag">Commercial</span>
             </div>
 
-            <div class="mg-form-body">
+            <div class="mg-section-body">
                 <div class="row g-3">
                     <div class="col-md-6">
                         <div class="mg-field-group">
-                            <label class="mg-form-label">
-                                <span class="mg-label-icon icon-amber"><i class="fas fa-id-card"></i></span>
-                                Center Head / Owner Name <span class="mg-required">*</span>
-                            </label>
+                            <label class="mg-form-label">Center Head / Owner Name <span class="mg-required">*</span></label>
                             <input type="text" name="owner_name" class="form-control mg-input-control" 
                                 value="<?= htmlspecialchars($center['owner_name']) ?>" required>
                         </div>
@@ -659,10 +577,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
 
                     <div class="col-md-6">
                         <div class="mg-field-group">
-                            <label class="mg-form-label">
-                                <span class="mg-label-icon icon-amber"><i class="fas fa-at"></i></span>
-                                Owner Email Address <span class="mg-required">*</span>
-                            </label>
+                            <label class="mg-form-label">Owner Email Address <span class="mg-required">*</span></label>
                             <input type="email" name="owner_email" class="form-control mg-input-control" 
                                 value="<?= htmlspecialchars($center['owner_email']) ?>" required>
                         </div>
@@ -670,12 +585,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
 
                     <div class="col-md-4">
                         <div class="mg-field-group">
-                            <label class="mg-form-label">
-                                <span class="mg-label-icon icon-amber"><i class="fas fa-mobile-screen"></i></span>
-                                Owner Direct Mobile <span class="mg-required">*</span>
-                            </label>
+                            <label class="mg-form-label">Owner Direct Mobile <span class="mg-required">*</span></label>
                             <div class="mg-input-group">
-                                <span class="mg-input-prefix"><i class="fas fa-flag me-1 text-danger"></i> +91</span>
+                                <span class="mg-input-prefix">+91</span>
                                 <input type="tel" name="owner_mobile" class="form-control mg-input-control" 
                                     maxlength="15"
                                     value="<?= htmlspecialchars(str_replace('+91 ', '', $center['owner_mobile'])) ?>" required>
@@ -685,10 +597,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
 
                     <div class="col-md-4">
                         <div class="mg-field-group">
-                            <label class="mg-form-label">
-                                <span class="mg-label-icon icon-amber"><i class="fas fa-headset"></i></span>
-                                Student Helpline / Enquiry No.
-                            </label>
+                            <label class="mg-form-label">Student Helpline / Enquiry No.</label>
                             <input type="text" name="helpline_number" class="form-control mg-input-control" 
                                 value="<?= htmlspecialchars($center['helpline_number'] ?? '') ?>">
                         </div>
@@ -696,10 +605,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
 
                     <div class="col-md-4">
                         <div class="mg-field-group">
-                            <label class="mg-form-label">
-                                <span class="mg-label-icon icon-amber"><i class="fas fa-percent"></i></span>
-                                Center Royalty Fee (%) <span class="mg-required">*</span>
-                            </label>
+                            <label class="mg-form-label">Center Royalty Fee (%) <span class="mg-required">*</span></label>
                             <div class="mg-input-group has-suffix">
                                 <input type="number" step="0.01" min="0" max="100" name="royalty_percentage" 
                                     class="form-control mg-input-control fw-bold" 
@@ -712,104 +618,116 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
             </div>
         </div>
 
-        <!-- SECTION 5: LEGAL & VERIFICATION DOCUMENTS (PDF ONLY) -->
-        <div class="mg-form-card">
-            <div class="mg-chevron-header theme-emerald-header">
-                <div class="mg-chevron-left">
-                    <div class="mg-chevron-icon-hole">
-                        <i class="fas fa-file-shield"></i>
+        <!-- 5. Verification Documents (PDF Only) -->
+        <div class="mg-section-card">
+            <div class="mg-section-header">
+                <div class="mg-section-header-left">
+                    <div class="mg-section-icon coral">
+                        <i class="fas fa-file-pdf"></i>
                     </div>
                     <div>
-                        <h5 class="mg-chevron-title">Section 5: Verification Documents (PDF Format Only)</h5>
-                        <p class="mg-chevron-sub">Statutory files in PDF format (Current files can be inspected or replaced)</p>
+                        <h6 class="mg-section-title">Verification Documents (PDF Format Only)</h6>
+                        <span class="mg-section-sub">Inspect or replace current verification files</span>
                     </div>
                 </div>
-                <div class="mg-chevron-badge d-none d-md-block">Step 5</div>
+                <span class="mg-section-tag">PDF Documents</span>
             </div>
 
-            <div class="mg-form-body">
-                <div class="row g-4">
-                    <!-- Owner Aadhar Card (PDF Only) -->
+            <div class="mg-section-body">
+                <div class="row g-3">
+                    <!-- Owner Aadhar PDF -->
                     <div class="col-md-4">
-                        <label class="mg-form-label">
-                            <span class="mg-label-icon icon-emerald"><i class="fas fa-file-pdf"></i></span>
-                            Owner Aadhar Card (PDF)
-                        </label>
-                        <?php if (!empty($center['aadhar_card_doc'])): ?>
-                            <div class="mb-2">
-                                <a href="../../<?= htmlspecialchars($center['aadhar_card_doc']) ?>" target="_blank" class="mg-current-file-badge">
-                                    <i class="fas fa-file-pdf text-danger"></i> View Current Aadhar PDF
-                                </a>
+                        <div class="mg-doc-upload-card">
+                            <div>
+                                <div class="mg-doc-upload-top">
+                                    <div class="mg-doc-icon-badge pdf"><i class="fas fa-file-pdf"></i></div>
+                                    <div class="mg-doc-upload-info">
+                                        <h6>Owner Aadhar Card</h6>
+                                        <span>PDF format only</span>
+                                    </div>
+                                </div>
+                                <?php if (!empty($center['aadhar_card_doc'])): ?>
+                                    <div class="mb-2">
+                                        <a href="../../<?= htmlspecialchars($center['aadhar_card_doc']) ?>" target="_blank" class="badge bg-light text-primary border text-decoration-none p-2 d-inline-flex align-items-center gap-1">
+                                            <i class="fas fa-file-pdf text-danger"></i> View Current Aadhar PDF
+                                        </a>
+                                    </div>
+                                <?php endif; ?>
+                                <div class="mg-file-status-line" id="status_aadhar">
+                                    <i class="fas fa-check-circle"></i> <span class="file-name"></span>
+                                </div>
                             </div>
-                        <?php endif; ?>
-                        <div class="mg-upload-dropzone pdf-zone" onclick="document.getElementById('file_aadhar').click()">
-                            <input type="file" name="aadhar_card_doc" id="file_aadhar" accept=".pdf,application/pdf" style="display:none;" onchange="updateFileLabel(this, 'preview_aadhar')">
-                            <div class="mg-upload-icon-circle pdf">
-                                <i class="fas fa-file-pdf"></i>
-                            </div>
-                            <h6 class="mg-upload-title"><?= !empty($center['aadhar_card_doc']) ? 'Upload New Aadhar' : 'Select Aadhar PDF' ?></h6>
-                            <p class="mg-upload-sub">Leave empty to keep existing file</p>
-                            <span class="mg-upload-badge pdf">PDF ONLY</span>
-                            <div class="mg-file-chosen-preview" id="preview_aadhar">
-                                <i class="fas fa-check-circle"></i> <span></span>
+                            <div class="mg-upload-btn-row">
+                                <input type="file" name="aadhar_card_doc" id="file_aadhar" accept=".pdf,application/pdf" style="display:none;" onchange="handleDocSelected(this, 'status_aadhar')">
+                                <button type="button" class="mg-btn-browse" onclick="document.getElementById('file_aadhar').click()">
+                                    <i class="fas fa-upload"></i> <?= !empty($center['aadhar_card_doc']) ? 'Replace PDF' : 'Upload PDF' ?>
+                                </button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Owner PAN Card (PDF Only) -->
+                    <!-- Owner PAN PDF -->
                     <div class="col-md-4">
-                        <label class="mg-form-label">
-                            <span class="mg-label-icon icon-emerald"><i class="fas fa-file-lines"></i></span>
-                            Owner PAN Card (PDF)
-                        </label>
-                        <?php if (!empty($center['pan_card_doc'])): ?>
-                            <div class="mb-2">
-                                <a href="../../<?= htmlspecialchars($center['pan_card_doc']) ?>" target="_blank" class="mg-current-file-badge">
-                                    <i class="fas fa-file-pdf text-danger"></i> View Current PAN PDF
-                                </a>
+                        <div class="mg-doc-upload-card">
+                            <div>
+                                <div class="mg-doc-upload-top">
+                                    <div class="mg-doc-icon-badge pdf"><i class="fas fa-file-lines"></i></div>
+                                    <div class="mg-doc-upload-info">
+                                        <h6>Owner PAN Card</h6>
+                                        <span>PDF format only</span>
+                                    </div>
+                                </div>
+                                <?php if (!empty($center['pan_card_doc'])): ?>
+                                    <div class="mb-2">
+                                        <a href="../../<?= htmlspecialchars($center['pan_card_doc']) ?>" target="_blank" class="badge bg-light text-primary border text-decoration-none p-2 d-inline-flex align-items-center gap-1">
+                                            <i class="fas fa-file-pdf text-danger"></i> View Current PAN PDF
+                                        </a>
+                                    </div>
+                                <?php endif; ?>
+                                <div class="mg-file-status-line" id="status_pan">
+                                    <i class="fas fa-check-circle"></i> <span class="file-name"></span>
+                                </div>
                             </div>
-                        <?php endif; ?>
-                        <div class="mg-upload-dropzone pdf-zone" onclick="document.getElementById('file_pan').click()">
-                            <input type="file" name="pan_card_doc" id="file_pan" accept=".pdf,application/pdf" style="display:none;" onchange="updateFileLabel(this, 'preview_pan')">
-                            <div class="mg-upload-icon-circle pdf">
-                                <i class="fas fa-file-pdf"></i>
-                            </div>
-                            <h6 class="mg-upload-title"><?= !empty($center['pan_card_doc']) ? 'Upload New PAN' : 'Select PAN PDF' ?></h6>
-                            <p class="mg-upload-sub">Leave empty to keep existing file</p>
-                            <span class="mg-upload-badge pdf">PDF ONLY</span>
-                            <div class="mg-file-chosen-preview" id="preview_pan">
-                                <i class="fas fa-check-circle"></i> <span></span>
+                            <div class="mg-upload-btn-row">
+                                <input type="file" name="pan_card_doc" id="file_pan" accept=".pdf,application/pdf" style="display:none;" onchange="handleDocSelected(this, 'status_pan')">
+                                <button type="button" class="mg-btn-browse" onclick="document.getElementById('file_pan').click()">
+                                    <i class="fas fa-upload"></i> <?= !empty($center['pan_card_doc']) ? 'Replace PDF' : 'Upload PDF' ?>
+                                </button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- GST Number & Certificate PDF -->
+                    <!-- GST Number & PDF -->
                     <div class="col-md-4">
-                        <label class="mg-form-label">
-                            <span class="mg-label-icon icon-emerald"><i class="fas fa-receipt"></i></span>
-                            GST Number &amp; Certificate <span class="text-muted">(Optional)</span>
-                        </label>
-                        <input type="text" name="gst_number" class="form-control mg-input-control mb-2 text-uppercase" 
-                            placeholder="GSTIN (e.g. 06AAAAA0000A1Z5)"
-                            value="<?= htmlspecialchars($center['gst_number'] ?? '') ?>">
-
-                        <?php if (!empty($center['gst_certificate_doc'])): ?>
-                            <div class="mb-2">
-                                <a href="../../<?= htmlspecialchars($center['gst_certificate_doc']) ?>" target="_blank" class="mg-current-file-badge">
-                                    <i class="fas fa-file-pdf text-danger"></i> View Current GST Certificate
-                                </a>
+                        <div class="mg-doc-upload-card">
+                            <div>
+                                <div class="mg-doc-upload-top">
+                                    <div class="mg-doc-icon-badge pdf"><i class="fas fa-receipt"></i></div>
+                                    <div class="mg-doc-upload-info">
+                                        <h6>GST Registration</h6>
+                                        <span>Optional business filing</span>
+                                    </div>
+                                </div>
+                                <input type="text" name="gst_number" class="form-control mg-input-control mb-2 text-uppercase" 
+                                    style="height:36px; font-size:0.8rem;"
+                                    placeholder="GSTIN (Optional)"
+                                    value="<?= htmlspecialchars($center['gst_number'] ?? '') ?>">
+                                <?php if (!empty($center['gst_certificate_doc'])): ?>
+                                    <div class="mb-2">
+                                        <a href="../../<?= htmlspecialchars($center['gst_certificate_doc']) ?>" target="_blank" class="badge bg-light text-primary border text-decoration-none p-2 d-inline-flex align-items-center gap-1">
+                                            <i class="fas fa-file-pdf text-danger"></i> View Current GST PDF
+                                        </a>
+                                    </div>
+                                <?php endif; ?>
+                                <div class="mg-file-status-line" id="status_gst">
+                                    <i class="fas fa-check-circle"></i> <span class="file-name"></span>
+                                </div>
                             </div>
-                        <?php endif; ?>
-                        <div class="mg-upload-dropzone pdf-zone" onclick="document.getElementById('file_gst').click()">
-                            <input type="file" name="gst_certificate_doc" id="file_gst" accept=".pdf,application/pdf" style="display:none;" onchange="updateFileLabel(this, 'preview_gst')">
-                            <div class="mg-upload-icon-circle pdf">
-                                <i class="fas fa-file-invoice"></i>
-                            </div>
-                            <h6 class="mg-upload-title"><?= !empty($center['gst_certificate_doc']) ? 'Upload New GST PDF' : 'Select GST PDF' ?></h6>
-                            <p class="mg-upload-sub">Leave empty to keep existing file</p>
-                            <span class="mg-upload-badge pdf">PDF ONLY</span>
-                            <div class="mg-file-chosen-preview" id="preview_gst">
-                                <i class="fas fa-check-circle"></i> <span></span>
+                            <div class="mg-upload-btn-row">
+                                <input type="file" name="gst_certificate_doc" id="file_gst" accept=".pdf,application/pdf" style="display:none;" onchange="handleDocSelected(this, 'status_gst')">
+                                <button type="button" class="mg-btn-browse" onclick="document.getElementById('file_gst').click()">
+                                    <i class="fas fa-upload"></i> <?= !empty($center['gst_certificate_doc']) ? 'Replace PDF' : 'Upload PDF' ?>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -817,84 +735,70 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
             </div>
         </div>
 
-        <!-- SECTION 6: OWNER PHOTO & SIGNATURE -->
-        <div class="mg-form-card">
-            <div class="mg-chevron-header theme-navy-header">
-                <div class="mg-chevron-left">
-                    <div class="mg-chevron-icon-hole">
-                        <i class="fas fa-id-badge"></i>
+        <!-- 6. Owner Photo & Signature Images -->
+        <div class="mg-section-card">
+            <div class="mg-section-header">
+                <div class="mg-section-header-left">
+                    <div class="mg-section-icon navy">
+                        <i class="fas fa-signature"></i>
                     </div>
                     <div>
-                        <h5 class="mg-chevron-title">Section 6: Owner Photo &amp; Authorized Signature</h5>
-                        <p class="mg-chevron-sub">Executive portrait and official signature image assets</p>
+                        <h6 class="mg-section-title">Owner Photo &amp; Specimen Signature</h6>
+                        <span class="mg-section-sub">Current portrait and specimen signature</span>
                     </div>
                 </div>
-                <div class="mg-chevron-badge d-none d-md-block">Step 6</div>
+                <span class="mg-section-tag">Media Assets</span>
             </div>
 
-            <div class="mg-form-body">
-                <div class="row g-4">
-                    <!-- Owner Image -->
+            <div class="mg-section-body">
+                <div class="row g-3">
+                    <!-- Owner Photo -->
                     <div class="col-md-6">
-                        <label class="mg-form-label">
-                            <span class="mg-label-icon icon-navy"><i class="fas fa-user-circle"></i></span>
-                            Center Head / Owner Image
-                        </label>
-                        <div class="mg-upload-dropzone" onclick="document.getElementById('file_owner_photo').click()">
-                            <input type="file" name="owner_photo" id="file_owner_photo" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="previewImageFile(this, 'img_preview_photo')">
-                            <div class="mg-upload-icon-circle image">
-                                <i class="fas fa-camera"></i>
-                            </div>
-                            <h6 class="mg-upload-title">Change Owner Passport Photo</h6>
-                            <p class="mg-upload-sub">Leave untouched to keep current photo</p>
-                            <span class="mg-upload-badge img">IMAGE FILE</span>
-                            
-                            <!-- Display current or newly chosen photo -->
+                        <div class="p-3 rounded-2 border bg-light d-flex align-items-center gap-3">
                             <?php if (!empty($center['owner_photo'])): ?>
-                                <img src="../../<?= htmlspecialchars($center['owner_photo']) ?>" id="img_preview_photo" class="mg-img-preview-box" style="display:block;" alt="Current Owner Photo">
+                                <img src="../../<?= htmlspecialchars($center['owner_photo']) ?>" id="preview_photo_img" class="mg-img-preview-frame" style="display:block;" alt="Owner Photo">
                             <?php else: ?>
-                                <img src="" id="img_preview_photo" class="mg-img-preview-box" alt="Owner Photo Preview">
+                                <img src="" id="preview_photo_img" class="mg-img-preview-frame" alt="Owner Photo">
                             <?php endif; ?>
+                            <div class="flex-grow-1">
+                                <div class="fw-semibold text-dark" style="font-size:0.88rem;">Owner Passport Photo</div>
+                                <div class="text-muted small mb-2" style="font-size:0.75rem;">JPG, PNG, or WEBP</div>
+                                <input type="file" name="owner_photo" id="file_photo" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="handleImgSelected(this, 'preview_photo_img')">
+                                <button type="button" class="mg-btn-browse" onclick="document.getElementById('file_photo').click()">
+                                    <i class="fas fa-camera me-1"></i> Change Photo
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Owner Signature Image -->
+                    <!-- Owner Signature -->
                     <div class="col-md-6">
-                        <label class="mg-form-label">
-                            <span class="mg-label-icon icon-navy"><i class="fas fa-signature"></i></span>
-                            Owner Authorized Signature Image
-                        </label>
-                        <div class="mg-upload-dropzone" onclick="document.getElementById('file_owner_sig').click()">
-                            <input type="file" name="owner_signature" id="file_owner_sig" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="previewImageFile(this, 'img_preview_sig')">
-                            <div class="mg-upload-icon-circle image">
-                                <i class="fas fa-pen-nib"></i>
-                            </div>
-                            <h6 class="mg-upload-title">Change Specimen Signature</h6>
-                            <p class="mg-upload-sub">Leave untouched to keep current signature</p>
-                            <span class="mg-upload-badge img">IMAGE FILE</span>
-
-                            <!-- Display current or newly chosen signature -->
+                        <div class="p-3 rounded-2 border bg-light d-flex align-items-center gap-3">
                             <?php if (!empty($center['owner_signature'])): ?>
-                                <img src="../../<?= htmlspecialchars($center['owner_signature']) ?>" id="img_preview_sig" class="mg-img-preview-box" style="display:block; background:#fff; padding:6px;" alt="Current Signature">
+                                <img src="../../<?= htmlspecialchars($center['owner_signature']) ?>" id="preview_sig_img" class="mg-img-preview-frame" style="display:block; background:#fff; padding:4px;" alt="Signature">
                             <?php else: ?>
-                                <img src="" id="img_preview_sig" class="mg-img-preview-box" alt="Owner Signature Preview">
+                                <img src="" id="preview_sig_img" class="mg-img-preview-frame" alt="Signature">
                             <?php endif; ?>
+                            <div class="flex-grow-1">
+                                <div class="fw-semibold text-dark" style="font-size:0.88rem;">Specimen Signature</div>
+                                <div class="text-muted small mb-2" style="font-size:0.75rem;">Clean background</div>
+                                <input type="file" name="owner_signature" id="file_sig" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="handleImgSelected(this, 'preview_sig_img')">
+                                <button type="button" class="mg-btn-browse" onclick="document.getElementById('file_sig').click()">
+                                    <i class="fas fa-pen-nib me-1"></i> Change Signature
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Status Row -->
-                <div class="row mt-4 pt-3 border-top">
+                <div class="row mt-3 pt-3 border-top align-items-center">
                     <div class="col-md-4">
                         <div class="mg-field-group mb-0">
-                            <label class="mg-form-label">
-                                <span class="mg-label-icon icon-navy"><i class="fas fa-toggle-on"></i></span>
-                                Current Center Status
-                            </label>
+                            <label class="mg-form-label">Current Franchise Status</label>
                             <select name="status" class="form-select mg-input-control">
                                 <option value="active" <?= ($center['status'] === 'active') ? 'selected' : '' ?>>Active &bull; Fully Authorized</option>
-                                <option value="pending" <?= ($center['status'] === 'pending') ? 'selected' : '' ?>>Pending &bull; Verification in Progress</option>
-                                <option value="inactive" <?= ($center['status'] === 'inactive') ? 'selected' : '' ?>>Inactive &bull; Temporarily Paused</option>
+                                <option value="pending" <?= ($center['status'] === 'pending') ? 'selected' : '' ?>>Pending Verification</option>
+                                <option value="inactive" <?= ($center['status'] === 'inactive') ? 'selected' : '' ?>>Inactive</option>
                             </select>
                         </div>
                     </div>
@@ -902,17 +806,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
             </div>
         </div>
 
-        <!-- FORM ACTION FOOTER -->
-        <div class="mg-form-footer">
-            <div class="d-flex align-items-center gap-2">
-                <i class="fas fa-clock-rotate-left text-primary fa-lg"></i>
-                <span class="text-muted fw-semibold" style="font-size: 0.88rem;">Last updated: <?= date('d M Y, h:i A', strtotime($center['updated_at'])) ?></span>
+        <!-- Sticky Footer -->
+        <div class="mg-form-footer-bar">
+            <div class="text-muted small">
+                <i class="fas fa-clock-rotate-left me-1"></i> Last updated: <?= date('d M Y, h:i A', strtotime($center['updated_at'])) ?>
             </div>
-            <div class="d-flex align-items-center gap-3">
-                <a href="index.php" class="btn mg-btn-reset">
-                    <i class="fas fa-xmark me-1"></i> Cancel
-                </a>
-                <button type="submit" class="btn mg-btn-submit">
+            <div class="d-flex align-items-center gap-2">
+                <a href="index.php" class="btn btn-light border px-3" style="font-size:0.88rem; font-weight:600;">Cancel</a>
+                <button type="submit" class="mg-btn-save-main">
                     <i class="fas fa-check-double me-1"></i> Update &amp; Save Changes
                 </button>
             </div>
@@ -921,116 +822,121 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
     </form>
 </div>
 
-<!-- India Post API Script & Interactive Handlers -->
+<!-- India Post API & Interactive Handlers Script -->
 <script>
 $(document).ready(function() {
-    let pincodeTimer = null;
+    let pinTimer = null;
 
     $('#mg_pincode_input').on('input keyup paste', function() {
         const pin = $(this).val().trim();
-        $('#pincode_loader, #pincode_success, #pincode_error').hide();
-
         if (pin.length === 6 && /^\d{6}$/.test(pin)) {
-            clearTimeout(pincodeTimer);
-            $('#pincode_loader').show();
-            $('#pincode_help_text').html('<span class="text-info"><i class="fas fa-circle-notch fa-spin"></i> Contacting India Post postal API...</span>');
-
-            pincodeTimer = setTimeout(function() {
-                fetchIndiaPostData(pin);
+            clearTimeout(pinTimer);
+            pinTimer = setTimeout(function() {
+                lookupIndiaPost(pin);
             }, 300);
-        } else if (pin.length > 0 && pin.length < 6) {
-            $('#pincode_help_text').html('<span class="text-muted">Enter all 6 digits to autofill City &amp; State.</span>');
+        } else if (pin.length === 0) {
+            $('#pin_status_container').empty();
             $('#postoffice_select_wrap').hide();
         }
     });
 
-    function fetchIndiaPostData(pincode) {
-        const apiUrl = 'https://api.postalpincode.in/pincode/' + pincode;
+    $('#btn_verify_pin').on('click', function(e) {
+        e.preventDefault();
+        const pin = $('#mg_pincode_input').val().trim();
+        if (pin.length === 6 && /^\d{6}$/.test(pin)) {
+            lookupIndiaPost(pin);
+        } else {
+            $('#pin_status_container').html('<span class="mg-pin-status-pill error"><i class="fas fa-triangle-exclamation"></i> Please enter a 6-digit PIN.</span>');
+        }
+    });
+
+    function lookupIndiaPost(pin) {
+        const statusBox = $('#pin_status_container');
+        statusBox.html('<span class="mg-pin-status-pill loading"><i class="fas fa-spinner fa-spin"></i> Checking India Post...</span>');
 
         $.ajax({
-            url: apiUrl,
+            url: 'https://api.postalpincode.in/pincode/' + pin,
             type: 'GET',
             dataType: 'json',
             timeout: 6000,
-            success: function(response) {
-                $('#pincode_loader').hide();
-
-                if (response && response[0] && response[0].Status === 'Success' && response[0].PostOffice && response[0].PostOffice.length > 0) {
-                    const postOffices = response[0].PostOffice;
+            success: function(resp) {
+                if (resp && resp[0] && resp[0].Status === 'Success' && resp[0].PostOffice && resp[0].PostOffice.length > 0) {
+                    const postOffices = resp[0].PostOffice;
                     const primary = postOffices[0];
 
                     const city = primary.District || primary.Region || primary.Circle;
                     const state = primary.State;
 
-                    $('#mg_city_input').val(city).addClass('is-valid');
-                    $('#mg_state_input').val(state).addClass('is-valid');
+                    $('#mg_city_input').val(city);
+                    $('#mg_state_input').val(state);
 
-                    $('#pincode_success').show();
-                    $('#pincode_help_text').html(
-                        '<span class="text-success"><i class="fas fa-check-circle"></i> India Post Verified: <strong>' + city + ', ' + state + '</strong> (' + postOffices.length + ' post offices found)</span>'
-                    );
+                    statusBox.html('<span class="mg-pin-status-pill success"><i class="fas fa-check-circle"></i> India Post Verified: <strong>' + city + ', ' + state + '</strong> (' + postOffices.length + ' post offices)</span>');
 
-                    const select = $('#mg_postoffice_select');
-                    select.empty();
-                    select.append('<option value="">-- Select Post Office to append to address --</option>');
+                    const sel = $('#mg_postoffice_select');
+                    sel.empty();
+                    sel.append('<option value="">-- Select Post Office to append --</option>');
                     postOffices.forEach(function(po) {
-                        select.append('<option value="' + po.Name + '">' + po.Name + ' (' + po.BranchType + ')</option>');
+                        sel.append('<option value="' + po.Name + '">' + po.Name + ' (' + po.BranchType + ')</option>');
                     });
                     $('#postoffice_select_wrap').slideDown();
 
-                    select.off('change').on('change', function() {
+                    sel.off('change').on('change', function() {
                         const poName = $(this).val();
                         if (poName) {
-                            const curAddr = $('#mg_address_textarea').val().trim();
-                            if (curAddr.indexOf(poName) === -1) {
-                                $('#mg_address_textarea').val(curAddr ? (curAddr + ', Near ' + poName + ' Post Office') : ('Near ' + poName + ' Post Office'));
+                            const cur = $('#mg_address_textarea').val().trim();
+                            if (cur.indexOf(poName) === -1) {
+                                $('#mg_address_textarea').val(cur ? (cur + ', Near ' + poName + ' Post Office') : ('Near ' + poName + ' Post Office'));
                             }
                         }
                     });
-
                 } else {
-                    $('#pincode_error').show();
-                    $('#pincode_help_text').html('<span class="text-danger"><i class="fas fa-triangle-exclamation"></i> No postal records found for this PIN.</span>');
+                    statusBox.html('<span class="mg-pin-status-pill error"><i class="fas fa-circle-xmark"></i> No records found for ' + pin + '.</span>');
                 }
             },
             error: function() {
-                $('#pincode_loader').hide();
+                statusBox.html('<span class="mg-pin-status-pill error"><i class="fas fa-wifi"></i> India Post API unreachable.</span>');
             }
         });
     }
 });
 
-function updateFileLabel(input, previewId) {
-    if (input.files && input.files[0]) {
-        const file = input.files[0];
-        const fileName = file.name;
-        const fileSizeMb = (file.size / (1024 * 1024)).toFixed(2);
-        
-        if (!fileName.toLowerCase().endsWith('.pdf')) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Invalid File Type',
-                text: 'Only PDF format is permitted for this document.',
-                confirmButtonColor: '#e34e26'
-            });
-            input.value = '';
-            $('#' + previewId).hide();
-            return;
-        }
-
-        $('#' + previewId).html('<i class="fas fa-check-circle"></i> New File: ' + fileName + ' (' + fileSizeMb + ' MB)').css('display', 'flex');
+function togglePillActive(checkbox) {
+    const pill = $(checkbox).closest('.mg-amenity-pill');
+    if (checkbox.checked) {
+        pill.addClass('active');
+    } else {
+        pill.removeClass('active');
     }
 }
 
-function previewImageFile(input, imgElementId) {
+function handleDocSelected(input, statusElementId) {
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        if (!file.name.toLowerCase().endsWith('.pdf')) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid File Format',
+                text: 'Only PDF format is accepted for legal verification documents.',
+                confirmButtonColor: '#071d33'
+            });
+            input.value = '';
+            $('#' + statusElementId).hide();
+            return;
+        }
+
+        const sizeMb = (file.size / (1024 * 1024)).toFixed(2);
+        $('#' + statusElementId).find('.file-name').text(file.name + ' (' + sizeMb + ' MB)');
+        $('#' + statusElementId).css('display', 'flex');
+    }
+}
+
+function handleImgSelected(input, imgElementId) {
     if (input.files && input.files[0]) {
         const file = input.files[0];
         const reader = new FileReader();
-
         reader.onload = function(e) {
             $('#' + imgElementId).attr('src', e.target.result).show();
         };
-
         reader.readAsDataURL(file);
     }
 }
@@ -1042,7 +948,7 @@ Swal.fire({
     title: 'Center Updated!',
     text: <?= json_encode($successMessage) ?>,
     icon: 'success',
-    confirmButtonColor: '#10b981',
+    confirmButtonColor: '#071d33',
     confirmButtonText: 'Great!'
 });
 </script>
@@ -1052,4 +958,3 @@ Swal.fire({
 // Include Admin Footer
 require_once dirname(__DIR__) . '/footer.php'; 
 ?>
-
