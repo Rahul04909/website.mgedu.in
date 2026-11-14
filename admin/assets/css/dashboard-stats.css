@@ -1,0 +1,401 @@
+/**
+ * MG Education & Social Development Organization
+ * Admin Dashboard Stylesheet - Live Date & Time Topbar + Quick Features Chevron Stat Cards
+ * 100% Visual Language of Quick Features: 4 Interconnected Chevrons, Golden Ring Badges, Solid Vibrant Colors
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap');
+
+/* ==========================================================================
+   1. LIVE DATE & TIME TOPBAR (Replaced "Overview & Analytics")
+   ========================================================================== */
+.mg-header-topbar {
+  margin-left: var(--mg-sidebar-width) !important;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  padding: 10px 18px !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.sidebar-collapse .mg-header-topbar {
+  margin-left: 76px !important;
+}
+
+.mg-datetime-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.mg-datetime-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.mg-datetime-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f8fafc;
+  padding: 6px 14px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.mg-datetime-icon-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.mg-datetime-icon-circle.date-icon {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+.mg-datetime-icon-circle.time-icon {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.mg-datetime-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.mg-datetime-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #64748b;
+  line-height: 1.1;
+}
+
+.mg-datetime-val {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.2;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+#mg-live-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  color: #0b63b6;
+  letter-spacing: -0.3px;
+}
+
+/* Status Pill */
+.mg-datetime-right {
+  display: flex;
+  align-items: center;
+}
+
+.mg-live-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #065f46;
+}
+
+.mg-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+  animation: mgPulse 2s infinite;
+}
+
+@keyframes mgPulse {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+  70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+/* ==========================================================================
+   2. STAT CARDS CONTAINER (QUICK FEATURES CHEVRON FORMAT)
+   ========================================================================== */
+.mg-stat-chevron-container {
+  width: 100%;
+  margin-top: 32px;
+  margin-bottom: 28px;
+  position: relative;
+  box-sizing: border-box;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* 4 Interconnected Chevron Action Modules Wrapper */
+.mg-stat-wrapper {
+  width: 100%;
+  display: flex;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  border-radius: 14px;
+  box-shadow: 0 10px 28px rgba(7, 29, 51, 0.12);
+  background: transparent;
+}
+
+/* Individual Stat Block */
+.mg-stat-col {
+  flex: 1;
+  position: relative;
+  min-height: 185px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+/* Card 1 (Purple - Academic Courses) - No chevron cut on left */
+.mg-stat-col.purple {
+  background: linear-gradient(145deg, #724c97 0%, #5e3b7e 100%);
+  z-index: 4;
+  border-radius: 14px 0 0 14px;
+  padding: 34px 24px 16px 30px !important;
+}
+
+/* Card 2 (Amber - Authorized Centers) - Left padding accommodates 28px chevron */
+.mg-stat-col.amber {
+  background: linear-gradient(145deg, #d67d26 0%, #b86518 100%);
+  z-index: 3;
+  padding: 34px 24px 16px 52px !important;
+}
+
+/* Card 3 (Cyan - Enrolled Students) - Left padding accommodates 28px chevron */
+.mg-stat-col.cyan {
+  background: linear-gradient(145deg, #00a2db 0%, #0284c7 100%);
+  z-index: 2;
+  padding: 34px 24px 16px 52px !important;
+}
+
+/* Card 4 (Vermilion - Issued Certificates) - Left padding accommodates 28px chevron */
+.mg-stat-col.vermilion {
+  background: linear-gradient(145deg, #e34e26 0%, #c53a15 100%);
+  z-index: 1;
+  border-radius: 0 14px 14px 0;
+  padding: 34px 24px 16px 52px !important;
+}
+
+/* Hover State */
+.mg-stat-col:hover {
+  filter: brightness(1.06);
+}
+
+/* Seamless Vector Chevron Arrow Pointing Right */
+.mg-stat-arrow {
+  position: absolute;
+  top: 0;
+  right: -28px;
+  width: 29px;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+  filter: drop-shadow(2px 0 3px rgba(0, 0, 0, 0.08));
+}
+
+/* Floating Circular Icon Badge with Golden-Yellow Ring (Quick Features Signature) */
+.mg-stat-badge {
+  position: absolute;
+  top: -24px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3.5px solid #ffb703; /* Bright Golden Yellow Ring */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 15;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Badge Optical Centering over the Usable Area */
+.mg-stat-col.purple .mg-stat-badge {
+  left: calc(50% - 12px);
+  transform: translateX(-50%);
+}
+
+.mg-stat-col.amber .mg-stat-badge,
+.mg-stat-col.cyan .mg-stat-badge {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mg-stat-col.vermilion .mg-stat-badge {
+  left: calc(50% + 12px);
+  transform: translateX(-50%);
+}
+
+.mg-stat-col:hover .mg-stat-badge {
+  transform: translateX(-50%) scale(1.12);
+}
+
+.mg-stat-badge i {
+  font-size: 21px;
+}
+
+.mg-stat-col.purple .mg-stat-badge i { color: #724c97; }
+.mg-stat-col.amber .mg-stat-badge i { color: #d67d26; }
+.mg-stat-col.cyan .mg-stat-badge i { color: #00a2db; }
+.mg-stat-col.vermilion .mg-stat-badge i { color: #e34e26; }
+
+/* Stat Card Content Hierarchy */
+.mg-stat-content {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 5;
+}
+
+.mg-stat-number-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  margin-top: 2px;
+  margin-bottom: 3px;
+}
+
+.mg-stat-number {
+  font-size: 35px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+}
+
+.mg-stat-suffix {
+  font-size: 21px;
+  font-weight: 800;
+  color: #ffb703; /* Golden accent */
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.mg-stat-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 4px 0 4px 0;
+  letter-spacing: -0.2px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+}
+
+.mg-stat-sublabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.mg-stat-sublabel i {
+  font-size: 10.5px;
+  color: #ffb703;
+}
+
+/* Bottom Action Link ("More Info" / "View Details") */
+.mg-stat-footer {
+  margin-top: 15px;
+  position: relative;
+  z-index: 5;
+}
+
+.mg-stat-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.16);
+  border-radius: 8px;
+  color: #ffffff !important;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none !important;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.mg-stat-link:hover {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.45);
+  transform: translateX(2px);
+}
+
+.mg-stat-link i {
+  font-size: 12px;
+  transition: transform 0.2s ease;
+}
+
+.mg-stat-link:hover i {
+  transform: translateX(3px);
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (Tablets & Mobile)
+   ========================================================================== */
+@media (max-width: 991px) {
+  .mg-stat-wrapper {
+    flex-wrap: wrap;
+    gap: 26px 16px;
+    box-shadow: none;
+  }
+
+  .mg-stat-col {
+    flex: 1 1 calc(50% - 16px);
+    border-radius: 12px !important;
+    min-height: 160px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    padding: 34px 20px 16px 20px !important;
+  }
+
+  .mg-stat-col .mg-stat-badge {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+
+  .mg-stat-arrow {
+    display: none !important;
+  }
+}
+
+@media (max-width: 575px) {
+  .mg-stat-col {
+    flex: 1 1 100%;
+    margin-bottom: 12px;
+  }
+  
+  .mg-datetime-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

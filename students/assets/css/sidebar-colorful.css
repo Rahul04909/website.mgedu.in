@@ -1,0 +1,1087 @@
+/**
+ * MG Education & Social Development Organization
+ * Admin Sidebar Stylesheet - Pointed Pencil / Price-Tag Style Colorful Menus & Submenus
+ * 100% Visual Language of Quick Features: Pointed Pencil Tip Right (>), Circular Icon Hole Left, Solid Vibrant Colors
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Mukta:wght@600;700&display=swap');
+
+:root {
+  /* Quick Features Theme Palette */
+  --mg-cyan: #00a2db;
+  --mg-cyan-dark: #0284c7;
+  --mg-purple: #724c97;
+  --mg-purple-dark: #5e3b7e;
+  --mg-amber: #d67d26;
+  --mg-amber-dark: #b86518;
+  --mg-vermilion: #e34e26;
+  --mg-vermilion-dark: #c53a15;
+  --mg-emerald: #10b981;
+  --mg-emerald-dark: #059669;
+  --mg-navy: #071d33;
+  --mg-navy-light: #0b2542;
+  --mg-gold: #ffb703;
+  --mg-sidebar-width: 275px;
+}
+
+/* ==========================================================================
+   1. MAIN SIDEBAR STRUCTURE
+   ========================================================================== */
+.main-sidebar {
+  width: var(--mg-sidebar-width) !important;
+  background-color: #ffffff !important;
+  box-shadow: 3px 0 24px rgba(7, 29, 51, 0.08) !important;
+  border-right: 1px solid #e2e8f0 !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  overflow-x: hidden !important;
+}
+
+.content-wrapper,
+.main-header,
+.main-footer {
+  margin-left: var(--mg-sidebar-width) !important;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* ==========================================================================
+   1B. TOP NAVBAR & EXECUTIVE PROFILE DROPDOWN
+   ========================================================================== */
+.mg-top-navbar {
+  min-height: 58px !important;
+  height: 58px !important;
+  padding: 8px 20px !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  z-index: 1030 !important;
+}
+
+/* Sidebar Toggle Button */
+.mg-sidebar-toggle-btn {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 9px !important;
+  background: #f8fafc !important;
+  border: 1.5px solid #e2e8f0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #0b63b6 !important;
+  font-size: 15px !important;
+  padding: 0 !important;
+  cursor: pointer !important;
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.mg-sidebar-toggle-btn:hover {
+  background: #0b63b6 !important;
+  color: #ffffff !important;
+  border-color: #0b63b6 !important;
+  box-shadow: 0 4px 12px rgba(11, 99, 182, 0.28) !important;
+  transform: translateY(-1px) !important;
+}
+
+.mg-sidebar-toggle-btn:active {
+  transform: scale(0.95) !important;
+}
+
+/* Profile Dropdown Trigger */
+.mg-profile-dropdown {
+  position: relative !important;
+}
+
+.mg-profile-trigger {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 4px 12px 4px 4px !important;
+  border-radius: 30px !important;
+  background: #f8fafc !important;
+  border: 1.5px solid #e2e8f0 !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.mg-profile-trigger:hover,
+.mg-profile-dropdown.show .mg-profile-trigger {
+  background: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+.mg-nav-avatar-wrap {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+}
+
+.mg-nav-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  display: block;
+}
+
+.mg-nav-online-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 9px;
+  height: 9px;
+  background: #10b981;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+}
+
+.mg-nav-user-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.mg-nav-user-name {
+  font-size: 13px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.2px;
+}
+
+.mg-nav-user-role {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #0b63b6;
+}
+
+.mg-nav-chevron {
+  font-size: 10px;
+  color: #94a3b8;
+  margin-left: 2px;
+  transition: transform 0.2s ease;
+}
+
+.mg-profile-dropdown.show .mg-nav-chevron {
+  transform: rotate(180deg);
+}
+
+/* Profile Dropdown Menu Card */
+.mg-profile-dropdown-menu {
+  width: 250px !important;
+  min-width: 250px !important;
+  border-radius: 12px !important;
+  border: 1px solid #e2e8f0 !important;
+  padding: 8px !important;
+  box-shadow: 0 12px 32px rgba(7, 29, 51, 0.14) !important;
+  margin-top: 8px !important;
+  border-top: 3px solid #0b63b6 !important;
+  animation: mgDropFade 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes mgDropFade {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.mg-dropdown-user-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 10px 12px 10px;
+  background: #f8fafc;
+  border-radius: 8px;
+  margin-bottom: 4px;
+}
+
+.mg-dropdown-header-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  flex-shrink: 0;
+}
+
+.mg-dropdown-header-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.mg-dropdown-header-name {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.mg-dropdown-header-email {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 1px;
+}
+
+.mg-dropdown-badge {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #0284c7;
+  background: #e0f2fe;
+  padding: 2px 7px;
+  border-radius: 10px;
+  width: fit-content;
+  margin-top: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.mg-dropdown-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 8px 12px !important;
+  border-radius: 8px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: #334155 !important;
+  text-decoration: none !important;
+  transition: all 0.15s ease !important;
+}
+
+.mg-dropdown-item:hover {
+  background: #f1f5f9 !important;
+  color: #0b63b6 !important;
+  transform: translateX(3px) !important;
+}
+
+.mg-dropdown-item i {
+  font-size: 14px;
+  width: 18px;
+  text-align: center;
+}
+
+/* ==========================================================================
+   2. BRAND LOGO SECTION (Full-Fit Logo Header)
+   ========================================================================== */
+.main-sidebar .brand-link {
+  background: #ffffff !important;
+  border-bottom: 2.5px solid var(--mg-gold) !important;
+  padding: 6px 14px !important;
+  min-height: 58px !important;
+  height: 58px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-decoration: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+.brand-logo-img {
+  max-height: 48px !important;
+  max-width: 95% !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain !important;
+  display: block !important;
+  margin: 0 auto !important;
+}
+
+/* ==========================================================================
+   3. ADMIN USER CARD (Executive Centered Profile with Signature Golden Ring)
+   ========================================================================== */
+.mg-admin-user-card {
+  margin: 14px 14px 10px 14px !important;
+  padding: 14px 12px 12px 12px !important;
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%) !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 14px !important;
+  box-shadow: 0 2px 10px rgba(7, 29, 51, 0.05) !important;
+  transition: all 0.25s ease !important;
+  display: block !important;
+}
+
+.mg-admin-user-card:hover {
+  background: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(11, 99, 182, 0.12) !important;
+  border-color: #cbd5e1 !important;
+  transform: translateY(-1px) !important;
+}
+
+.mg-user-card-inner {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  width: 100% !important;
+}
+
+.mg-user-avatar-wrap {
+  position: relative !important;
+  margin: 0 auto 8px auto !important;
+  width: 52px !important;
+  height: 52px !important;
+  flex-shrink: 0 !important;
+}
+
+.mg-user-avatar-img {
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  border: 2.5px solid var(--mg-gold) !important; /* Signature Golden Ring */
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16) !important;
+  display: block !important;
+  background: #ffffff !important;
+  transition: transform 0.25s ease !important;
+}
+
+.mg-admin-user-card:hover .mg-user-avatar-img {
+  transform: scale(1.06) !important;
+}
+
+.mg-online-dot {
+  position: absolute !important;
+  bottom: 1px !important;
+  right: 1px !important;
+  width: 13px !important;
+  height: 13px !important;
+  background-color: #10b981 !important;
+  border: 2px solid #ffffff !important;
+  border-radius: 50% !important;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.7) !important;
+}
+
+.mg-user-meta {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  width: 100% !important;
+}
+
+.mg-user-name {
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  color: #0f172a !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.2px !important;
+}
+
+.mg-user-role-badge {
+  margin-top: 4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  background: #e0f2fe !important;
+  color: #0284c7 !important;
+  border: 1px solid #bae6fd !important;
+  padding: 2px 9px !important;
+  border-radius: 20px !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.2px !important;
+}
+
+.mg-user-role-badge i {
+  font-size: 9.5px !important;
+}
+
+/* Sidebar Divider (Navigation Modules with Clean Hairlines) */
+.mg-sidebar-divider {
+  display: flex !important;
+  align-items: center !important;
+  text-align: center !important;
+  margin: 10px 14px 10px 14px !important;
+}
+
+.mg-sidebar-divider::before,
+.mg-sidebar-divider::after {
+  content: '' !important;
+  flex: 1 !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+.mg-sidebar-divider span {
+  padding: 0 10px !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  color: #94a3b8 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+}
+
+/* ==========================================================================
+   4. PRIMARY PENCIL-TIP / PRICE-TAG STYLE MENUS
+   ========================================================================== */
+.sidebar nav {
+  padding-bottom: 24px !important;
+}
+
+.nav-sidebar {
+  padding: 4px 12px 20px 10px !important;
+  margin: 0 !important;
+  list-style: none !important;
+}
+
+/* Vertical Breathing Gap Between Tags - Perfectly Aligned and Spaced */
+.nav-sidebar > .nav-item {
+  margin-top: 0 !important;
+  margin-bottom: 12px !important;
+  position: relative !important;
+  border: none !important;
+  background: transparent !important;
+  display: block !important;
+  transform: none !important;
+}
+
+/* Parent Nav Link - The Pointed Pencil / Price-Tag Ribbon */
+.nav-sidebar > .nav-item > .nav-link {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  min-height: 48px !important;
+  padding: 7px 20px 7px 10px !important;
+  color: #ffffff !important;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+  margin: 0 !important;
+  
+  /* THE PENCIL TIP / PRICE TAG SHAPE:
+     Left side is straight rounded (9px), Right side tapers to a sharp point (>) */
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 0 100%) !important;
+  border-radius: 9px 0 0 9px !important;
+  
+  /* Filter drop-shadow follows the pointed pencil contour accurately */
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.14)) !important;
+  
+  transform: none !important;
+  transition: filter 0.22s ease, opacity 0.22s ease !important;
+  border: none !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+}
+
+/* Hover State */
+.nav-sidebar > .nav-item > .nav-link:hover {
+  transform: none !important;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2)) brightness(1.08) !important;
+}
+
+/* Active / Open State */
+.nav-sidebar > .nav-item > .nav-link.active,
+.nav-sidebar > .nav-item.menu-open > .nav-link {
+  transform: none !important;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.25)) brightness(1.04) !important;
+}
+
+/* Circular Hole / Icon Badge with Golden Ring (Quick Features Style) */
+.mg-menu-badge-icon {
+  width: 35px !important;
+  height: 35px !important;
+  min-width: 35px !important;
+  border-radius: 50% !important;
+  background: #ffffff !important;
+  border: 2.5px solid var(--mg-gold) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  margin-right: 11px !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.22) !important;
+  transition: transform 0.25s ease !important;
+}
+
+.mg-menu-badge-icon i {
+  font-size: 14px !important;
+  line-height: 1 !important;
+}
+
+.nav-sidebar > .nav-item > .nav-link:hover .mg-menu-badge-icon {
+  transform: scale(1.08);
+}
+
+/* Text Container - Perfectly Centered Vertically */
+.nav-sidebar > .nav-item > .nav-link p {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.25 !important;
+  color: #ffffff !important;
+}
+
+.mg-menu-text {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.2px !important;
+  white-space: nowrap !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15) !important;
+  color: #ffffff !important;
+}
+
+/* ==========================================================================
+   5. INDIVIDUAL PENCIL TAG COLOR THEMES
+   ========================================================================== */
+
+/* --- 1. CYAN PENCIL TAG (Dashboard) --- */
+.nav-item.theme-cyan > .nav-link {
+  background: linear-gradient(135deg, #00a2db 0%, #0284c7 100%) !important;
+}
+.nav-item.theme-cyan .mg-menu-badge-icon i {
+  color: #00a2db !important;
+}
+
+/* --- 2. PURPLE PENCIL TAG (Academics & Courses) --- */
+.nav-item.theme-purple > .nav-link {
+  background: linear-gradient(135deg, #724c97 0%, #8b5cf6 100%) !important;
+}
+.nav-item.theme-purple .mg-menu-badge-icon i {
+  color: #724c97 !important;
+}
+
+/* --- 3. AMBER / OCHRE PENCIL TAG (Students & Admissions) --- */
+.nav-item.theme-amber > .nav-link {
+  background: linear-gradient(135deg, #d67d26 0%, #ea580c 100%) !important;
+}
+.nav-item.theme-amber .mg-menu-badge-icon i {
+  color: #d67d26 !important;
+}
+
+/* --- 4. VERMILION / RED-ORANGE PENCIL TAG (Study Centers Network) --- */
+.nav-item.theme-vermilion > .nav-link {
+  background: linear-gradient(135deg, #e34e26 0%, #dc2626 100%) !important;
+}
+.nav-item.theme-vermilion .mg-menu-badge-icon i {
+  color: #e34e26 !important;
+}
+
+/* --- 5. EMERALD GREEN PENCIL TAG (Internships & Placements) --- */
+.nav-item.theme-emerald > .nav-link {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+}
+.nav-item.theme-emerald .mg-menu-badge-icon i {
+  color: #059669 !important;
+}
+
+/* --- 6. ROYAL NAVY PENCIL TAG (System & Settings) --- */
+.nav-item.theme-navy > .nav-link {
+  background: linear-gradient(135deg, #0b2542 0%, #071d33 100%) !important;
+}
+.nav-item.theme-navy .mg-menu-badge-icon i {
+  color: #0b2542 !important;
+}
+
+/* ==========================================================================
+   6. SUBMENUS IN IDENTICAL PENCIL-TIP / PRICE-TAG STYLE
+   ========================================================================== */
+.nav-treeview {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  margin: 8px 0 10px 0 !important;
+  padding: 0 0 0 12px !important;
+  border-left: 2.5px dashed #cbd5e1 !important;
+  margin-left: 26px !important; /* Connected smoothly below the parent icon */
+}
+
+.theme-cyan .nav-treeview { border-left-color: #38bdf8 !important; }
+.theme-purple .nav-treeview { border-left-color: #a78bfa !important; }
+.theme-amber .nav-treeview { border-left-color: #fb923c !important; }
+.theme-vermilion .nav-treeview { border-left-color: #f87171 !important; }
+.theme-emerald .nav-treeview { border-left-color: #34d399 !important; }
+.theme-navy .nav-treeview { border-left-color: #64748b !important; }
+
+.nav-treeview > .nav-item {
+  margin: 0 0 8px 0 !important;
+  border: none !important;
+  background: transparent !important;
+  position: relative !important;
+}
+
+/* Submenu Pencil-Tip / Price-Tag Ribbon */
+.nav-treeview > .nav-item > .nav-link {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  min-height: 38px !important;
+  padding: 5px 16px 5px 8px !important;
+  color: #ffffff !important;
+  text-decoration: none !important;
+  margin: 0 !important;
+  
+  /* PENCIL TIP / PRICE TAG SHAPE FOR SUBMENUS:
+     Slightly more compact pointed right tip (12px cut) */
+  clip-path: polygon(0 0, calc(100% - 13px) 0, 100% 50%, calc(100% - 13px) 100%, 0 100%) !important;
+  border-radius: 7px 0 0 7px !important;
+  
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12)) !important;
+  transform: none !important;
+  transition: filter 0.2s ease, opacity 0.2s ease !important;
+  border: none !important;
+  cursor: pointer !important;
+}
+
+/* Submenu Golden Ring Circular Icon Badge */
+.mg-sub-badge-icon {
+  width: 25px !important;
+  height: 25px !important;
+  min-width: 25px !important;
+  border-radius: 50% !important;
+  background: #ffffff !important;
+  border: 2px solid var(--mg-gold) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  margin-right: 9px !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18) !important;
+  transition: transform 0.2s ease !important;
+}
+
+.mg-sub-badge-icon i {
+  font-size: 10px !important;
+  line-height: 1 !important;
+  font-weight: 900 !important;
+}
+
+.nav-treeview > .nav-item > .nav-link:hover .mg-sub-badge-icon {
+  transform: scale(1.12);
+}
+
+/* Submenu Text */
+.nav-treeview > .nav-item > .nav-link p {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  white-space: nowrap !important;
+  letter-spacing: -0.2px !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15) !important;
+  line-height: 1.25 !important;
+}
+
+/* --- THEMED SUBMENU COLORS (Harmonized with Parent Ribbon) --- */
+
+/* 1. Cyan Submenus (Dashboard) */
+.theme-cyan .nav-treeview > .nav-item > .nav-link {
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+}
+.theme-cyan .mg-sub-badge-icon i { color: #0284c7 !important; }
+.theme-cyan .nav-treeview > .nav-item > .nav-link:hover {
+  filter: drop-shadow(0 3px 8px rgba(2, 132, 199, 0.35)) brightness(1.1) !important;
+}
+.theme-cyan .nav-treeview > .nav-item > .nav-link.active {
+  background: linear-gradient(135deg, #00a2db 0%, #0284c7 100%) !important;
+  filter: drop-shadow(0 3px 8px rgba(0, 162, 219, 0.45)) brightness(1.12) !important;
+  border-left: 3px solid var(--mg-gold) !important;
+}
+
+/* 2. Purple Submenus (Academics & Courses) */
+.theme-purple .nav-treeview > .nav-item > .nav-link {
+  background: linear-gradient(135deg, #6b21a8 0%, #581c87 100%) !important;
+}
+.theme-purple .mg-sub-badge-icon i { color: #6b21a8 !important; }
+.theme-purple .nav-treeview > .nav-item > .nav-link:hover {
+  filter: drop-shadow(0 3px 8px rgba(107, 33, 168, 0.35)) brightness(1.1) !important;
+}
+.theme-purple .nav-treeview > .nav-item > .nav-link.active {
+  background: linear-gradient(135deg, #724c97 0%, #8b5cf6 100%) !important;
+  filter: drop-shadow(0 3px 8px rgba(114, 76, 151, 0.45)) brightness(1.12) !important;
+  border-left: 3px solid var(--mg-gold) !important;
+}
+
+/* 3. Amber Submenus (Students & Admission) */
+.theme-amber .nav-treeview > .nav-item > .nav-link {
+  background: linear-gradient(135deg, #c2410c 0%, #9a3412 100%) !important;
+}
+.theme-amber .mg-sub-badge-icon i { color: #c2410c !important; }
+.theme-amber .nav-treeview > .nav-item > .nav-link:hover {
+  filter: drop-shadow(0 3px 8px rgba(194, 65, 12, 0.35)) brightness(1.1) !important;
+}
+.theme-amber .nav-treeview > .nav-item > .nav-link.active {
+  background: linear-gradient(135deg, #d67d26 0%, #ea580c 100%) !important;
+  filter: drop-shadow(0 3px 8px rgba(214, 125, 38, 0.45)) brightness(1.12) !important;
+  border-left: 3px solid var(--mg-gold) !important;
+}
+
+/* 4. Vermilion Submenus (Study Centers Network) */
+.theme-vermilion .nav-treeview > .nav-item > .nav-link {
+  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%) !important;
+}
+.theme-vermilion .mg-sub-badge-icon i { color: #b91c1c !important; }
+.theme-vermilion .nav-treeview > .nav-item > .nav-link:hover {
+  filter: drop-shadow(0 3px 8px rgba(185, 28, 28, 0.35)) brightness(1.1) !important;
+}
+.theme-vermilion .nav-treeview > .nav-item > .nav-link.active {
+  background: linear-gradient(135deg, #e34e26 0%, #dc2626 100%) !important;
+  filter: drop-shadow(0 3px 8px rgba(227, 78, 38, 0.45)) brightness(1.12) !important;
+  border-left: 3px solid var(--mg-gold) !important;
+}
+
+/* 5. Emerald Submenus (Internships & Career) */
+.theme-emerald .nav-treeview > .nav-item > .nav-link {
+  background: linear-gradient(135deg, #047857 0%, #065f46 100%) !important;
+}
+.theme-emerald .mg-sub-badge-icon i { color: #047857 !important; }
+.theme-emerald .nav-treeview > .nav-item > .nav-link:hover {
+  filter: drop-shadow(0 3px 8px rgba(4, 120, 87, 0.35)) brightness(1.1) !important;
+}
+.theme-emerald .nav-treeview > .nav-item > .nav-link.active {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  filter: drop-shadow(0 3px 8px rgba(16, 185, 129, 0.45)) brightness(1.12) !important;
+  border-left: 3px solid var(--mg-gold) !important;
+}
+
+/* 6. Navy Submenus (System & Settings) */
+.theme-navy .nav-treeview > .nav-item > .nav-link {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+}
+.theme-navy .mg-sub-badge-icon i { color: #1e293b !important; }
+.theme-navy .nav-treeview > .nav-item > .nav-link:hover {
+  filter: drop-shadow(0 3px 8px rgba(15, 23, 42, 0.35)) brightness(1.1) !important;
+}
+.theme-navy .nav-treeview > .nav-item > .nav-link.active {
+  background: linear-gradient(135deg, #0b2542 0%, #071d33 100%) !important;
+  filter: drop-shadow(0 3px 8px rgba(7, 29, 51, 0.45)) brightness(1.12) !important;
+  border-left: 3px solid var(--mg-gold) !important;
+}
+
+/* ==========================================================================
+   7. LOGOUT BUTTON AS A DISTINCT CORAL TAG
+   ========================================================================== */
+.mg-sidebar-logout-btn {
+  margin-top: 22px !important;
+  margin-bottom: 25px !important;
+  padding-top: 14px !important;
+  border-top: 1px dashed #cbd5e1 !important;
+}
+
+.mg-sidebar-logout-btn .nav-link {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 0 100%) !important;
+  border-radius: 9px 0 0 9px !important;
+  color: #ffffff !important;
+  padding: 8px 20px 8px 12px !important;
+  min-height: 46px !important;
+  font-weight: 700 !important;
+  font-size: 13.5px !important;
+  display: flex !important;
+  align-items: center !important;
+  filter: drop-shadow(0 3px 6px rgba(239, 68, 68, 0.25)) !important;
+  transform: none !important;
+  transition: filter 0.22s ease !important;
+}
+
+.mg-sidebar-logout-btn .nav-link:hover {
+  transform: none !important;
+  filter: drop-shadow(0 4px 10px rgba(239, 68, 68, 0.35)) brightness(1.1) !important;
+}
+
+.mg-sidebar-logout-btn .nav-link i {
+  font-size: 15px;
+  margin-right: 10px;
+}
+
+/* ==========================================================================
+   8. SIDEBAR COLLAPSED (MINI) BEHAVIOR - 100% POLISHED & STABLE (NO HOVER GLITCHES)
+   ========================================================================== */
+.sidebar-collapse .main-sidebar,
+.sidebar-collapse .main-sidebar:hover,
+.sidebar-collapse .main-sidebar.sidebar-focused {
+  width: 76px !important;
+}
+
+.sidebar-collapse .content-wrapper,
+.sidebar-collapse .main-header,
+.sidebar-collapse .main-footer {
+  margin-left: 76px !important;
+}
+
+/* Stable Full-Fit Logo in Collapsed Mode (Never Disappears on Hover) */
+.sidebar-collapse .brand-link,
+.sidebar-collapse .brand-link:hover,
+.sidebar-collapse .main-sidebar:hover .brand-link {
+  width: 76px !important;
+  justify-content: center !important;
+  padding: 6px 8px !important;
+  background: #ffffff !important;
+  display: flex !important;
+}
+
+.sidebar-collapse .brand-logo-img,
+.sidebar-collapse .brand-link:hover .brand-logo-img,
+.sidebar-collapse .main-sidebar:hover .brand-logo-img {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  max-height: 40px !important;
+  max-width: 90% !important;
+  margin: 0 auto !important;
+}
+
+/* Ensure no text or expanded submenus pop out on hover in collapsed mode */
+.sidebar-collapse .brand-text-col,
+.sidebar-collapse .mg-user-meta,
+.sidebar-collapse .mg-sidebar-label,
+.sidebar-collapse .mg-sidebar-divider,
+.sidebar-collapse .nav-sidebar > .nav-item > .nav-link p,
+.sidebar-collapse .mg-sub-badge-icon,
+.sidebar-collapse .nav-treeview,
+.sidebar-collapse .mg-sidebar-logout-btn .nav-link p,
+.sidebar-collapse .main-sidebar:hover .brand-text-col,
+.sidebar-collapse .main-sidebar:hover .mg-user-meta,
+.sidebar-collapse .main-sidebar:hover .mg-sidebar-label,
+.sidebar-collapse .main-sidebar:hover .mg-sidebar-divider,
+.sidebar-collapse .main-sidebar:hover .nav-sidebar > .nav-item > .nav-link p,
+.sidebar-collapse .main-sidebar:hover .mg-sub-badge-icon,
+.sidebar-collapse .main-sidebar:hover .nav-treeview,
+.sidebar-collapse .main-sidebar:hover .mg-sidebar-logout-btn .nav-link p {
+  display: none !important;
+}
+
+/* User Card in Collapsed Mode: Transparent Background, Only Golden-Ring Avatar Shows */
+.sidebar-collapse .mg-admin-user-card,
+.sidebar-collapse .mg-admin-user-card:hover,
+.sidebar-collapse .main-sidebar:hover .mg-admin-user-card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 6px 0 !important;
+  margin: 10px auto !important;
+  display: flex !important;
+  justify-content: center !important;
+  transform: none !important;
+}
+
+.sidebar-collapse .mg-user-card-inner {
+  display: flex !important;
+  justify-content: center !important;
+  width: auto !important;
+}
+
+.sidebar-collapse .mg-user-avatar-wrap {
+  margin: 0 auto !important;
+  width: 44px !important;
+  height: 44px !important;
+}
+
+.sidebar-collapse .mg-user-avatar-img {
+  width: 44px !important;
+  height: 44px !important;
+}
+
+.sidebar-collapse .nav-sidebar {
+  padding: 4px 10px 20px 10px !important;
+}
+
+.sidebar-collapse .nav-sidebar > .nav-item {
+  margin-bottom: 8px !important;
+}
+
+.sidebar-collapse .nav-sidebar > .nav-item > .nav-link {
+  clip-path: none !important;
+  width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  padding: 0 !important;
+  margin: 0 auto !important;
+  border-radius: 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transform: none !important;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.16)) !important;
+  box-sizing: border-box !important;
+}
+
+.sidebar-collapse .nav-sidebar > .nav-item > .nav-link:hover {
+  transform: scale(1.06) !important;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.22)) brightness(1.1) !important;
+}
+
+.sidebar-collapse .mg-menu-badge-icon {
+  margin: 0 !important;
+}
+
+.sidebar-collapse .mg-sidebar-logout-btn {
+  margin: 16px 0 !important;
+  padding-top: 12px !important;
+  border-top: 1px dashed #cbd5e1 !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.sidebar-collapse .mg-sidebar-logout-btn .nav-link {
+  clip-path: none !important;
+  width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  padding: 0 !important;
+  margin: 0 auto !important;
+  border-radius: 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transform: none !important;
+}
+
+.sidebar-collapse .mg-sidebar-logout-btn .nav-link i {
+  margin: 0 !important;
+  font-size: 16px !important;
+}
+
+/* ==========================================================================
+   9. EXECUTIVE ADMIN FOOTER DESIGN (Quick Features Spectrum Accented)
+   ========================================================================== */
+.main-footer.mg-admin-footer {
+  background: #ffffff !important;
+  border-top: none !important;
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 1025 !important;
+  margin-left: var(--mg-sidebar-width) !important;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  padding: 10px 24px !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 13px !important;
+  color: #475569 !important;
+  box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+.sidebar-collapse .main-footer.mg-admin-footer {
+  margin-left: 76px !important;
+}
+
+/* Ensure content-wrapper has adequate clearance for the bottom fixed footer */
+.content-wrapper {
+  padding-bottom: 55px !important;
+}
+
+/* Quick Features 4-Color Spectrum Top Strip */
+.mg-admin-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3.5px;
+  background: linear-gradient(90deg, 
+    #724c97 0%, #724c97 25%, 
+    #d67d26 25%, #d67d26 50%, 
+    #00a2db 50%, #00a2db 75%, 
+    #e34e26 75%, #e34e26 100%);
+}
+
+.mg-footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+}
+
+.mg-footer-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.mg-footer-copy {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.mg-footer-copy span {
+  color: #0b63b6;
+}
+
+.mg-footer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 12px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.mg-footer-badge i {
+  color: #10b981;
+}
+
+.mg-footer-center {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mg-footer-pill-link {
+  color: #64748b !important;
+  text-decoration: none !important;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.mg-footer-pill-link:hover {
+  color: #0b63b6 !important;
+}
+
+.mg-footer-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.mg-dev-credit-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #071d33 0%, #0b2542 100%);
+  color: #ffffff !important;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 700;
+  text-decoration: none !important;
+  border: 1.5px solid var(--mg-gold);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  transition: all 0.22s ease;
+}
+
+.mg-dev-credit-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  color: #ffb703 !important;
+}
+
+.mg-dev-credit-badge i {
+  color: var(--mg-gold);
+  font-size: 11px;
+}
