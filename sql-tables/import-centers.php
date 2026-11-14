@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['run_migration'])) {
                 `center_name` VARCHAR(255) NOT NULL,
                 `center_email` VARCHAR(191) NOT NULL,
                 `center_mobile` VARCHAR(20) NOT NULL,
+                `password` VARCHAR(255) NULL,
                 `pincode` VARCHAR(10) NOT NULL,
                 `city` VARCHAR(100) NOT NULL,
                 `state` VARCHAR(100) NOT NULL,
@@ -70,6 +71,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['run_migration'])) {
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
             $pdo->exec($createTableSql);
+
+            // Auto-upgrade: Ensure password column exists if table pre-existed
+            try {
+                $colCheck = $pdo->query("SHOW COLUMNS FROM `centers` LIKE 'password'")->fetch();
+                if (!$colCheck) {
+                    $pdo->exec("ALTER TABLE `centers` ADD COLUMN `password` VARCHAR(255) NULL AFTER `center_mobile`");
+                }
+            } catch (Throwable $e) {}
 
             // 2. Check if default sample centers exist, insert if empty
             $checkStmt = $pdo->query("SELECT COUNT(*) AS total FROM `centers`");

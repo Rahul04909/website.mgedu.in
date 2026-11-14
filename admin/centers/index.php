@@ -404,16 +404,22 @@ if ($pdo) {
             <div class="modal-body p-4">
                 <!-- Basic Contact Grid -->
                 <div class="row g-3 mb-4">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="p-3 rounded-3 bg-light border">
                             <div class="text-muted small text-uppercase fw-bold mb-1"><i class="fas fa-envelope text-primary me-1"></i> Center Email</div>
-                            <div class="fw-semibold text-dark" id="modalCenterEmail">-</div>
+                            <div class="fw-semibold text-dark text-break" id="modalCenterEmail">-</div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="p-3 rounded-3 bg-light border">
                             <div class="text-muted small text-uppercase fw-bold mb-1"><i class="fas fa-phone text-success me-1"></i> Center Mobile</div>
                             <div class="fw-semibold text-dark" id="modalCenterMobile">-</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 rounded-3 bg-light border">
+                            <div class="text-muted small text-uppercase fw-bold mb-1"><i class="fas fa-key text-warning me-1"></i> Portal Security</div>
+                            <div class="fw-semibold text-dark"><span class="badge bg-success-subtle text-success border border-success-subtle"><i class="fas fa-shield-halved me-1"></i> Configured (Bcrypt)</span></div>
                         </div>
                     </div>
                 </div>

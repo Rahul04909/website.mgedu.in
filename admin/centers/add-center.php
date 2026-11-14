@@ -13,10 +13,21 @@
 // Include Admin Top Header (Enforces JWT Auth & Navigation)
 require_once dirname(__DIR__) . '/header.php';
 require_once dirname(dirname(__DIR__)) . '/includes/db.php';
+require_once dirname(dirname(__DIR__)) . '/includes/mailer.php';
 
 $pdo = getDB();
 $errors = [];
 $successMessage = '';
+
+// Auto-upgrade database schema: ensure password column exists
+if ($pdo) {
+    try {
+        $colCheck = $pdo->query("SHOW COLUMNS FROM `centers` LIKE 'password'")->fetch();
+        if (!$colCheck) {
+            $pdo->exec("ALTER TABLE `centers` ADD COLUMN `password` VARCHAR(255) NULL AFTER `center_mobile`");
+        }
+    } catch (Throwable $e) {}
+}
 
 // Generate Center ID format: MGEDU2026001 (MGEDU + Year + 3-digit serial)
 $currentYear = date('Y');
@@ -47,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_save_center'])
     $centerName         = trim($_POST['center_name'] ?? '');
     $centerEmail        = trim($_POST['center_email'] ?? '');
     $centerMobile       = trim($_POST['center_mobile'] ?? '');
+    $centerPassword     = trim($_POST['center_password'] ?? '');
     $pincode            = trim($_POST['pincode'] ?? '');
     $city               = trim($_POST['city'] ?? '');
     $state              = trim($_POST['state'] ?? '');
@@ -75,6 +87,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_save_center'])
     if (empty($centerName))   $errors[] = "Center Name is required.";
     if (empty($centerEmail))  $errors[] = "Center Email is required.";
     if (empty($centerMobile)) $errors[] = "Center Mobile Number is required.";
+    if (empty($centerPassword)) {
+        $errors[] = "Center Portal Login Password is required.";
+    } elseif (strlen($centerPassword) < 6) {
+        $errors[] = "Center Password must be at least 6 characters.";
+    }
     if (empty($pincode))      $errors[] = "Postal PIN Code is required.";
     if (empty($city))         $errors[] = "City / District is required.";
     if (empty($state))        $errors[] = "State is required.";
@@ -179,7 +196,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_save_center'])
         } else {
             try {
                 $insertSql = "INSERT INTO `centers` (
-                    `center_code`, `center_name`, `center_email`, `center_mobile`,
+                    `center_code`, `center_name`, `center_email`, `center_mobile`, `password`,
                     `pincode`, `city`, `state`, `country`, `address`,
                     `classrooms_count`, `computers_count`, `total_staff`, `lab_type`,
                     `working_days_from`, `working_days_to`, `working_hours_from`, `working_hours_to`,
@@ -187,7 +204,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_save_center'])
                     `royalty_percentage`, `aadhar_card_doc`, `pan_card_doc`, `gst_number`,
                     `gst_certificate_doc`, `owner_photo`, `owner_signature`, `status`
                 ) VALUES (
-                    :center_code, :center_name, :center_email, :center_mobile,
+                    :center_code, :center_name, :center_email, :center_mobile, :password,
                     :pincode, :city, :state, :country, :address,
                     :classrooms_count, :computers_count, :total_staff, :lab_type,
                     :working_days_from, :working_days_to, :working_hours_from, :working_hours_to,
@@ -202,6 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_save_center'])
                     ':center_name'         => $centerName,
                     ':center_email'        => $centerEmail,
                     ':center_mobile'       => $centerMobile,
+                    ':password'            => password_hash($centerPassword, PASSWORD_BCRYPT),
                     ':pincode'             => $pincode,
                     ':city'                => $city,
                     ':state'               => $state,
@@ -230,7 +248,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_save_center'])
                     ':status'              => $status
                 ]);
 
-                $successMessage = "Authorized Study Center '{$centerName}' [{$centerCode}] created successfully!";
+                // Dispatch Official Registration Confirmation Email
+                $mailData = [
+                    'center_code'         => $centerCode,
+                    'center_name'         => $centerName,
+                    'center_email'        => $centerEmail,
+                    'center_mobile'       => $centerMobile,
+                    'owner_name'          => $ownerName,
+                    'owner_email'         => $ownerEmail,
+                    'city'                => $city,
+                    'state'               => $state,
+                    'pincode'             => $pincode,
+                    'address'             => $address,
+                    'classrooms_count'    => $classroomsCount,
+                    'computers_count'     => $computersCount,
+                    'lab_type'            => $labType,
+                    'working_days_from'   => $workingDaysFrom,
+                    'working_days_to'     => $workingDaysTo,
+                    'working_hours_from'  => $workingHoursFrom,
+                    'working_hours_to'    => $workingHoursTo,
+                    'royalty_percentage'  => $royaltyPercentage
+                ];
+                $mailResult = sendCenterRegistrationEmail($mailData, $centerPassword);
+
+                $emailNotice = $mailResult['success']
+                    ? "An official registration confirmation email with portal login credentials has been sent to {$centerEmail}."
+                    : "Center recorded successfully, but mail dispatch failed: " . htmlspecialchars($mailResult['error'] ?? 'Unknown error');
+
+                $successMessage = "Authorized Study Center '{$centerName}' [{$centerCode}] created successfully! " . $emailNotice;
             } catch (PDOException $e) {
                 if ($e->getCode() == 23000) {
                     $errors[] = "A center with Code '{$centerCode}' already exists. Please choose a unique code.";
@@ -331,7 +376,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_save_center'])
                     </div>
 
                     <!-- Center Email -->
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="mg-field-group">
                             <label class="mg-form-label">
                                 Center Official Email <span class="mg-required">*</span>
@@ -343,7 +388,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_save_center'])
                     </div>
 
                     <!-- Center Mobile (+91) -->
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="mg-field-group">
                             <label class="mg-form-label">
                                 Center Mobile Number <span class="mg-required">*</span>
@@ -354,6 +399,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_save_center'])
                                     placeholder="8059982049" maxlength="15"
                                     value="<?= htmlspecialchars($_POST['center_mobile'] ?? '') ?>" required>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Center Portal Login Password -->
+                    <div class="col-md-4">
+                        <div class="mg-field-group">
+                            <label class="mg-form-label">
+                                Portal Login Password <span class="mg-required">*</span>
+                            </label>
+                            <div class="input-group">
+                                <input type="password" name="center_password" id="center_password_input" 
+                                    class="form-control mg-input-control" 
+                                    placeholder="Enter login password" 
+                                    value="<?= htmlspecialchars($_POST['center_password'] ?? '') ?>" required>
+                                <button type="button" class="btn btn-outline-secondary" id="btn_toggle_pwd" title="Show / Hide Password" style="border-color:#cbd5e1;">
+                                    <i class="far fa-eye" id="eye_icon"></i>
+                                </button>
+                                <button type="button" class="btn btn-light border" id="btn_gen_pwd" title="Generate Strong Password" style="border-color:#cbd5e1; font-size:0.75rem; font-weight:600;">
+                                    <i class="fas fa-key me-1 text-warning"></i> Auto
+                                </button>
+                            </div>
+                            <small class="text-muted" style="font-size:0.73rem;">Sent in welcome email to center.</small>
                         </div>
                     </div>
                 </div>
@@ -969,6 +1036,30 @@ function handleImgSelected(input, imgElementId) {
         reader.readAsDataURL(file);
     }
 }
+// Toggle password visibility
+$('#btn_toggle_pwd').on('click', function() {
+    const input = $('#center_password_input');
+    const icon = $('#eye_icon');
+    if (input.attr('type') === 'password') {
+        input.attr('type', 'text');
+        icon.removeClass('fa-eye').addClass('fa-eye-slash');
+    } else {
+        input.attr('type', 'password');
+        icon.removeClass('fa-eye-slash').addClass('fa-eye');
+    }
+});
+
+// Auto-generate secure password
+$('#btn_gen_pwd').on('click', function() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%&*';
+    let pwd = 'MG@';
+    for (let i = 0; i < 5; i++) {
+        pwd += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    pwd += '26!';
+    $('#center_password_input').val(pwd).attr('type', 'text');
+    $('#eye_icon').removeClass('fa-eye').addClass('fa-eye-slash');
+});
 </script>
 
 <?php if (!empty($successMessage)): ?>
