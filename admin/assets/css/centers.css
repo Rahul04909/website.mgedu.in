@@ -1,0 +1,803 @@
+/**
+ * MG Education & Social Development Organization
+ * Study Centers Management & Colorful Form Stylesheet
+ * 
+ * Styled with 100% Quick Features Visual Language:
+ * Pointed Chevron Ribbon Headers, Golden-Ring Floating Badges, Vibrant Solid Sections,
+ * India Post API Status Indicators, Amenities Toggle Chips, and Document Dropzones.
+ */
+
+:root {
+  --mg-cyan: #00a2db;
+  --mg-cyan-dark: #0284c7;
+  --mg-cyan-soft: #e0f2fe;
+
+  --mg-purple: #724c97;
+  --mg-purple-dark: #5e3b7e;
+  --mg-purple-soft: #f3e8ff;
+
+  --mg-amber: #d67d26;
+  --mg-amber-dark: #b86518;
+  --mg-amber-soft: #fef3c7;
+
+  --mg-vermilion: #e34e26;
+  --mg-vermilion-dark: #c53a15;
+  --mg-vermilion-soft: #fee2e2;
+
+  --mg-emerald: #10b981;
+  --mg-emerald-dark: #059669;
+  --mg-emerald-soft: #d1fae5;
+
+  --mg-navy: #071d33;
+  --mg-navy-light: #0b2542;
+  --mg-gold: #ffb703;
+}
+
+/* ==========================================================================
+   1. PAGE HEADER & ACTION BAR
+   ========================================================================== */
+.mg-page-header {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 22px 26px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 20px rgba(7, 29, 51, 0.05);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.mg-page-header-title {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.mg-page-header-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--mg-vermilion) 0%, var(--mg-vermilion-dark) 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  box-shadow: 0 6px 15px rgba(227, 78, 38, 0.3);
+}
+
+.mg-page-header-title h4 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--mg-navy);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.mg-page-header-title p {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin: 4px 0 0;
+  font-weight: 500;
+}
+
+.mg-btn-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.mg-btn-vermilion {
+  background: linear-gradient(135deg, var(--mg-vermilion) 0%, var(--mg-vermilion-dark) 100%);
+  color: #ffffff !important;
+  box-shadow: 0 6px 16px rgba(227, 78, 38, 0.3);
+  border: none;
+}
+.mg-btn-vermilion:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 9px 22px rgba(227, 78, 38, 0.4);
+}
+
+.mg-btn-navy {
+  background: linear-gradient(135deg, var(--mg-navy) 0%, var(--mg-navy-light) 100%);
+  color: #ffffff !important;
+  box-shadow: 0 6px 16px rgba(7, 29, 51, 0.25);
+  border: none;
+}
+.mg-btn-navy:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 9px 22px rgba(7, 29, 51, 0.35);
+}
+
+/* ==========================================================================
+   2. COLORFUL SECTION CARDS & POINTED CHEVRON HEADERS
+   ========================================================================== */
+.mg-form-card {
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 6px 25px rgba(7, 29, 51, 0.06);
+  margin-bottom: 28px;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.mg-form-card:hover {
+  box-shadow: 0 10px 32px rgba(7, 29, 51, 0.09);
+}
+
+/* Pointed Chevron Header Ribbon */
+.mg-chevron-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  clip-path: polygon(0% 0%, calc(100% - 24px) 0%, 100% 50%, calc(100% - 24px) 100%, 0% 100%);
+  margin-right: 0px;
+}
+
+@media (max-width: 768px) {
+  .mg-chevron-header {
+    clip-path: none;
+  }
+}
+
+.mg-chevron-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Circular Icon Hole with Golden Ring (Quick Features Language) */
+.mg-chevron-icon-hole {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 3px var(--mg-gold), 0 4px 10px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+}
+
+.mg-chevron-title {
+  font-size: 1.12rem;
+  font-weight: 800;
+  margin: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.mg-chevron-sub {
+  font-size: 0.78rem;
+  opacity: 0.92;
+  margin: 2px 0 0;
+  font-weight: 500;
+}
+
+.mg-chevron-badge {
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(6px);
+  padding: 4px 14px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-right: 30px;
+}
+
+/* Themes for Chevron Headers */
+.theme-vermilion-header {
+  background: linear-gradient(135deg, var(--mg-vermilion) 0%, var(--mg-vermilion-dark) 100%);
+}
+.theme-vermilion-header .mg-chevron-icon-hole i { color: var(--mg-vermilion); font-size: 1.15rem; }
+
+.theme-cyan-header {
+  background: linear-gradient(135deg, var(--mg-cyan) 0%, var(--mg-cyan-dark) 100%);
+}
+.theme-cyan-header .mg-chevron-icon-hole i { color: var(--mg-cyan); font-size: 1.15rem; }
+
+.theme-purple-header {
+  background: linear-gradient(135deg, var(--mg-purple) 0%, var(--mg-purple-dark) 100%);
+}
+.theme-purple-header .mg-chevron-icon-hole i { color: var(--mg-purple); font-size: 1.15rem; }
+
+.theme-amber-header {
+  background: linear-gradient(135deg, var(--mg-amber) 0%, var(--mg-amber-dark) 100%);
+}
+.theme-amber-header .mg-chevron-icon-hole i { color: var(--mg-amber); font-size: 1.15rem; }
+
+.theme-emerald-header {
+  background: linear-gradient(135deg, var(--mg-emerald) 0%, var(--mg-emerald-dark) 100%);
+}
+.theme-emerald-header .mg-chevron-icon-hole i { color: var(--mg-emerald); font-size: 1.15rem; }
+
+.theme-navy-header {
+  background: linear-gradient(135deg, var(--mg-navy) 0%, var(--mg-navy-light) 100%);
+}
+.theme-navy-header .mg-chevron-icon-hole i { color: var(--mg-navy); font-size: 1.15rem; }
+
+.mg-form-body {
+  padding: 26px 26px 20px;
+}
+
+/* ==========================================================================
+   3. FORM LABELS, INPUTS & PREFIX BADGES
+   ========================================================================== */
+.mg-field-group {
+  margin-bottom: 22px;
+}
+
+.mg-form-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.mg-form-label .mg-label-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  color: #ffffff;
+}
+
+.mg-label-icon.icon-vermilion { background: var(--mg-vermilion); }
+.mg-label-icon.icon-cyan      { background: var(--mg-cyan); }
+.mg-label-icon.icon-purple    { background: var(--mg-purple); }
+.mg-label-icon.icon-amber     { background: var(--mg-amber); }
+.mg-label-icon.icon-emerald   { background: var(--mg-emerald); }
+.mg-label-icon.icon-navy      { background: var(--mg-navy); }
+
+.mg-required {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+.mg-input-control {
+  border: 1.5px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 11px 16px;
+  font-size: 0.94rem;
+  font-weight: 500;
+  color: #1e293b;
+  transition: all 0.25s ease;
+  background-color: #f8fafc;
+}
+
+.mg-input-control:focus {
+  background-color: #ffffff;
+  border-color: var(--mg-cyan);
+  box-shadow: 0 0 0 3.5px rgba(0, 162, 219, 0.16);
+  outline: none;
+}
+
+.mg-input-control::placeholder {
+  color: #94a3b8;
+  font-size: 0.88rem;
+}
+
+.mg-input-group {
+  display: flex;
+  align-items: stretch;
+}
+
+.mg-input-group .mg-input-prefix {
+  background: #f1f5f9;
+  border: 1.5px solid #cbd5e1;
+  border-right: none;
+  border-radius: 12px 0 0 12px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.mg-input-group .mg-input-control {
+  border-radius: 0 12px 12px 0;
+  flex: 1;
+}
+
+.mg-input-group .mg-input-suffix {
+  background: #f1f5f9;
+  border: 1.5px solid #cbd5e1;
+  border-left: none;
+  border-radius: 0 12px 12px 0;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.mg-input-group.has-suffix .mg-input-control {
+  border-radius: 12px 0 0 12px;
+}
+
+/* ==========================================================================
+   4. INDIA POST PIN CODE LIVE API INTEGRATION STYLES
+   ========================================================================== */
+.mg-pincode-wrap {
+  position: relative;
+}
+
+.mg-pincode-status {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: none;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.mg-pincode-status.loading {
+  display: flex;
+  color: var(--mg-cyan);
+}
+
+.mg-pincode-status.success {
+  display: flex;
+  color: var(--mg-emerald);
+}
+
+.mg-pincode-status.error {
+  display: flex;
+  color: #ef4444;
+}
+
+.mg-post-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+.mg-readonly-badge {
+  background: #f1f5f9 !important;
+  color: #64748b !important;
+  cursor: not-allowed !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* ==========================================================================
+   5. AMENITIES TOGGLE CHIPS
+   ========================================================================== */
+.mg-amenities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.mg-amenity-chip {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+}
+
+.mg-amenity-chip input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.mg-amenity-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  transition: all 0.25s ease;
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: #334155;
+}
+
+.mg-amenity-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #e2e8f0;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+}
+
+.mg-amenity-chip input:checked + .mg-amenity-box {
+  background: #eff6ff;
+  border-color: var(--mg-cyan);
+  color: #0369a1;
+  box-shadow: 0 4px 12px rgba(0, 162, 219, 0.15);
+}
+
+.mg-amenity-chip input:checked + .mg-amenity-box .mg-amenity-icon {
+  background: var(--mg-cyan);
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   6. DOCUMENT DROPZONES (PDF ONLY) & PREVIEWS
+   ========================================================================== */
+.mg-upload-dropzone {
+  border: 2px dashed #cbd5e1;
+  border-radius: 14px;
+  padding: 20px;
+  text-align: center;
+  background: #f8fafc;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.mg-upload-dropzone:hover {
+  border-color: var(--mg-emerald);
+  background: #f0fdf4;
+}
+
+.mg-upload-dropzone.pdf-zone:hover {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+.mg-upload-icon-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+}
+
+.mg-upload-icon-circle.pdf {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.mg-upload-icon-circle.image {
+  background: #e0f2fe;
+  color: var(--mg-cyan);
+}
+
+.mg-upload-title {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #1e293b;
+  margin: 0;
+}
+
+.mg-upload-sub {
+  font-size: 0.78rem;
+  color: #64748b;
+  margin: 3px 0 0;
+}
+
+.mg-upload-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  margin-top: 6px;
+}
+
+.mg-upload-badge.pdf {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.mg-upload-badge.img {
+  background: var(--mg-cyan);
+  color: #ffffff;
+}
+
+.mg-file-chosen-preview {
+  margin-top: 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #10b981;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Image preview thumbnails */
+.mg-img-preview-box {
+  width: 110px;
+  height: 110px;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  object-fit: cover;
+  margin: 10px auto 0;
+  display: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.mg-current-file-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #334155;
+  margin-top: 8px;
+  text-decoration: none;
+}
+.mg-current-file-badge:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+/* ==========================================================================
+   7. FORM SUBMIT & ACTION FOOTER
+   ========================================================================== */
+.mg-form-footer {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px 28px;
+  box-shadow: 0 4px 20px rgba(7, 29, 51, 0.06);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 10px;
+  margin-bottom: 40px;
+}
+
+.mg-btn-submit {
+  background: linear-gradient(135deg, var(--mg-emerald) 0%, var(--mg-emerald-dark) 100%);
+  color: #ffffff;
+  border: none;
+  padding: 13px 34px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+  transition: all 0.25s ease;
+}
+
+.mg-btn-submit:hover {
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(16, 185, 129, 0.4);
+}
+
+.mg-btn-reset {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+  padding: 13px 24px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.mg-btn-reset:hover {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+/* ==========================================================================
+   8. CENTERS DATA TABLE & STATS (INDEX PAGE)
+   ========================================================================== */
+.mg-table-card {
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 6px 25px rgba(7, 29, 51, 0.06);
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+.mg-table-toolbar {
+  padding: 20px 24px;
+  background: #fafafa;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.mg-search-input {
+  max-width: 340px;
+  position: relative;
+}
+
+.mg-search-input i {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+}
+
+.mg-search-input input {
+  padding-left: 38px;
+}
+
+.mg-centers-table {
+  width: 100%;
+  margin-bottom: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.mg-centers-table th {
+  background: #f8fafc;
+  color: #475569;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 14px 18px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.mg-centers-table td {
+  padding: 16px 18px;
+  vertical-align: middle;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.9rem;
+  color: #1e293b;
+}
+
+.mg-centers-table tbody tr:hover td {
+  background-color: #f8fafc;
+}
+
+.mg-code-pill {
+  background: #e0f2fe;
+  color: #0284c7;
+  font-weight: 800;
+  font-family: monospace;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  display: inline-block;
+}
+
+.mg-center-title {
+  font-weight: 700;
+  color: var(--mg-navy);
+  font-size: 0.95rem;
+  margin-bottom: 3px;
+}
+
+.mg-center-sub {
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+.mg-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.mg-status-badge.active {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.mg-status-badge.inactive {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.mg-status-badge.pending {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.mg-status-badge .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.mg-table-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mg-btn-sm-action {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #475569;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.mg-btn-sm-action:hover {
+  background: #f1f5f9;
+  color: var(--mg-navy);
+}
+
+.mg-btn-sm-action.view:hover {
+  background: #e0f2fe;
+  color: #0284c7;
+  border-color: #bae6fd;
+}
+
+.mg-btn-sm-action.edit:hover {
+  background: #fef3c7;
+  color: #d97706;
+  border-color: #fde68a;
+}
+
+.mg-btn-sm-action.delete:hover {
+  background: #fee2e2;
+  color: #dc2626;
+  border-color: #fecaca;
+}

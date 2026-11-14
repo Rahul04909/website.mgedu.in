@@ -8,9 +8,17 @@ $currentAdmin = requireAdminAuth();
 $adminName   = htmlspecialchars($currentAdmin['name'] ?? 'Admin User');
 $adminRole   = htmlspecialchars($currentAdmin['role'] ?? 'Administrator');
 $adminEmail  = htmlspecialchars($currentAdmin['email'] ?? 'admin@mgedu.in');
-$adminAvatar = !empty($currentAdmin['profile_pic']) ? htmlspecialchars($currentAdmin['profile_pic']) : './src/images/user-avtar.png';
+
+// Calculate relative path prefixes so header works both from /admin/ and subdirectories like /admin/centers/
+$isSubdir    = (basename(dirname($_SERVER['SCRIPT_FILENAME'])) !== 'admin');
+$adminPrefix = $isSubdir ? '../' : './';
+$sitePrefix  = $isSubdir ? '../../' : '../';
+
+$rawAvatar   = !empty($currentAdmin['profile_pic']) ? $currentAdmin['profile_pic'] : './src/images/user-avtar.png';
+$adminAvatar = (strpos($rawAvatar, './') === 0) ? ($adminPrefix . substr($rawAvatar, 2)) : htmlspecialchars($rawAvatar);
 
 $currentPage = basename($_SERVER['SCRIPT_NAME']);
+$currentRelPath = $isSubdir ? (basename(dirname($_SERVER['SCRIPT_NAME'])) . '/' . $currentPage) : $currentPage;
 
 $menuItems = [
     [
@@ -47,7 +55,8 @@ $menuItems = [
         "icon"      => "fas fa-building-columns",
         "theme"     => "theme-vermilion",
         "pages"     => [
-            ["title" => "All Authorized Centers", "url" => "centers.php"],
+            ["title" => "All Authorized Centers", "url" => "centers/index.php"],
+            ["title" => "Add New Center",         "url" => "centers/add-center.php"],
             ["title" => "Franchise Verification",  "url" => "center-verify.php"],
             ["title" => "Affiliation Requests",    "url" => "center-requests.php"]
         ],
@@ -77,7 +86,7 @@ $active_pageInfo = null;
 foreach ($menuItems as $menuItem) {
     if (!empty($menuItem['pages'])) {
         foreach ($menuItem['pages'] as $page) {
-            if ($currentPage === $page['url']) {
+            if ($currentRelPath === $page['url'] || $currentPage === basename($page['url'])) {
                 $active_pageInfo = [
                     "breadcrumb_Items" => [
                         ["title" => $menuItem['menuTitle'], "url" => "#"],
@@ -90,7 +99,7 @@ foreach ($menuItems as $menuItem) {
                 break 2;
             }
         }
-    } elseif (!empty($menuItem['url']) && $currentPage === $menuItem['url']) {
+    } elseif (!empty($menuItem['url']) && ($currentRelPath === $menuItem['url'] || $currentPage === $menuItem['url'])) {
         $active_pageInfo = [
             "breadcrumb_Items" => [
                 ["title" => $menuItem['menuTitle'], "url" => $menuItem['url']]
@@ -117,16 +126,18 @@ $active_page = $active_pageInfo['active_page'] ?? null;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
     <title><?= htmlspecialchars($page_title) ?></title>
-    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="<?= $sitePrefix ?>favicon.ico" type="image/x-icon">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap"
         rel="stylesheet">
     <!-- MG Education Colorful Sidebar Stylesheet (Quick Features Theme) -->
-    <link rel="stylesheet" href="assets/css/sidebar-colorful.css">
+    <link rel="stylesheet" href="<?= $adminPrefix ?>assets/css/sidebar-colorful.css">
     <!-- MG Education Quick Features Dashboard Stat Cards Stylesheet -->
-    <link rel="stylesheet" href="assets/css/dashboard-stats.css">
+    <link rel="stylesheet" href="<?= $adminPrefix ?>assets/css/dashboard-stats.css">
+    <!-- MG Education Centers Management & Form Stylesheet -->
+    <link rel="stylesheet" href="<?= $adminPrefix ?>assets/css/centers.css">
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -176,15 +187,15 @@ $active_page = $active_pageInfo['active_page'] ?? null;
                         </div>
                         <div class="dropdown-divider"></div>
                         <!-- Navigation Links -->
-                        <a href="profile.php" class="dropdown-item mg-dropdown-item">
+                        <a href="<?= $adminPrefix ?>profile.php" class="dropdown-item mg-dropdown-item">
                             <i class="fas fa-user-circle text-primary"></i>
                             <span>My Profile</span>
                         </a>
-                        <a href="settings.php" class="dropdown-item mg-dropdown-item">
+                        <a href="<?= $adminPrefix ?>settings.php" class="dropdown-item mg-dropdown-item">
                             <i class="fas fa-sliders-h text-info"></i>
                             <span>General Settings</span>
                         </a>
-                        <a href="notices.php" class="dropdown-item mg-dropdown-item">
+                        <a href="<?= $adminPrefix ?>notices.php" class="dropdown-item mg-dropdown-item">
                             <i class="fas fa-bell text-warning"></i>
                             <span>Website Notices</span>
                         </a>
@@ -262,13 +273,13 @@ $active_page = $active_pageInfo['active_page'] ?? null;
         </script>
 
         <aside class="main-sidebar sidebar-no-expand elevation-3">
-            <a href="./" class="brand-link">
-                <img src="../assets/images/logo.jpg" alt="MG Education Logo" class="brand-logo-img">
+            <a href="<?= $adminPrefix ?>index.php" class="brand-link">
+                <img src="<?= $sitePrefix ?>assets/images/logo.jpg" alt="MG Education Logo" class="brand-logo-img">
             </a>
             <div class="sidebar">
                 <!-- Admin User Card (Executive Centered Profile) -->
                 <div class="mg-admin-user-card">
-                    <a href="./profile.php" class="mg-user-card-inner">
+                    <a href="<?= $adminPrefix ?>profile.php" class="mg-user-card-inner">
                         <div class="mg-user-avatar-wrap">
                             <img src="<?= $adminAvatar ?>" class="mg-user-avatar-img" alt="<?= $adminName ?>">
                             <span class="mg-online-dot" title="Online"></span>
@@ -290,33 +301,33 @@ $active_page = $active_pageInfo['active_page'] ?? null;
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
                         <?php foreach ($menuItems as $menuItem): 
                             $hasPages = !empty($menuItem['pages']);
-                            $itemHref = $hasPages ? '#' : ($menuItem['url'] ?? '#');
+                            $itemHref = $hasPages ? '#' : ($adminPrefix . ($menuItem['url'] ?? '#'));
                             $treeviewClass = $hasPages ? 'has-treeview' : '';
                             $menuOpenClass = ($hasPages && $menuItem === $active_menu) ? 'menu-open' : '';
                         ?>
                             <li class="nav-item <?= $treeviewClass ?> <?= $menuItem['theme'] ?> <?= $menuOpenClass ?>">
                                 <a class="nav-link <?= $menuItem === $active_menu ? 'active' : '' ?>" href="<?= $itemHref ?>">
-                                    <div class="mg-menu-badge-icon">
-                                        <i class="<?= $menuItem['icon'] ?>"></i>
-                                    </div>
-                                    <p>
-                                        <span class="mg-menu-text"><?= $menuItem['menuTitle'] ?></span>
-                                    </p>
+                                     <div class="mg-menu-badge-icon">
+                                         <i class="<?= $menuItem['icon'] ?>"></i>
+                                     </div>
+                                     <p>
+                                         <span class="mg-menu-text"><?= $menuItem['menuTitle'] ?></span>
+                                     </p>
                                 </a>
                                 <?php if ($hasPages): ?>
-                                    <ul class="nav nav-treeview">
-                                        <?php foreach ($menuItem['pages'] as $page): ?>
-                                            <li class="nav-item">
-                                                <a href="<?= $page['url'] ?>"
-                                                    class="nav-link <?= $page === $active_page ? 'active' : '' ?>">
-                                                    <div class="mg-sub-badge-icon">
-                                                        <i class="fas fa-chevron-right"></i>
-                                                    </div>
-                                                    <p><?= $page['title'] ?></p>
-                                                </a>
-                                            </li>
-                                        <?php endforeach; ?>
-                                    </ul>
+                                     <ul class="nav nav-treeview">
+                                         <?php foreach ($menuItem['pages'] as $page): ?>
+                                             <li class="nav-item">
+                                                 <a href="<?= $adminPrefix . $page['url'] ?>"
+                                                     class="nav-link <?= $page === $active_page ? 'active' : '' ?>">
+                                                     <div class="mg-sub-badge-icon">
+                                                         <i class="fas fa-chevron-right"></i>
+                                                     </div>
+                                                     <p><?= $page['title'] ?></p>
+                                                 </a>
+                                             </li>
+                                         <?php endforeach; ?>
+                                     </ul>
                                 <?php endif; ?>
                             </li>
                         <?php endforeach; ?>

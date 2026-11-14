@@ -44,7 +44,7 @@
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
-                            window.location.href = 'logout.php';
+                            window.location.href = '<?= $adminPrefix ?? '' ?>logout.php';
                         });
                     }
                 });
