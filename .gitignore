@@ -6,7 +6,7 @@
 .env.staging
 
 # Dependencies
-/vendor/
+
 
 # Logs & Temporary files
 *.log
