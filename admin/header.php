@@ -1,6 +1,14 @@
 <?php
 // Load Environment Variables (.env) & Global Config
 require_once dirname(__DIR__) . '/includes/config.php';
+require_once __DIR__ . '/includes/auth.php';
+
+// Enforce JWT Admin Authentication across all admin pages
+$currentAdmin = requireAdminAuth();
+$adminName   = htmlspecialchars($currentAdmin['name'] ?? 'Admin User');
+$adminRole   = htmlspecialchars($currentAdmin['role'] ?? 'Administrator');
+$adminEmail  = htmlspecialchars($currentAdmin['email'] ?? 'admin@mgedu.in');
+$adminAvatar = !empty($currentAdmin['profile_pic']) ? htmlspecialchars($currentAdmin['profile_pic']) : './src/images/user-avtar.png';
 
 $currentPage = basename($_SERVER['SCRIPT_NAME']);
 
@@ -147,23 +155,23 @@ $active_page = $active_pageInfo['active_page'] ?? null;
                 <li class="nav-item dropdown mg-profile-dropdown">
                     <a class="nav-link mg-profile-trigger" href="#" id="mgProfileMenuLink" role="button" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="mg-nav-avatar-wrap">
-                            <img src="./src/images/user-avtar.png" alt="Admin Avatar" class="mg-nav-avatar">
+                            <img src="<?= $adminAvatar ?>" alt="<?= $adminName ?>" class="mg-nav-avatar">
                             <span class="mg-nav-online-dot"></span>
                         </div>
                         <div class="mg-nav-user-text d-none d-md-flex flex-column text-left">
-                            <span class="mg-nav-user-name">Rahul Sharma</span>
-                            <span class="mg-nav-user-role">Super Admin</span>
+                            <span class="mg-nav-user-name"><?= $adminName ?></span>
+                            <span class="mg-nav-user-role"><?= $adminRole ?></span>
                         </div>
                         <i class="fas fa-chevron-down mg-nav-chevron"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-end mg-profile-dropdown-menu" aria-labelledby="mgProfileMenuLink">
                         <!-- Dropdown User Card -->
                         <div class="mg-dropdown-user-header">
-                            <img src="./src/images/user-avtar.png" alt="Avatar" class="mg-dropdown-header-avatar">
+                            <img src="<?= $adminAvatar ?>" alt="<?= $adminName ?>" class="mg-dropdown-header-avatar">
                             <div class="mg-dropdown-header-info">
-                                <h6 class="mg-dropdown-header-name">Rahul Sharma</h6>
-                                <span class="mg-dropdown-header-email">admin@mgedu.in</span>
-                                <span class="mg-dropdown-badge"><i class="fas fa-shield-alt"></i> Super Admin</span>
+                                <h6 class="mg-dropdown-header-name"><?= $adminName ?></h6>
+                                <span class="mg-dropdown-header-email"><?= $adminEmail ?></span>
+                                <span class="mg-dropdown-badge"><i class="fas fa-shield-alt"></i> <?= $adminRole ?></span>
                             </div>
                         </div>
                         <div class="dropdown-divider"></div>
@@ -262,13 +270,13 @@ $active_page = $active_pageInfo['active_page'] ?? null;
                 <div class="mg-admin-user-card">
                     <a href="./profile.php" class="mg-user-card-inner">
                         <div class="mg-user-avatar-wrap">
-                            <img src="./src/images/user-avtar.png" class="mg-user-avatar-img" alt="Rahul Sharma">
+                            <img src="<?= $adminAvatar ?>" class="mg-user-avatar-img" alt="<?= $adminName ?>">
                             <span class="mg-online-dot" title="Online"></span>
                         </div>
                         <div class="mg-user-meta">
-                            <span class="mg-user-name">Rahul Sharma</span>
+                            <span class="mg-user-name"><?= $adminName ?></span>
                             <span class="mg-user-role-badge">
-                                <i class="fas fa-shield-alt"></i> Super Admin
+                                <i class="fas fa-shield-alt"></i> <?= $adminRole ?>
                             </span>
                         </div>
                     </a>

@@ -44,7 +44,7 @@
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
-                            window.location.href = '/logout/';
+                            window.location.href = 'logout.php';
                         });
                     }
                 });
