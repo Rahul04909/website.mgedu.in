@@ -272,7 +272,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_save_center'])
                 $mailResult = sendCenterRegistrationEmail($mailData, $centerPassword);
 
                 $emailNotice = $mailResult['success']
-                    ? "An official registration confirmation email with portal login credentials has been sent to {$centerEmail}."
+                    ? "Official registration confirmation & credentials sent to registered email (" . htmlspecialchars($mailResult['message'] ?? '') . ")."
                     : "Center recorded successfully, but mail dispatch failed: " . htmlspecialchars($mailResult['error'] ?? 'Unknown error');
 
                 $successMessage = "Authorized Study Center '{$centerName}' [{$centerCode}] created successfully! " . $emailNotice;

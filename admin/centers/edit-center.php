@@ -12,6 +12,7 @@
 // Include Admin Top Header (Enforces JWT Auth & Navigation)
 require_once dirname(__DIR__) . '/header.php';
 require_once dirname(dirname(__DIR__)) . '/includes/db.php';
+require_once dirname(dirname(__DIR__)) . '/includes/mailer.php';
 
 $pdo = getDB();
 $centerId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
@@ -258,12 +259,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
             $updateStmt = $pdo->prepare($updateSql);
             $updateStmt->execute($params);
 
-            $successMessage = "Study Center '{$centerName}' [{$centerCode}] updated successfully!";
-
+            // Re-fetch updated center record
             $stmt = $pdo->prepare("SELECT * FROM `centers` WHERE `id` = :id LIMIT 1");
             $stmt->execute([':id' => $centerId]);
             $center = $stmt->fetch(PDO::FETCH_ASSOC);
             $existingAmenities = $amenitiesArray;
+
+            // Dispatch update notification email
+            $mailResult = sendCenterUpdateEmail($center, !empty($centerPassword) ? $centerPassword : null);
+            $mailNote = $mailResult['success'] 
+                ? " (Notification sent to registered email)" 
+                : " (Mail notice: " . htmlspecialchars($mailResult['error'] ?? '') . ")";
+
+            $successMessage = "Study Center '{$centerName}' [{$centerCode}] updated successfully!" . $mailNote;
         } catch (PDOException $e) {
             $errors[] = "Update failed: " . $e->getMessage();
         }
