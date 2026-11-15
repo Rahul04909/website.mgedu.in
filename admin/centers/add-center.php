@@ -290,22 +290,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_save_center'])
 
 <div class="container-fluid px-3 px-md-4 py-3">
 
-    <!-- Page Header -->
-    <div class="mg-page-header">
-        <div class="mg-page-header-title">
-            <div class="mg-page-header-icon">
-                <i class="fas fa-plus"></i>
-            </div>
-            <div>
-                <h4>Add Authorized Study Center</h4>
-                <p>Register new franchise institute, infrastructure details and legal verification records.</p>
-            </div>
-        </div>
-        <div>
-            <a href="index.php" class="mg-btn-action mg-btn-secondary">
+    <!-- Top Action & Navigation Row -->
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3 pt-1">
+        <div class="d-flex align-items-center gap-2">
+            <a href="index.php" class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-2 rounded-pill px-3 py-1 fw-semibold">
                 <i class="fas fa-arrow-left"></i>
                 <span>Back to Centers</span>
             </a>
+            <span class="text-muted d-none d-sm-inline">|</span>
+            <span class="fw-bold text-dark fs-6 d-none d-sm-inline">Add Authorized Study Center</span>
+        </div>
+        <div>
+            <span class="badge bg-light text-secondary border px-3 py-2 rounded-pill shadow-xs">
+                <i class="fas fa-building-columns text-primary me-1"></i> Franchise Center Registration
+            </span>
         </div>
     </div>
 

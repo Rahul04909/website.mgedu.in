@@ -527,6 +527,114 @@ textarea.mg-input-control {
 /* ==========================================================================
    8. DATA TABLE & STATS (INDEX PAGE)
    ========================================================================== */
+
+/* KPI Stat Cards (Index) */
+.mg-stat-card {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid var(--mg-slate-200);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.mg-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+  border-color: #cbd5e1;
+}
+
+.mg-stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+}
+
+.mg-stat-card.vermilion::before { background: #ea580c; }
+.mg-stat-card.emerald::before   { background: #10b981; }
+.mg-stat-card.purple::before    { background: #8b5cf6; }
+.mg-stat-card.azure::before,
+.mg-stat-card.cyan::before      { background: #0284c7; }
+
+.mg-stat-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.mg-stat-number {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--mg-dark);
+  line-height: 1.1;
+  font-family: system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.5px;
+}
+
+.mg-stat-suffix {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ea580c;
+  margin-left: 2px;
+}
+
+.mg-stat-card.emerald .mg-stat-suffix { color: #10b981; }
+.mg-stat-card.purple .mg-stat-suffix  { color: #8b5cf6; }
+.mg-stat-card.azure .mg-stat-suffix,
+.mg-stat-card.cyan .mg-stat-suffix    { color: #0284c7; }
+
+.mg-stat-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--mg-slate-700);
+  margin-top: 5px;
+}
+
+.mg-stat-sublabel {
+  font-size: 0.74rem;
+  color: var(--mg-slate-400);
+  margin-top: 1px;
+}
+
+.mg-stat-badge-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.mg-stat-card.vermilion .mg-stat-badge-icon {
+  background: #ffedd5;
+  color: #ea580c;
+}
+
+.mg-stat-card.emerald .mg-stat-badge-icon {
+  background: #ecfdf5;
+  color: #10b981;
+}
+
+.mg-stat-card.purple .mg-stat-badge-icon {
+  background: #f3e8ff;
+  color: #8b5cf6;
+}
+
+.mg-stat-card.azure .mg-stat-badge-icon,
+.mg-stat-card.cyan .mg-stat-badge-icon {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
 .mg-table-card {
   background: #ffffff;
   border-radius: 12px;

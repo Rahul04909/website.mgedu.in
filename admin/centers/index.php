@@ -99,28 +99,6 @@ if ($pdo) {
 
 <div class="container-fluid px-3 px-md-4 py-3">
 
-    <!-- Page Header & Action Bar -->
-    <div class="mg-page-header">
-        <div class="mg-page-header-title">
-            <div class="mg-page-header-icon">
-                <i class="fas fa-building-columns"></i>
-            </div>
-            <div>
-                <h4>Authorized Study Centers Network</h4>
-                <p>Manage, inspect, verify and register authorized franchisee institutions across India.</p>
-            </div>
-        </div>
-        <div class="d-flex align-items-center gap-2">
-            <a href="../../sql-tables/import-centers.php" class="mg-btn-action mg-btn-secondary" title="Database Migration">
-                <i class="fas fa-database me-1"></i> Migration
-            </a>
-            <a href="add-center.php" class="mg-btn-action mg-btn-primary">
-                <i class="fas fa-circle-plus"></i>
-                <span>Add New Center</span>
-            </a>
-        </div>
-    </div>
-
     <!-- Notification Alert -->
     <?php if (!empty($notification)): ?>
         <div class="alert alert-<?= $notificationType ?> alert-dismissible fade show rounded-4 shadow-sm border-0 mb-4" role="alert">
@@ -190,16 +168,15 @@ if ($pdo) {
 
     <!-- Main Table Card with Toolbar -->
     <div class="mg-table-card">
-        <!-- Toolbar with Filters & Search -->
+        <!-- Toolbar with Filters, Search & Action Buttons -->
         <div class="mg-table-toolbar">
-            <!-- Search -->
-            <div class="mg-search-input">
-                <i class="fas fa-search"></i>
-                <input type="text" id="centerTableSearch" class="form-control mg-input-control" placeholder="Search center, code, city, owner...">
-            </div>
+            <div class="d-flex flex-wrap align-items-center gap-2 flex-grow-1">
+                <!-- Search -->
+                <div class="mg-search-input flex-grow-1" style="max-width: 340px;">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="centerTableSearch" class="form-control mg-input-control" placeholder="Search center, code, city, owner...">
+                </div>
 
-            <!-- Filters -->
-            <div class="d-flex flex-wrap align-items-center gap-2">
                 <!-- State Filter -->
                 <select id="stateFilter" class="form-select mg-input-control" style="width: auto; min-width: 140px;">
                     <option value="">All States</option>
@@ -222,6 +199,18 @@ if ($pdo) {
                     <option value="Basic">Basic Labs</option>
                     <option value="Advanced">Advanced Labs</option>
                 </select>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                <a href="../../sql-tables/import-centers.php" class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-1 rounded-3 px-3 py-2 fw-semibold" title="Database Migration">
+                    <i class="fas fa-database"></i>
+                    <span>Migration</span>
+                </a>
+                <a href="add-center.php" class="btn btn-sm btn-primary d-inline-flex align-items-center gap-2 rounded-3 px-3 py-2 fw-bold text-white shadow-sm" style="background: var(--mg-navy); border-color: var(--mg-navy);">
+                    <i class="fas fa-circle-plus"></i>
+                    <span>Add New Center</span>
+                </a>
             </div>
         </div>
 

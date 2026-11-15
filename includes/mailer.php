@@ -6,7 +6,8 @@
  * Configured using environment variables (.env):
  * - MAIL_HOST, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD, MAIL_ENCRYPTION
  * - MAIL_FROM_ADDRESS, MAIL_FROM_NAME
- * - Organization contact details & embedded logo
+ * - Automatic dual-port fallback (Port 587 TLS <-> Port 465 SSL)
+ * - Complete audit logging to logs/mail.log
  */
 
 require_once __DIR__ . '/config.php';
@@ -18,9 +19,11 @@ use PHPMailer\PHPMailer\Exception;
 /**
  * Returns a configured PHPMailer instance using .env credentials.
  *
+ * @param int|null $overridePort
+ * @param string|null $overrideEncryption 'ssl' or 'tls'
  * @return PHPMailer
  */
-function createMailer(): PHPMailer
+function createMailer(?int $overridePort = null, ?string $overrideEncryption = null): PHPMailer
 {
     $mail = new PHPMailer(true);
 
@@ -31,35 +34,38 @@ function createMailer(): PHPMailer
     $mail->Username   = env('MAIL_USERNAME', 'team@mgedu.in');
     $mail->Password   = env('MAIL_PASSWORD', '');
     
-    $encryption       = strtolower(env('MAIL_ENCRYPTION', 'tls'));
-    if ($encryption === 'ssl') {
+    $port       = $overridePort ?? (int)env('MAIL_PORT', 587);
+    $encryption = $overrideEncryption ?? strtolower((string)env('MAIL_ENCRYPTION', 'tls'));
+
+    if ($port === 465 || $encryption === 'ssl') {
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-    } elseif ($encryption === 'tls') {
+        $mail->Port       = 465;
+    } elseif ($port === 587 || $encryption === 'tls') {
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = 587;
     } else {
-        $mail->SMTPSecure = false;
+        $mail->SMTPSecure  = false;
         $mail->SMTPAutoTLS = false;
+        $mail->Port        = $port;
     }
 
-    $mail->Port       = (int)env('MAIL_PORT', 587);
-    $mail->Timeout    = 15;
-    $mail->CharSet    = 'UTF-8';
+    $mail->Timeout = 10;
+    $mail->CharSet = 'UTF-8';
 
-    // Allow self-signed certificates in local development if needed
-    if (env('APP_ENV', 'local') === 'local') {
-        $mail->SMTPOptions = [
-            'ssl' => [
-                'verify_peer'       => false,
-                'verify_peer_name'  => false,
-                'allow_self_signed' => true
-            ]
-        ];
-    }
+    // Unconditionally relax SSL cert verification for cPanel / local WAMP / Windows OpenSSL
+    $mail->SMTPOptions = [
+        'ssl' => [
+            'verify_peer'       => false,
+            'verify_peer_name'  => false,
+            'allow_self_signed' => true
+        ]
+    ];
 
-    // Default sender
-    $fromAddress = env('MAIL_FROM_ADDRESS', 'team@mgedu.in');
-    $fromName    = env('MAIL_FROM_NAME', 'MG EDUCATION & SOCIAL DEVELOPMENT ORGANIZATION');
+    // Default sender & Return-Path / Envelope Sender
+    $fromAddress  = env('MAIL_FROM_ADDRESS', 'team@mgedu.in');
+    $fromName     = env('MAIL_FROM_NAME', 'MG EDUCATION & SOCIAL DEVELOPMENT ORGANIZATION');
     $mail->setFrom($fromAddress, $fromName);
+    $mail->Sender = $fromAddress; // Critical for Exim / cPanel SPF / Return-Path verification
 
     return $mail;
 }
@@ -67,64 +73,93 @@ function createMailer(): PHPMailer
 /**
  * Sends a formal registration confirmation email with login credentials,
  * embedded logo, and organization contacts to the newly authorized center.
+ * Features automatic dual-port fallback (Port 587 TLS <-> Port 465 SSL).
  *
  * @param array $center Center data row
  * @param string $plainPassword Plain-text password entered or generated
- * @return array ['success' => bool, 'message' => string]
+ * @return array ['success' => bool, 'message' => string, 'error' => ?string]
  */
 function sendCenterRegistrationEmail(array $center, string $plainPassword): array
 {
-    try {
-        $mail = createMailer();
+    $logDir = dirname(__DIR__) . '/logs';
+    if (!is_dir($logDir)) {
+        @mkdir($logDir, 0755, true);
+    }
+    $logFile = $logDir . '/mail.log';
 
-        $centerName   = htmlspecialchars($center['center_name'] ?? 'Authorized Study Center');
-        $centerCode   = htmlspecialchars($center['center_code'] ?? 'MGEDU');
-        $centerEmail  = trim($center['center_email'] ?? '');
-        $ownerName    = htmlspecialchars($center['owner_name'] ?? 'Center Director');
-        $ownerEmail   = trim($center['owner_email'] ?? '');
-        $centerMobile = htmlspecialchars($center['center_mobile'] ?? '');
-        $city         = htmlspecialchars($center['city'] ?? '');
-        $state        = htmlspecialchars($center['state'] ?? '');
-        $pincode      = htmlspecialchars($center['pincode'] ?? '');
-        $address      = htmlspecialchars($center['address'] ?? '');
-        $classrooms   = (int)($center['classrooms_count'] ?? 1);
-        $computers    = (int)($center['computers_count'] ?? 0);
-        $labType      = htmlspecialchars($center['lab_type'] ?? 'Standard');
-        $workingDays  = htmlspecialchars(($center['working_days_from'] ?? 'Mon') . ' to ' . ($center['working_days_to'] ?? 'Sat'));
-        $workingHours = htmlspecialchars(($center['working_hours_from'] ?? '09:00 AM') . ' - ' . ($center['working_hours_to'] ?? '06:00 PM'));
-        $royalty      = htmlspecialchars($center['royalty_percentage'] ?? '0.00');
+    $centerEmail = trim($center['center_email'] ?? '');
+    if (empty($centerEmail) || !filter_var($centerEmail, FILTER_VALIDATE_EMAIL)) {
+        $err = "Invalid or empty center email address: '{$centerEmail}'";
+        @file_put_contents($logFile, "[" . date('Y-m-d H:i:s') . "] ERROR: {$err}\n", FILE_APPEND);
+        return ['success' => false, 'error' => $err];
+    }
 
-        $appUrl       = rtrim(env('APP_URL', 'http://localhost/mgedu.in'), '/');
-        $loginUrl     = $appUrl . '/admin/login.php';
-        $supportPhone = env('ORG_CONTACT_PHONE', '+91 8059982049');
-        $supportEmail = env('ORG_CONTACT_EMAIL', 'team@mgedu.in');
-        $orgName      = env('APP_NAME', 'MG Education & Social Development Organization');
-        $isoCert      = env('ORG_ISO_CERT', 'ISO 9001:2015 Certified');
-        $nitiDarpan   = env('ORG_NITI_DARPAN', 'NITI Aayog Darpan Registered');
+    $centerName   = htmlspecialchars($center['center_name'] ?? 'Authorized Study Center');
+    $centerCode   = htmlspecialchars($center['center_code'] ?? 'MGEDU');
+    $ownerName    = htmlspecialchars($center['owner_name'] ?? 'Center Director');
+    $ownerEmail   = trim($center['owner_email'] ?? '');
+    $centerMobile = htmlspecialchars($center['center_mobile'] ?? '');
+    $city         = htmlspecialchars($center['city'] ?? '');
+    $state        = htmlspecialchars($center['state'] ?? '');
+    $pincode      = htmlspecialchars($center['pincode'] ?? '');
+    $address      = htmlspecialchars($center['address'] ?? '');
+    $classrooms   = (int)($center['classrooms_count'] ?? 1);
+    $computers    = (int)($center['computers_count'] ?? 0);
+    $labType      = htmlspecialchars($center['lab_type'] ?? 'Standard');
+    $workingDays  = htmlspecialchars(($center['working_days_from'] ?? 'Mon') . ' to ' . ($center['working_days_to'] ?? 'Sat'));
+    $workingHours = htmlspecialchars(($center['working_hours_from'] ?? '09:00 AM') . ' - ' . ($center['working_hours_to'] ?? '06:00 PM'));
+    $royalty      = htmlspecialchars($center['royalty_percentage'] ?? '0.00');
 
-        // Recipients
-        $mail->addAddress($centerEmail, $centerName);
-        if (!empty($ownerEmail) && strtolower($ownerEmail) !== strtolower($centerEmail)) {
-            $mail->addCC($ownerEmail, $ownerName);
-        }
+    $appUrl       = rtrim(env('APP_URL', 'http://localhost/mgedu.in'), '/');
+    $loginUrl     = $appUrl . '/admin/login.php';
+    $supportPhone = env('ORG_CONTACT_PHONE', '+91 8059982049');
+    $supportEmail = env('ORG_CONTACT_EMAIL', 'team@mgedu.in');
+    $orgName      = env('APP_NAME', 'MG Education & Social Development Organization');
+    $isoCert      = env('ORG_ISO_CERT', 'ISO 9001:2015 Certified');
+    $nitiDarpan   = env('ORG_NITI_DARPAN', 'NITI Aayog Darpan Registered');
 
-        // Embed MG Education official logo
-        $logoPath = ROOT_PATH . '/assets/images/logo.jpg';
-        $hasEmbeddedLogo = false;
-        if (file_exists($logoPath)) {
-            $mail->addEmbeddedImage($logoPath, 'mg_official_logo', 'logo.jpg');
-            $hasEmbeddedLogo = true;
-        }
+    $configuredPort = (int)env('MAIL_PORT', 587);
+    $configuredEnc  = strtolower((string)env('MAIL_ENCRYPTION', 'tls'));
 
-        $mail->isHTML(true);
-        $mail->Subject = "Study Center Authorization & Portal Credentials: {$centerName} [{$centerCode}]";
+    // Try primary configuration first; fallback to secondary port if blocked
+    $attempts = [];
+    if ($configuredPort === 465 || $configuredEnc === 'ssl') {
+        $attempts[] = ['port' => 465, 'enc' => 'ssl', 'name' => 'Port 465 (SSL)'];
+        $attempts[] = ['port' => 587, 'enc' => 'tls', 'name' => 'Port 587 (STARTTLS)'];
+    } else {
+        $attempts[] = ['port' => 587, 'enc' => 'tls', 'name' => 'Port 587 (STARTTLS)'];
+        $attempts[] = ['port' => 465, 'enc' => 'ssl', 'name' => 'Port 465 (SSL)'];
+    }
 
-        // HTML Body
-        $logoHtml = $hasEmbeddedLogo 
-            ? '<img src="cid:mg_official_logo" alt="MG Education Logo" style="max-height: 58px; max-width: 240px; display: block; margin: 0 auto;">'
-            : '<h2 style="color: #071d33; margin: 0; font-size: 22px; font-weight: 800;">' . $orgName . '</h2>';
+    $lastError = '';
 
-        $bodyHtml = <<<HTML
+    foreach ($attempts as $idx => $attempt) {
+        try {
+            $mail = createMailer($attempt['port'], $attempt['enc']);
+
+            // Recipients
+            $mail->addAddress($centerEmail, $centerName);
+            if (!empty($ownerEmail) && filter_var($ownerEmail, FILTER_VALIDATE_EMAIL) && strtolower($ownerEmail) !== strtolower($centerEmail)) {
+                $mail->addCC($ownerEmail, $ownerName);
+            }
+
+            // Embed MG Education official logo
+            $logoPath = dirname(__DIR__) . '/assets/images/logo.jpg';
+            $hasEmbeddedLogo = false;
+            if (file_exists($logoPath)) {
+                $mail->addEmbeddedImage($logoPath, 'mg_official_logo', 'logo.jpg', 'base64', 'image/jpeg');
+                $hasEmbeddedLogo = true;
+            }
+
+            $mail->isHTML(true);
+            $mail->Subject = "Study Center Authorization & Portal Credentials: {$centerName} [{$centerCode}]";
+
+            // HTML Header Graphic
+            $logoHtml = $hasEmbeddedLogo 
+                ? '<img src="cid:mg_official_logo" alt="MG Education Logo" style="max-height: 58px; max-width: 260px; display: block; margin: 0 auto;">'
+                : '<h2 style="color: #071d33; margin: 0; font-size: 22px; font-weight: 800; text-align: center;">' . $orgName . '</h2>';
+
+            $bodyHtml = <<<HTML
 <!DOCTYPE html>
 <html>
 <head>
@@ -138,135 +173,125 @@ function sendCenterRegistrationEmail(array $center, string $plainPassword): arra
         <tr>
             <td align="center">
                 <!-- Main Container Card -->
-                <table width="640" border="0" cellpadding="0" cellspacing="0" style="max-width: 640px; width: 100%; background-color: #ffffff; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08); border: 1px solid #e2e8f0;">
-                    
-                    <!-- Top Organization Header -->
+                <table width="640" border="0" cellpadding="0" cellspacing="0" style="max-width: 640px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 18px rgba(15, 23, 42, 0.08); border: 1px solid #e2e8f0;">
+
+                    <!-- Top Accent Bar -->
                     <tr>
-                        <td align="center" style="background-color: #ffffff; padding: 26px 24px; border-bottom: 2px solid #00a2db;">
+                        <td height="6" style="background: linear-gradient(90deg, #0284c7 0%, #071d33 50%, #f59e0b 100%); line-height: 6px; font-size: 6px;">&nbsp;</td>
+                    </tr>
+
+                    <!-- Organization Header -->
+                    <tr>
+                        <td style="padding: 28px 36px 20px; text-align: center; border-bottom: 1px solid #e2e8f0; background-color: #ffffff;">
                             {$logoHtml}
-                            <div style="font-size: 11px; text-transform: uppercase; color: #64748b; letter-spacing: 1px; font-weight: 700; margin-top: 8px;">
+                            <div style="margin-top: 10px; font-size: 11px; font-weight: 700; color: #64748b; letter-spacing: 0.5px; text-transform: uppercase;">
                                 {$isoCert} &bull; {$nitiDarpan}
                             </div>
                         </td>
                     </tr>
 
-                    <!-- Authorization Announcement Banner -->
+                    <!-- Hero Confirmation Banner -->
                     <tr>
-                        <td style="background: linear-gradient(135deg, #071d33 0%, #0b2542 100%); padding: 24px 30px; color: #ffffff;">
-                            <div style="display: inline-block; background-color: rgba(0, 162, 219, 0.25); color: #38bdf8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; padding: 4px 12px; border-radius: 4px; margin-bottom: 8px;">
-                                Official Franchise Onboarding
-                            </div>
-                            <h1 style="margin: 0; font-size: 21px; font-weight: 700; line-height: 1.3; color: #ffffff;">
-                                Congratulations! Center Registration Successful
-                            </h1>
-                            <p style="margin: 6px 0 0; font-size: 13px; color: #cbd5e1; line-height: 1.5;">
-                                Your institute has been formally accredited and integrated into the national MG Education network.
-                            </p>
-                        </td>
-                    </tr>
-
-                    <!-- Greeting & Introduction -->
-                    <tr>
-                        <td style="padding: 26px 30px 14px;">
-                            <p style="font-size: 15px; color: #0f172a; margin: 0 0 10px; font-weight: 600;">
-                                Dear {$ownerName} / Management Team,
-                            </p>
-                            <p style="font-size: 13.5px; line-height: 1.6; color: #334155; margin: 0;">
-                                We are pleased to confirm that <strong>{$centerName}</strong> has been registered with authorization code 
-                                <strong style="color: #0284c7; font-family: monospace; font-size: 14px;">{$centerCode}</strong>. 
-                                Below are your confidential portal credentials and official registration summary.
-                            </p>
-                        </td>
-                    </tr>
-
-                    <!-- Confidential Credentials Box -->
-                    <tr>
-                        <td style="padding: 0 30px 20px;">
-                            <table width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; overflow: hidden;">
-                                <tr>
-                                    <td colspan="2" style="background-color: #0284c7; color: #ffffff; padding: 10px 16px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
-                                        &#128274; Center Portal Login Credentials
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #64748b; width: 38%;">
-                                        <strong>Center Code / ID:</strong>
-                                    </td>
-                                    <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-size: 14px; color: #071d33; font-weight: 700; font-family: monospace;">
-                                        {$centerCode}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #64748b;">
-                                        <strong>Login Email:</strong>
-                                    </td>
-                                    <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-size: 13.5px; color: #0f172a; font-weight: 600;">
-                                        {$centerEmail}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #64748b;">
-                                        <strong>Initial Password:</strong>
-                                    </td>
-                                    <td style="padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-size: 14px; color: #b91c1c; font-weight: 700; font-family: monospace;">
-                                        {$plainPassword}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 12px 16px; font-size: 13px; color: #64748b;">
-                                        <strong>Portal Access:</strong>
-                                    </td>
-                                    <td style="padding: 12px 16px; font-size: 13px;">
-                                        <a href="{$loginUrl}" target="_blank" style="display: inline-block; background-color: #071d33; color: #ffffff; text-decoration: none; font-size: 12px; font-weight: 700; padding: 7px 16px; border-radius: 6px;">
-                                            Access Portal &rarr;
-                                        </a>
-                                    </td>
-                                </tr>
-                            </table>
-                            <div style="font-size: 11px; color: #64748b; margin-top: 6px; font-style: italic;">
-                                * For security purposes, please login and update your temporary password immediately upon first access.
-                            </div>
-                        </td>
-                    </tr>
-
-                    <!-- Registered Center Specifications -->
-                    <tr>
-                        <td style="padding: 0 30px 22px;">
-                            <div style="font-size: 12.5px; font-weight: 700; color: #071d33; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">
-                                Institute Infrastructure &amp; Location Profile
-                            </div>
-                            <table width="100%" border="0" cellpadding="8" cellspacing="0" style="font-size: 12.5px; border-collapse: collapse; border: 1px solid #e2e8f0;">
-                                <tr style="background-color: #f8fafc;">
-                                    <td style="border: 1px solid #e2e8f0; color: #64748b; width: 35%;"><strong>Center Address:</strong></td>
-                                    <td style="border: 1px solid #e2e8f0; color: #0f172a;">{$address}, {$city}, {$state} - {$pincode}</td>
-                                </tr>
-                                <tr>
-                                    <td style="border: 1px solid #e2e8f0; color: #64748b;"><strong>Center Contact:</strong></td>
-                                    <td style="border: 1px solid #e2e8f0; color: #0f172a;">{$centerMobile} | Director: {$ownerName}</td>
-                                </tr>
-                                <tr style="background-color: #f8fafc;">
-                                    <td style="border: 1px solid #e2e8f0; color: #64748b;"><strong>Infrastructure:</strong></td>
-                                    <td style="border: 1px solid #e2e8f0; color: #0f172a;">{$classrooms} Classroom(s) &bull; {$computers} Computer Terminals ({$labType} Lab)</td>
-                                </tr>
-                                <tr>
-                                    <td style="border: 1px solid #e2e8f0; color: #64748b;"><strong>Operational Timing:</strong></td>
-                                    <td style="border: 1px solid #e2e8f0; color: #0f172a;">{$workingDays} ({$workingHours})</td>
-                                </tr>
-                                <tr style="background-color: #f8fafc;">
-                                    <td style="border: 1px solid #e2e8f0; color: #64748b;"><strong>Royalty Agreement:</strong></td>
-                                    <td style="border: 1px solid #e2e8f0; color: #0f172a; font-weight: 700; color: #0284c7;">{$royalty}% Monthly</td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-
-                    <!-- Official Support & Helpline -->
-                    <tr>
-                        <td style="padding: 20px 30px; background-color: #f8fafc; border-top: 1px solid #e2e8f0;">
+                        <td style="padding: 26px 36px 16px; background-color: #f8fafc; border-bottom: 1px solid #e2e8f0;">
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td>
-                                        <div style="font-size: 13px; font-weight: 700; color: #071d33; margin-bottom: 4px;">
+                                        <div style="display: inline-block; padding: 4px 12px; background-color: #ecfdf5; color: #047857; font-size: 11px; font-weight: 700; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; border: 1px solid #a7f3d0; margin-bottom: 10px;">
+                                            &bull; Registration Confirmed &amp; Authorized
+                                        </div>
+                                        <h1 style="margin: 0; font-size: 21px; font-weight: 700; color: #0f172a; line-height: 1.3;">
+                                            Welcome to the MG Education Network
+                                        </h1>
+                                        <p style="margin: 8px 0 0; font-size: 13px; color: #475569; line-height: 1.5;">
+                                            Dear <strong>{$ownerName}</strong>, your institution <strong>{$centerName}</strong> has been successfully registered and authorized as an official study center.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Credentials Box -->
+                    <tr>
+                        <td style="padding: 24px 36px;">
+                            <div style="background-color: #071d33; border-radius: 10px; padding: 22px 26px; color: #ffffff;">
+                                <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #38bdf8; font-weight: 700; margin-bottom: 12px;">
+                                    Center Administrator Login Credentials
+                                </div>
+                                <table width="100%" border="0" cellpadding="0" cellspacing="0" style="color: #ffffff;">
+                                    <tr>
+                                        <td width="38%" style="padding: 6px 0; font-size: 13px; color: #94a3b8;">Center Code / ID:</td>
+                                        <td width="62%" style="padding: 6px 0; font-size: 15px; font-weight: 700; color: #ffffff; font-family: monospace;">{$centerCode}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 6px 0; font-size: 13px; color: #94a3b8;">Official Username / Email:</td>
+                                        <td style="padding: 6px 0; font-size: 14px; font-weight: 600; color: #38bdf8;">{$centerEmail}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 6px 0; font-size: 13px; color: #94a3b8;">Temporary Password:</td>
+                                        <td style="padding: 6px 0; font-size: 15px; font-weight: 700; color: #facc15; font-family: monospace;">{$plainPassword}</td>
+                                    </tr>
+                                </table>
+                                <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.12); text-align: center;">
+                                    <a href="{$loginUrl}" target="_blank" style="display: inline-block; background-color: #0284c7; color: #ffffff; padding: 10px 24px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 700; letter-spacing: 0.3px;">
+                                        Access Center Management Portal &rarr;
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Center Summary Details -->
+                    <tr>
+                        <td style="padding: 0 36px 24px;">
+                            <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: #64748b; letter-spacing: 0.5px; margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px;">
+                                Authorized Center Profile Record
+                            </div>
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0" style="font-size: 13px; color: #334155; line-height: 1.6;">
+                                <tr>
+                                    <td width="35%" style="padding: 5px 0; color: #64748b;">Institute Name:</td>
+                                    <td width="65%" style="padding: 5px 0; font-weight: 600; color: #0f172a;">{$centerName}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px 0; color: #64748b;">Center Director / Owner:</td>
+                                    <td style="padding: 5px 0; font-weight: 600; color: #0f172a;">{$ownerName} ({$centerMobile})</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px 0; color: #64748b;">Center Location:</td>
+                                    <td style="padding: 5px 0; font-weight: 600; color: #0f172a;">{$address}, {$city}, {$state} - {$pincode}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px 0; color: #64748b;">Infrastructure:</td>
+                                    <td style="padding: 5px 0; font-weight: 600; color: #0f172a;">{$classrooms} Classrooms &bull; {$computers} Computer Terminals &bull; {$labType} Lab</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px 0; color: #64748b;">Working Hours:</td>
+                                    <td style="padding: 5px 0; font-weight: 600; color: #0f172a;">{$workingDays} ({$workingHours})</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px 0; color: #64748b;">Royalty Sharing:</td>
+                                    <td style="padding: 5px 0; font-weight: 600; color: #0f172a;">{$royalty}% Organization Share</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Security Advisory -->
+                    <tr>
+                        <td style="padding: 0 36px 24px;">
+                            <div style="background-color: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 12px 16px; font-size: 12px; color: #92400e; line-height: 1.5;">
+                                <strong>Security Reminder:</strong> For your center's protection, please log in immediately at <a href="{$loginUrl}" style="color: #b45309; font-weight: 700;">{$loginUrl}</a> and change your temporary password under Profile Settings.
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Support Helpdesk Contact -->
+                    <tr>
+                        <td style="padding: 20px 36px; background-color: #f8fafc; border-top: 1px solid #e2e8f0;">
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td>
+                                        <div style="font-size: 13px; font-weight: 700; color: #0f172a; margin-bottom: 4px;">
                                             Need Assistance or Franchise Support?
                                         </div>
                                         <div style="font-size: 12px; color: #475569; line-height: 1.6;">
@@ -297,26 +322,38 @@ function sendCenterRegistrationEmail(array $center, string $plainPassword): arra
 </html>
 HTML;
 
-        $mail->Body = $bodyHtml;
+            $mail->Body = $bodyHtml;
 
-        // Plain Text Alternative Body
-        $mail->AltBody = "CONGRATULATIONS - STUDY CENTER REGISTRATION SUCCESSFUL\n"
-            . "Institute: {$centerName}\n"
-            . "Center Code: {$centerCode}\n"
-            . "Center Email: {$centerEmail}\n"
-            . "Temporary Password: {$plainPassword}\n"
-            . "Portal Login: {$loginUrl}\n\n"
-            . "Address: {$address}, {$city}, {$state} - {$pincode}\n"
-            . "Helpline: {$supportPhone}\n"
-            . "Website: {$appUrl}\n\n"
-            . "MG Education & Social Development Organization";
+            // Plain text alternative
+            $mail->AltBody = "CONGRATULATIONS - STUDY CENTER REGISTRATION SUCCESSFUL\n"
+                . "Institute: {$centerName}\n"
+                . "Center Code: {$centerCode}\n"
+                . "Center Email: {$centerEmail}\n"
+                . "Temporary Password: {$plainPassword}\n"
+                . "Portal Login: {$loginUrl}\n\n"
+                . "Address: {$address}, {$city}, {$state} - {$pincode}\n"
+                . "Helpline: {$supportPhone}\n"
+                . "Website: {$appUrl}\n\n"
+                . "{$orgName}";
 
-        $mail->send();
-        return ['success' => true, 'message' => 'Registration email sent successfully to ' . $centerEmail];
+            $mail->send();
 
-    } catch (Throwable $e) {
-        error_log("Failed to send center registration email: " . $e->getMessage());
-        return ['success' => false, 'error' => $e->getMessage()];
+            // Log success
+            @file_put_contents($logFile, "[" . date('Y-m-d H:i:s') . "] SUCCESS: Registration email sent to {$centerEmail} via {$attempt['name']}\n", FILE_APPEND);
+
+            return [
+                'success' => true,
+                'message' => "Registration email sent successfully to {$centerEmail} via {$attempt['name']}."
+            ];
+
+        } catch (Throwable $e) {
+            $lastError = $e->getMessage();
+            @file_put_contents($logFile, "[" . date('Y-m-d H:i:s') . "] ATTEMPT FAILED ({$attempt['name']}) for {$centerEmail}: {$lastError}\n", FILE_APPEND);
+        }
     }
-}
 
+    return [
+        'success' => false,
+        'error'   => "SMTP Delivery Failed: " . $lastError
+    ];
+}

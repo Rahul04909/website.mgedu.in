@@ -273,25 +273,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_center'
 
 <div class="container-fluid px-3 px-md-4 py-3">
 
-    <!-- Page Header -->
-    <div class="mg-page-header">
-        <div class="mg-page-header-title">
-            <div class="mg-page-header-icon" style="background: var(--mg-primary);">
-                <i class="fas fa-pen-to-square"></i>
-            </div>
-            <div>
-                <h4>Edit Study Center: <?= htmlspecialchars($center['center_name']) ?></h4>
-                <p>Code: <span class="mg-code-badge"><?= htmlspecialchars($center['center_code']) ?></span> &bull; Status: <span class="badge bg-light text-dark border text-capitalize"><?= htmlspecialchars($center['status']) ?></span></p>
-            </div>
-        </div>
-        <div class="d-flex gap-2">
-            <a href="index.php" class="mg-btn-action mg-btn-secondary">
+    <!-- Top Action & Navigation Row -->
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3 pt-1">
+        <div class="d-flex align-items-center gap-2">
+            <a href="index.php" class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-2 rounded-pill px-3 py-1 fw-semibold">
                 <i class="fas fa-arrow-left"></i>
-                <span>Centers List</span>
+                <span>Back to Centers</span>
             </a>
-            <a href="add-center.php" class="mg-btn-action mg-btn-primary">
-                <i class="fas fa-plus"></i>
-                <span>Add Center</span>
+            <span class="text-muted d-none d-sm-inline">|</span>
+            <span class="fw-bold text-dark fs-6 d-none d-sm-inline">Edit Center: <?= htmlspecialchars($center['center_name']) ?></span>
+            <span class="mg-code-badge ms-1"><?= htmlspecialchars($center['center_code']) ?></span>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-light text-secondary border px-3 py-2 rounded-pill">
+                Status: <strong class="text-capitalize text-<?= $center['status'] === 'active' ? 'success' : ($center['status'] === 'pending' ? 'warning' : 'danger') ?>"><?= htmlspecialchars($center['status']) ?></strong>
+            </span>
+            <a href="add-center.php" class="btn btn-sm btn-outline-primary rounded-pill px-3 py-1 fw-semibold">
+                <i class="fas fa-plus me-1"></i> Add New
             </a>
         </div>
     </div>
